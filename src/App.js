@@ -15,7 +15,8 @@ class App extends Component {
     this.state = {
       userKey: getQuery('token') || '-',
       dir: dir,
-      isMobile: window.innerWidth < 1000
+      isMobile: window.innerWidth < 1000,
+      tabbar: null
     };
     this.game = new GameServer('trade');
     autoBind(this);
