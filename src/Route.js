@@ -21,10 +21,10 @@ class Route extends Component {
                     <Grid style={{ width: '12vw' }}>
                         <img style={{ width: '10vw' }} src={require('./assets/img/logo.png')} />
                     </Grid>
-                    <Grid style={{ width: '67vw' }}>
+                    <Grid style={{ width: '69vw' }}>
                         <Appbar />
                     </Grid>
-                    <Grid style={{ width: '20vw', height: '8vh' }}>
+                    <Grid style={{ width: '19vw', height: '8vh', minWidth: 200 }}>
                         <Deposit />
                     </Grid>
                 </Grid>

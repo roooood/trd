@@ -35,12 +35,11 @@ const StyledTab = withStyles(theme => ({
         minWidth: 30,
         minHeight: '8.5vh',
         height: '8.5vh',
-        border: '1px solid #757575',
         margin: 5,
         borderRadius: 5,
-        width: 100,
+        width: 150,
         // padding: '10px 20px',
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(62, 62, 62, 0.3)',
         '&:hover': {
             opacity: 1,
             color: '#fff',
@@ -48,7 +47,7 @@ const StyledTab = withStyles(theme => ({
         '&$selected': {
             color: '#f50057',
             backgroundColor: 'transparent',
-            border: '1px solid #f50057',
+            borderBottom: '2px solid #f07000',
         }
     },
     selected: {}

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Context from '../library/Context';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
     return (
-        <Typography style={{}} component="div" role="tabpanel" hidden={value !== index} {...other}>
+        <Typography style={{ width: '100%' }} component="div" role="tabpanel" hidden={value !== index} {...other}>
             {children}
         </Typography>
     );
@@ -24,7 +24,14 @@ class Tabbar extends Component {
         return (
             <div style={{ ...styles.root }} >
                 <TabPanel value={this.context.state.tabbar} index={0}>
-                    Item One
+                    <Grid container alignItems="center" style={{ width: '100%' }}>
+                        <Grid style={{ width: '80%' }}>
+                            a
+                        </Grid>
+                        <Grid style={{ width: '19%' }}>
+                            b
+                        </Grid>
+                    </Grid>
                 </TabPanel>
                 <TabPanel value={this.context.state.tabbar} index={1}>
                     Item Two
