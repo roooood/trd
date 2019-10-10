@@ -8,6 +8,7 @@ import { green, purple } from '@material-ui/core/colors';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Grid from '@material-ui/core/Grid';
 import { t } from '../locales';
 import Context from '../library/Context';
 
@@ -64,16 +65,17 @@ class Deposit extends Component {
     }
     render() {
         return (
-            <>
-                <List component="nav" aria-label="Device settings">
+            <Grid container justify="space-between" style={{ height: '100%' }}>
+                <List disablePadding={true} component="div" aria-label="Device settings">
                     <ListItem
                         button
                         aria-haspopup="true"
                         aria-controls="lock-menu"
                         aria-label="when device is locked"
                         onClick={this.openHelp}
+                        className="list-item"
                     >
-                        <ListItemText primary="When device is locked" secondary={options[this.stateselectedIndex]} />
+                        <ListItemText className="account" primary={t('practiceAccount')} secondary={"$ 20,000"} />
                     </ListItem>
                 </List>
                 <StyledMenu
@@ -87,7 +89,7 @@ class Deposit extends Component {
                 <ColorButton variant="contained" color="primary">
                     <DynamicFeed style={{ marginRight: 20 }} /> {t('deposit')}
                 </ColorButton>
-            </>
+            </Grid>
         );
     }
 }
