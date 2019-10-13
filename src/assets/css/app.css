@@ -59,7 +59,6 @@ body {
   width:100%;
 }
 .c2 .item1 {
-  border-right: 1px solid #333;
   height:100%;
 }
 
@@ -81,6 +80,9 @@ body {
 .t1 .tab1 { 
   width: calc(100% - 130px);
   height:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .list-item,.account{
@@ -95,8 +97,12 @@ body {
   font-size:.9rem;
   font-weight: bold;
 }
+.animated{
+  border-right: 1px solid #333;
+  width:200px;
+}
 .animate{
-   width:200px;
+  border-right: 1px solid #333;
   -webkit-animation:sideMenu ease-in 1;  
   -moz-animation:sideMenu ease-in 1;
   animation:sideMenu ease-in 1;
@@ -105,9 +111,9 @@ body {
   -moz-animation-fill-mode:forwards;
   animation-fill-mode:forwards;
 
-  -webkit-animation-duration:.5s;
-  -moz-animation-duration:.5s;
-  animation-duration:.5s;
+  -webkit-animation-duration:.2s;
+  -moz-animation-duration:.2s;
+  animation-duration:.2s;
 }
 
 @keyframes sideMenu{

@@ -36,7 +36,7 @@ const StyledTab = withStyles(theme => ({
 }))(props => <Tab disableRipple {...props} />);
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, prev, index, ...other } = props;
 
     return (
         <Typography
@@ -45,7 +45,7 @@ function TabPanel(props) {
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
-            className="animate"
+            className={prev == null ? "animate" : "animated"}
             {...other}
         >
             <Box p={3}>{children}</Box>
@@ -62,18 +62,19 @@ class Sidebar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tab: null
+            tab: null,
         };
         autoBind(this);
     }
     handleChange(e, tab) {
+        this.prev = this.state.tab;
         if (tab == this.state.tab)
             tab = null;
         this.setState({ tab });
     }
     render() {
         return (
-            <div style={styles.root}>
+            <div style={styles.root} className="sidebar">
                 <Tabs
                     orientation="vertical"
                     variant="scrollable"
@@ -89,25 +90,25 @@ class Sidebar extends Component {
                     <StyledTab label={t('videoToturial')} icon={<Videocam />}{...a11yProps(4)} />
                     <StyledTab label={t('more')} icon={<MoreOutlined />}{...a11yProps(5)} />
                 </Tabs>
-                <TabPanel value={this.state.tab} index={0}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={0}>
                     Item One
       </TabPanel>
-                <TabPanel value={this.state.tab} index={1}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={1}>
                     Item Two
       </TabPanel>
-                <TabPanel value={this.state.tab} index={2}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={2}>
                     Item Three
       </TabPanel>
-                <TabPanel value={this.state.tab} index={3}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={3}>
                     Item Four
       </TabPanel>
-                <TabPanel value={this.state.tab} index={4}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={4}>
                     Item Five
       </TabPanel>
-                <TabPanel value={this.state.tab} index={5}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={5}>
                     Item Six
       </TabPanel>
-                <TabPanel value={this.state.tab} index={6}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={6}>
                     Item Seven
       </TabPanel>
             </div>

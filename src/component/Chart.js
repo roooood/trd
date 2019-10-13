@@ -2,26 +2,26 @@ import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import Context from '../library/Context';
 import * as LightweightCharts from 'lightweight-charts';
-
+var candleSeries, chart, volumeSeries;
 var data = [
-    { time: '2018-10-19', open: 54.62, high: 55.50, low: 54.52, close: 54.90 },
-    { time: '2018-10-22', open: 55.08, high: 55.27, low: 54.61, close: 54.98 },
-    { time: '2018-10-23', open: 56.09, high: 57.47, low: 56.09, close: 57.21 },
-    { time: '2018-10-24', open: 57.00, high: 58.44, low: 56.41, close: 57.42 },
-    { time: '2018-10-25', open: 57.46, high: 57.63, low: 56.17, close: 56.43 },
-    { time: '2018-10-26', open: 56.26, high: 56.62, low: 55.19, close: 55.51 },
-    { time: '2018-10-29', open: 55.81, high: 57.15, low: 55.72, close: 56.48 },
-    { time: '2018-10-30', open: 56.92, high: 58.80, low: 56.92, close: 58.18 },
-    { time: '2018-10-31', open: 58.32, high: 58.32, low: 56.76, close: 57.09 },
-    { time: '2018-11-01', open: 56.98, high: 57.28, low: 55.55, close: 56.05 },
-    { time: '2018-11-02', open: 56.34, high: 57.08, low: 55.92, close: 56.63 },
-    { time: '2018-11-05', open: 56.51, high: 57.45, low: 56.51, close: 57.21 },
-    { time: '2018-11-06', open: 57.02, high: 57.35, low: 56.65, close: 57.21 },
-    { time: '2018-11-07', open: 57.55, high: 57.78, low: 57.03, close: 57.65 },
-    { time: '2018-11-08', open: 57.70, high: 58.44, low: 57.66, close: 58.27 },
-    { time: '2018-11-09', open: 58.32, high: 59.20, low: 57.94, close: 58.46 },
-    { time: '2018-11-12', open: 58.84, high: 59.40, low: 58.54, close: 58.72 },
-    { time: '2018-11-13', open: 59.09, high: 59.14, low: 58.32, close: 58.66 },
+    { time: '2018-10-19', open: 54.62, value: 54.62, color: '#25b940', high: 55.50, low: 54.52, close: 54.90 },
+    { time: '2018-10-22', open: 55.08, value: 33.62, high: 55.27, low: 54.61, close: 54.98 },
+    { time: '2018-10-23', open: 56.09, value: 55.62, color: '#fc155a', high: 57.47, low: 56.09, close: 57.21 },
+    { time: '2018-10-24', open: 57.00, value: 33.62, high: 58.44, low: 56.41, close: 57.42 },
+    { time: '2018-10-25', open: 57.46, value: 11.62, high: 57.63, low: 56.17, close: 56.43 },
+    { time: '2018-10-26', open: 56.26, value: 11.62, high: 56.62, low: 55.19, close: 55.51 },
+    { time: '2018-10-29', open: 55.81, value: 11.62, high: 57.15, low: 55.72, close: 56.48 },
+    { time: '2018-10-30', open: 56.92, value: 11.62, high: 58.80, low: 56.92, close: 58.18 },
+    { time: '2018-10-31', open: 58.32, value: 11.62, high: 58.32, low: 56.76, close: 57.09 },
+    { time: '2018-11-01', open: 56.98, value: 11.62, high: 57.28, low: 55.55, close: 56.05 },
+    { time: '2018-11-02', open: 56.34, value: 11.62, high: 57.08, low: 55.92, close: 56.63 },
+    { time: '2018-11-05', open: 56.51, value: 11.62, high: 57.45, low: 56.51, close: 57.21 },
+    { time: '2018-11-06', open: 57.02, value: 11.62, high: 57.35, low: 56.65, close: 57.21 },
+    { time: '2018-11-07', open: 57.55, value: 11.62, high: 57.78, low: 57.03, close: 57.65 },
+    { time: '2018-11-08', open: 57.70, value: 11.62, high: 58.44, low: 57.66, close: 58.27 },
+    { time: '2018-11-09', open: 58.32, value: 11.62, high: 59.20, low: 57.94, close: 58.46 },
+    { time: '2018-11-12', open: 58.84, value: 11.62, high: 59.40, low: 58.54, close: 58.72 },
+    { time: '2018-11-13', open: 59.09, value: 11.62, high: 59.14, low: 58.32, close: 58.66 },
     { time: '2018-11-14', open: 59.13, high: 59.32, low: 58.41, close: 58.94 },
     { time: '2018-11-15', open: 58.85, high: 59.09, low: 58.45, close: 59.08 },
     { time: '2018-11-16', open: 59.06, high: 60.39, low: 58.91, close: 60.21 },
@@ -84,76 +84,6 @@ var data = [
     { time: '2019-02-12', open: 54.45, high: 54.77, low: 54.19, close: 54.42 },
     { time: '2019-02-13', open: 54.35, high: 54.77, low: 54.28, close: 54.48 },
     { time: '2019-02-14', open: 54.38, high: 54.52, low: 53.95, close: 54.03 },
-    { time: '2019-02-15', open: 54.48, high: 55.19, low: 54.32, close: 55.16 },
-    { time: '2019-02-19', open: 55.06, high: 55.66, low: 54.82, close: 55.44 },
-    { time: '2019-02-20', open: 55.37, high: 55.91, low: 55.24, close: 55.76 },
-    { time: '2019-02-21', open: 55.55, high: 56.72, low: 55.46, close: 56.15 },
-    { time: '2019-02-22', open: 56.43, high: 57.13, low: 56.40, close: 56.92 },
-    { time: '2019-02-25', open: 57.00, high: 57.27, low: 56.55, close: 56.78 },
-    { time: '2019-02-26', open: 56.82, high: 57.09, low: 56.46, close: 56.64 },
-    { time: '2019-02-27', open: 56.55, high: 56.73, low: 56.35, close: 56.72 },
-    { time: '2019-02-28', open: 56.74, high: 57.61, low: 56.72, close: 56.92 },
-    { time: '2019-03-01', open: 57.02, high: 57.15, low: 56.35, close: 56.96 },
-    { time: '2019-03-04', open: 57.15, high: 57.34, low: 55.66, close: 56.24 },
-    { time: '2019-03-05', open: 56.09, high: 56.17, low: 55.51, close: 56.08 },
-    { time: '2019-03-06', open: 56.19, high: 56.42, low: 55.45, close: 55.68 },
-    { time: '2019-03-07', open: 55.76, high: 56.40, low: 55.72, close: 56.30 },
-    { time: '2019-03-08', open: 56.36, high: 56.68, low: 56.00, close: 56.53 },
-    { time: '2019-03-11', open: 56.76, high: 57.62, low: 56.75, close: 57.58 },
-    { time: '2019-03-12', open: 57.63, high: 58.11, low: 57.36, close: 57.43 },
-    { time: '2019-03-13', open: 57.37, high: 57.74, low: 57.34, close: 57.66 },
-    { time: '2019-03-14', open: 57.71, high: 58.09, low: 57.51, close: 57.95 },
-    { time: '2019-03-15', open: 58.04, high: 58.51, low: 57.93, close: 58.39 },
-    { time: '2019-03-18', open: 58.27, high: 58.32, low: 57.56, close: 58.07 },
-    { time: '2019-03-19', open: 58.10, high: 58.20, low: 57.31, close: 57.50 },
-    { time: '2019-03-20', open: 57.51, high: 58.05, low: 57.11, close: 57.67 },
-    { time: '2019-03-21', open: 57.58, high: 58.49, low: 57.57, close: 58.29 },
-    { time: '2019-03-22', open: 58.16, high: 60.00, low: 58.13, close: 59.76 },
-    { time: '2019-03-25', open: 59.63, high: 60.19, low: 59.53, close: 60.08 },
-    { time: '2019-03-26', open: 60.30, high: 60.69, low: 60.17, close: 60.63 },
-    { time: '2019-03-27', open: 60.56, high: 61.19, low: 60.48, close: 60.88 },
-    { time: '2019-03-28', open: 60.88, high: 60.89, low: 58.44, close: 59.08 },
-    { time: '2019-03-29', open: 59.20, high: 59.27, low: 58.32, close: 59.13 },
-    { time: '2019-04-01', open: 59.39, high: 59.41, low: 58.79, close: 59.09 },
-    { time: '2019-04-02', open: 59.22, high: 59.23, low: 58.34, close: 58.53 },
-    { time: '2019-04-03', open: 58.78, high: 59.07, low: 58.41, close: 58.87 },
-    { time: '2019-04-04', open: 58.84, high: 59.10, low: 58.77, close: 58.99 },
-    { time: '2019-04-05', open: 59.02, high: 59.09, low: 58.82, close: 59.09 },
-    { time: '2019-04-08', open: 59.02, high: 59.13, low: 58.72, close: 59.13 },
-    { time: '2019-04-09', open: 58.37, high: 58.56, low: 58.04, close: 58.40 },
-    { time: '2019-04-10', open: 58.40, high: 58.70, low: 58.36, close: 58.61 },
-    { time: '2019-04-11', open: 58.65, high: 58.73, low: 58.20, close: 58.56 },
-    { time: '2019-04-12', open: 58.75, high: 58.79, low: 58.52, close: 58.74 },
-    { time: '2019-04-15', open: 58.91, high: 58.95, low: 58.59, close: 58.71 },
-    { time: '2019-04-16', open: 58.79, high: 58.98, low: 58.66, close: 58.79 },
-    { time: '2019-04-17', open: 58.40, high: 58.46, low: 57.64, close: 57.78 },
-    { time: '2019-04-18', open: 57.51, high: 58.20, low: 57.28, close: 58.04 },
-    { time: '2019-04-22', open: 58.14, high: 58.49, low: 57.89, close: 58.37 },
-    { time: '2019-04-23', open: 57.62, high: 57.72, low: 56.30, close: 57.15 },
-    { time: '2019-04-24', open: 57.34, high: 57.57, low: 56.73, close: 57.08 },
-    { time: '2019-04-25', open: 56.82, high: 56.90, low: 55.75, close: 55.85 },
-    { time: '2019-04-26', open: 56.06, high: 56.81, low: 55.83, close: 56.58 },
-    { time: '2019-04-29', open: 56.75, high: 57.17, low: 56.71, close: 56.84 },
-    { time: '2019-04-30', open: 56.99, high: 57.45, low: 56.76, close: 57.19 },
-    { time: '2019-05-01', open: 57.23, high: 57.30, low: 56.52, close: 56.52 },
-    { time: '2019-05-02', open: 56.81, high: 58.23, low: 56.68, close: 56.99 },
-    { time: '2019-05-03', open: 57.15, high: 57.36, low: 56.87, close: 57.24 },
-    { time: '2019-05-06', open: 56.83, high: 57.09, low: 56.74, close: 56.91 },
-    { time: '2019-05-07', open: 56.69, high: 56.81, low: 56.33, close: 56.63 },
-    { time: '2019-05-08', open: 56.66, high: 56.70, low: 56.25, close: 56.38 },
-    { time: '2019-05-09', open: 56.12, high: 56.56, low: 55.93, close: 56.48 },
-    { time: '2019-05-10', open: 56.49, high: 57.04, low: 56.26, close: 56.91 },
-    { time: '2019-05-13', open: 56.72, high: 57.34, low: 56.66, close: 56.75 },
-    { time: '2019-05-14', open: 56.76, high: 57.19, low: 56.50, close: 56.55 },
-    { time: '2019-05-15', open: 56.51, high: 56.84, low: 56.17, close: 56.81 },
-    { time: '2019-05-16', open: 57.00, high: 57.80, low: 56.82, close: 57.38 },
-    { time: '2019-05-17', open: 57.06, high: 58.48, low: 57.01, close: 58.09 },
-    { time: '2019-05-20', open: 59.15, high: 60.54, low: 58.00, close: 59.01 },
-    { time: '2019-05-21', open: 59.10, high: 59.63, low: 58.76, close: 59.50 },
-    { time: '2019-05-22', open: 59.09, high: 59.37, low: 58.96, close: 59.25 },
-    { time: '2019-05-23', open: 59.00, high: 59.27, low: 58.54, close: 58.87 },
-    { time: '2019-05-24', open: 59.07, high: 59.36, low: 58.67, close: 59.32 },
-    { time: '2019-05-28', open: 59.21, high: 59.66, low: 59.02, close: 59.57 },
 ];
 var lastClose = data[data.length - 1].close;
 var lastIndex = data.length - 1;
@@ -182,11 +112,11 @@ function mergeTickToBar(price) {
         currentBar.high = Math.max(currentBar.high, price);
         currentBar.low = Math.min(currentBar.low, price);
     }
-    // candleSeries.update(currentBar);
+    candleSeries.update(currentBar);
 }
 
 function reset() {
-    // candleSeries.setData(data);
+    candleSeries.setData(data);
     lastClose = data[data.length - 1].close;
     lastIndex = data.length - 1;
 
@@ -221,22 +151,128 @@ class Chart extends Component {
         super(props);
         this.state = {
         };
+        this.timer = null;
         autoBind(this);
     }
-    componentDidMount() {
-        let selector = document.getElementById('chart');
+    resize() {
+        let p = document.querySelector(".tab1");
+        let t1 = document.querySelector(".tab2");
+        // let t2 = document.querySelector(".item1");
+        let t3 = document.querySelector(".sidebar");
+        let xwidth = window.innerWidth - (t1.clientWidth + t3.offsetWidth + 20);
+        let xheight = p.clientHeight - 10;
+        chart.applyOptions({ width: xwidth, height: xheight });
+    }
+    debounce() {
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = setTimeout(this.resize, 100);
 
-        var chart = LightweightCharts.createChart(selector, {
-            width: 600,
-            height: 300,
+    }
+    componentDidMount() {
+        window.addEventListener('resize', this.resize);
+
+        new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
+
+        let selector = document.getElementById('chart');
+        let p = document.querySelector(".tab1");
+        let xwidth = p.clientWidth;
+        let xheight = p.clientHeight;
+
+        chart = LightweightCharts.createChart(selector, {
+            width: xwidth,
+            height: xheight,
+            layout: {
+                backgroundColor: 'transparent',
+                textColor: '#b5b5b5'
+            },
+
+            grid: {
+                vertLines: {
+                    color: '#333',
+                    style: 1
+                },
+                horzLines: {
+                    color: '#333',
+                    style: 1
+                },
+            },
+            priceScale: {
+                borderColor: 'transparent',
+            },
+            timeScale: {
+                borderColor: 'transparent',
+            },
+
             crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
+                vertLine: {
+                    width: 5,
+                    color: 'rgba(224, 227, 235, 0.1)',
+                    style: 0,
+                },
+                horzLine: {
+                    width: 5,
+                    color: 'rgba(224, 227, 235, 0.1)',
+                    style: 0,
+                },
             },
         });
 
-        var candleSeries = chart.addCandlestickSeries();
+        candleSeries = chart.addCandlestickSeries({
+            upColor: '#25b940',
+            downColor: '#fc155a',
+            wickVisible: true,
+            borderVisible: false,
+            wickColor: '#eee',
+            wickUpColor: '#25b940',
+            wickDownColor: '#fc155a',
+        });
         candleSeries.setData(data);
-
+        volumeSeries = chart.addHistogramSeries({
+            color: '#333',
+            priceFormat: {
+                type: 'volume',
+            },
+            priceLineVisible: false,
+            overlay: true,
+            scaleMargins: {
+                top: 0.85,
+                bottom: 0,
+            },
+        });
+        volumeSeries.setData(data);
+        setInterval(function () {
+            var deltaY = targetPrice - lastClose;
+            var deltaX = targetIndex - lastIndex;
+            var angle = deltaY / deltaX;
+            var basePrice = lastClose + (currentIndex - lastIndex) * angle;
+            var noise = (0.1 - Math.random() * 0.2) + 1.0;
+            var noisedPrice = basePrice * noise;
+            mergeTickToBar(noisedPrice);
+            if (++ticksInCurrentBar === 5) {
+                // move to next bar
+                currentIndex++;
+                currentBusinessDay = nextBusinessDay(currentBusinessDay);
+                currentBar = {
+                    open: null,
+                    high: null,
+                    low: null,
+                    close: null,
+                    time: currentBusinessDay,
+                };
+                ticksInCurrentBar = 0;
+                if (currentIndex === 5000) {
+                    reset();
+                    return;
+                }
+                if (currentIndex === targetIndex) {
+                    // change trend
+                    lastClose = noisedPrice;
+                    lastIndex = currentIndex;
+                    targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
+                    targetPrice = getRandomPrice();
+                }
+            }
+        }, 1000);
 
     };
 
