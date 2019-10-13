@@ -31,6 +31,58 @@ body {
 *{
     font-family: 'IRANSemi'!important;
 }
+.container {
+  display: flex;
+  width:100%;
+}
+.column{
+  flex-direction: column;
+}
+.c1{
+  height: 10vh;
+  width:100%;
+  border-bottom: 1px solid #333
+}
+.c1 .item1 {
+  width: 120px;
+}
+.c1 .item2 { 
+  width: calc(100% - 320px);
+  overflow: hidden;
+}
+.c1 .item3 { 
+  width: 300px;
+}
+
+.c2{
+  height: 84vh;
+  width:100%;
+}
+.c2 .item1 {
+  border-right: 1px solid #333;
+  height:100%;
+}
+
+.c2 .item2 { 
+  height:100%;
+  display: flex;
+  flex: 1;
+  background-image: url('../img/map.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+  background-size: 85%;
+} 
+
+.t1 .tab2 {
+  width: 125px;
+  padding:10px;
+}
+.t1 .tab1 { 
+  width: calc(100% - 130px);
+  height:100%;
+}
+
 .list-item,.account{
   padding:0!important;
 }
@@ -44,20 +96,30 @@ body {
   font-weight: bold;
 }
 .animate{
-  -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
-  -moz-animation:fadeIn ease-in 1;
-  animation:fadeIn ease-in 1;
+   width:200px;
+  -webkit-animation:sideMenu ease-in 1;  
+  -moz-animation:sideMenu ease-in 1;
+  animation:sideMenu ease-in 1;
 
-  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -webkit-animation-fill-mode:forwards; 
   -moz-animation-fill-mode:forwards;
   animation-fill-mode:forwards;
 
-  -webkit-animation-duration:.3s;
-  -moz-animation-duration:.3s;
-  animation-duration:.3s;
+  -webkit-animation-duration:.5s;
+  -moz-animation-duration:.5s;
+  animation-duration:.5s;
 }
-@-webkit-keyframes fadeIn {
-   from { width:0 } to { opacity:1;width:200px  } 
+
+@keyframes sideMenu{
+  0% {
+    width:0px;
+    opacity:0;
   }
-@-moz-keyframes fadeIn { from { width:0  } to { opacity:1;width:200px  } }
-@keyframes fadeIn { from { width:0  } to { opacity:1;width:200px  } }
+  90% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+    width:200px;
+  }
+}

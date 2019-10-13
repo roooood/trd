@@ -6,5 +6,8 @@ export default {
     leaderBoard: 'Leader Board',
     videoToturial: 'Video Toturial',
     more: 'More',
-    practiceAccount: 'Practice Account'
+    practiceAccount: 'Practice Account',
+    amount: 'Amount',
+    time: 'Time',
+    profit: 'Profit'
 }

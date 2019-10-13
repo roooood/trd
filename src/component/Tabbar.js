@@ -3,7 +3,7 @@ import autoBind from 'react-autobind';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Context from '../library/Context';
-
+import Tabs from './Tabs';
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
     return (
@@ -22,16 +22,9 @@ class Tabbar extends Component {
     }
     render() {
         return (
-            <div style={{ ...styles.root }} >
+            <>
                 <TabPanel value={this.context.state.tabbar} index={0}>
-                    <Grid container alignItems="center" style={{ width: '100%' }}>
-                        <Grid style={{ width: '80%' }}>
-                            a
-                        </Grid>
-                        <Grid style={{ width: '19%' }}>
-                            b
-                        </Grid>
-                    </Grid>
+                    <Tabs />
                 </TabPanel>
                 <TabPanel value={this.context.state.tabbar} index={1}>
                     Item Two
@@ -51,13 +44,11 @@ class Tabbar extends Component {
                 <TabPanel value={this.context.state.tabbar} index={6}>
                     Item Seven
                 </TabPanel>
-            </div>
+            </>
         );
     }
 }
 const styles = {
-    root: {
-        flexGrow: 1
-    },
+
 }
 export default Tabbar;

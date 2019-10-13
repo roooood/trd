@@ -10,9 +10,9 @@ import Box from '@material-ui/core/Box';
 import Work from '@material-ui/icons/WorkOutline';
 import History from '@material-ui/icons/History';
 import Chat from '@material-ui/icons/ChatBubbleOutline';
-import StarBorder from '@material-ui/icons/StarBorder';
+import StarBorderRounded from '@material-ui/icons/StarBorderRounded';
 import Videocam from '@material-ui/icons/OndemandVideo';
-import More from '@material-ui/icons/MoreHoriz';
+import MoreOutlined from '@material-ui/icons/MoreOutlined';
 
 const StyledTab = withStyles(theme => ({
     root: {
@@ -85,9 +85,9 @@ class Sidebar extends Component {
                     <StyledTab label={t('totalPortfolio')} icon={<Work />} {...a11yProps(0)} />
                     <StyledTab label={t('tradingHistory')} icon={<History />} {...a11yProps(1)} />
                     <StyledTab label={t('chatSupport')} icon={<Chat />} {...a11yProps(2)} />
-                    <StyledTab label={t('leaderBoard')} icon={<StarBorder />} {...a11yProps(3)} />
+                    <StyledTab label={t('leaderBoard')} icon={<StarBorderRounded />} {...a11yProps(3)} />
                     <StyledTab label={t('videoToturial')} icon={<Videocam />}{...a11yProps(4)} />
-                    <StyledTab label={t('more')} icon={<More />}{...a11yProps(5)} />
+                    <StyledTab label={t('more')} icon={<MoreOutlined />}{...a11yProps(5)} />
                 </Tabs>
                 <TabPanel value={this.state.tab} index={0}>
                     Item One
@@ -122,7 +122,7 @@ const styles = {
         height: '100%',
     },
     tabs: {
-        borderRight: `1px solid #333`,
+        borderRight: '1px solid #333',
     },
 }
 export default Sidebar;

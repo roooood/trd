@@ -12,17 +12,11 @@ import Grid from '@material-ui/core/Grid';
 import { t } from '../locales';
 import Context from '../library/Context';
 
-const options = [
-    'Show some love to Material-UI',
-    'Show all notification content',
-    'Hide sensitive notification content',
-    'Hide all notification content',
-];
 const ColorButton = withStyles(theme => ({
     root: {
         color: theme.palette.getContrastText(purple[500]),
         height: '100%',
-        background: 'linear-gradient(90deg, #525a69, #898dda)',
+        background: 'linear-gradient(90deg,  #5C91D9, #c84169)',
         '&:hover': {
             backgroundColor: purple[700],
         },
@@ -65,7 +59,7 @@ class Deposit extends Component {
     }
     render() {
         return (
-            <Grid container justify="space-between" style={{ height: '100%' }}>
+            <Grid container justify="space-between" style={styles.root}>
                 <List disablePadding={true} component="div" aria-label="Device settings">
                     <ListItem
                         button
@@ -95,7 +89,8 @@ class Deposit extends Component {
 }
 const styles = {
     root: {
-        flexGrow: 1,
+        height: '100%',
+        padding: 5
     },
     dir: {
         display: 'flex',

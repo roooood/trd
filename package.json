@@ -8,6 +8,7 @@
     "@material-ui/styles": "^4.5.0",
     "colyseus.js": "^0.9.13",
     "i18next": "^17.0.18",
+    "lightweight-charts": "^1.1.0",
     "react": "^16.10.2",
     "react-autobind": "^1.0.6",
     "react-dom": "^16.10.2",

@@ -16,30 +16,30 @@ class Route extends Component {
     }
     render() {
         return (
-            <Grid container direction="column" id="content" className={"theme-default"} >
-                <Grid container alignItems="center" style={{ height: '10vh', borderBottom: '1px solid #333' }}>
-                    <Grid style={{ width: '12vw' }}>
-                        <img style={{ width: '10vw' }} src={require('./assets/img/logo.png')} />
-                    </Grid>
-                    <Grid style={{ width: '69vw' }}>
+            <div id="content" className={"container column theme-default"} >
+                <div className="container c1" >
+                    <div className="item1" >
+                        <img style={{ width: '100%' }} src={require('./assets/img/logo.png')} />
+                    </div>
+                    <div className="item2">
                         <Appbar />
-                    </Grid>
-                    <Grid style={{ width: '19vw', height: '8vh', minWidth: 200 }}>
+                    </div>
+                    <div className="item3" >
                         <Deposit />
-                    </Grid>
-                </Grid>
-                <Grid container alignItems="center" style={{ height: '84vh' }}>
-                    <Grid style={{ height: '100%' }}>
+                    </div>
+                </div>
+                <div className="container c2" >
+                    <div className="item1" >
                         <Sidebar />
-                    </Grid>
-                    <Grid style={{ height: '100%' }}>
+                    </div>
+                    <div className="item2 t1" >
                         <Tabbar />
-                    </Grid>
-                </Grid>
+                    </div>
+                </div>
                 <Grid style={{ height: '5vh', borderTop: '1px solid #333' }} >
                     c
                 </Grid>
-            </Grid>
+            </div >
         );
     }
 }

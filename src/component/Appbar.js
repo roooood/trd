@@ -37,9 +37,10 @@ const StyledTab = withStyles(theme => ({
         height: '8.5vh',
         margin: 5,
         borderRadius: 5,
-        width: 150,
+        width: 100,
+        border: '1px solid #333',
         // padding: '10px 20px',
-        backgroundColor: 'rgba(62, 62, 62, 0.3)',
+        backgroundColor: 'transparent',
         '&:hover': {
             opacity: 1,
             color: '#fff',
