@@ -55,6 +55,8 @@ body {
 }
 .c1 .item3 { 
   width: 300px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .c2{
@@ -131,4 +133,11 @@ body {
     opacity:1;
     width:200px;
   }
+}
+.modal .MuiPaper-root{
+  background:#25272b!important;
+  color:#fff!important;
+}
+.modal .MuiBackdrop-root{
+  background:transparent!important;
 }

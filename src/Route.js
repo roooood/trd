@@ -5,8 +5,9 @@ import Grid from '@material-ui/core/Grid';
 
 import { connect } from 'react-redux';
 
-import Deposit from './component/Deposit';
-import Appbar from './component/Appbar';
+import Deposit from './component/header/Deposit';
+import Account from './component/header/Account';
+import Appbar from './component/header/Appbar';
 import Tabbar from './component/Tabbar';
 import Sidebar from './component/Sidebar';
 
@@ -31,6 +32,7 @@ class Route extends Component {
                         <Appbar />
                     </div>
                     <div className="item3" >
+                        <Account />
                         <Deposit />
                     </div>
                 </div>

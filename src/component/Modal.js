@@ -6,6 +6,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Fade from '@material-ui/core/Fade';
+import Slide from '@material-ui/core/Slide';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Modal extends React.Component {
     constructor(props) {
@@ -30,13 +35,13 @@ class Modal extends React.Component {
                 fullWidth={false}
                 maxWidth={'md'}
                 open={this.state.open}
+                TransitionComponent={Transition}
                 onClose={this.handleClose}
+                className="modal"
             >
                 {/* <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle> */}
                 <DialogContent>
-                    <Fade timeout={1000}>
-                        <this.state.component inModal={true} />
-                    </Fade>
+                    {this.state.component}
                 </DialogContent>
                 {/* <DialogActions>
                     <Button onClick={this.handleClose} color="primary">
