@@ -3,10 +3,14 @@ import autoBind from 'react-autobind';
 
 import Grid from '@material-ui/core/Grid';
 
+import { connect } from 'react-redux';
+
 import Deposit from './component/Deposit';
 import Appbar from './component/Appbar';
 import Tabbar from './component/Tabbar';
 import Sidebar from './component/Sidebar';
+
+import Sign from './component/sign';
 
 class Route extends Component {
     constructor(props) {
@@ -15,6 +19,8 @@ class Route extends Component {
         autoBind(this);
     }
     render() {
+        if (!this.props.user.isLogin)
+            return <Sign />
         return (
             <div id="content" className={"container column theme-default"} >
                 <div className="container c1" >
@@ -33,7 +39,7 @@ class Route extends Component {
                         <Sidebar />
                     </div>
                     <div className="item2 t1" >
-                        <Tabbar />
+                        {/* <Tabbar /> */}
                     </div>
                 </div>
                 <Grid style={{ height: '5vh', borderTop: '1px solid #333' }} >
@@ -54,4 +60,5 @@ const styles = {
         position: 'relative',
     },
 }
-export default Route;
+
+export default connect(state => state)(Route);

@@ -3,13 +3,6 @@ import autoBind from 'react-autobind';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import HelpIcon from '@material-ui/icons/Help';
-import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
 import Typography from '@material-ui/core/Typography';
 import Context from '../library/Context';
 
@@ -37,17 +30,16 @@ const StyledTab = withStyles(theme => ({
         height: '8.5vh',
         margin: 5,
         borderRadius: 5,
-        width: 100,
+        width: 120,
         border: '1px solid #333',
         // padding: '10px 20px',
         backgroundColor: 'transparent',
         '&:hover': {
             opacity: 1,
-            color: '#fff',
+            borderBottom: '2px solid #f07000',
         },
         '&$selected': {
-            color: '#f50057',
-            backgroundColor: 'transparent',
+            color: '#b5b5b5',
             borderBottom: '2px solid #f07000',
         }
     },
@@ -59,6 +51,21 @@ function a11yProps(index) {
         id: `scrollable-force-tab-${index}`,
         'aria-controls': `scrollable-force-tabpanel-${index}`,
     };
+}
+function tabGenerator(props) {
+    return (
+        <div style={styles.list}>
+            {props.icon}
+            <div style={styles.listText}>
+                <Typography variant="subtitle1" display="block" style={{ color: '#fff' }} >
+                    {props.title}
+                </Typography>
+                <Typography variant="subtitle2" display="block" style={{ fontSize: 10, marginPop: -4 }} >
+                    {props.type}
+                </Typography>
+            </div>
+        </div>
+    )
 }
 class Appbar extends Component {
     static contextType = Context;
@@ -83,13 +90,7 @@ class Appbar extends Component {
                     textColor="primary"
                     aria-label="scrollable force tabs example"
                 >
-                    <StyledTab label="Item One" icon={<PhoneIcon />} {...a11yProps(0)} />
-                    <StyledTab label="Item Two" icon={<FavoriteIcon />} {...a11yProps(1)} />
-                    <StyledTab label="Item Three" icon={<PersonPinIcon />} {...a11yProps(2)} />
-                    <StyledTab label="Item Four" icon={<HelpIcon />} {...a11yProps(3)} />
-                    <StyledTab label="Item Five" icon={<ShoppingBasket />} {...a11yProps(4)} />
-                    <StyledTab label="Item Six" icon={<ThumbDown />} {...a11yProps(5)} />
-                    <StyledTab label="Item Seven" icon={<ThumbUp />} {...a11yProps(6)} />
+                    <StyledTab label={tabGenerator({ title: 'test', icon: <i class="cc BTC" />, type: 'Crpto' })}  {...a11yProps(0)} />
                 </StyledTabs>
             </div>
         );
@@ -99,5 +100,18 @@ const styles = {
     root: {
         width: '100%'
     },
+    list: {
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+
+    },
+    listText: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+
+    }
 }
 export default Appbar;

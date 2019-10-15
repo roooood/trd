@@ -38,6 +38,9 @@ body {
 .column{
   flex-direction: column;
 }
+.cc{
+  font-size:2em;
+}
 .c1{
   height: 10vh;
   width:100%;
@@ -62,7 +65,7 @@ body {
   height:100%;
 }
 
-.c2 .item2 { 
+.c2 .item2 ,.bg{ 
   height:100%;
   display: flex;
   flex: 1;
