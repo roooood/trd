@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
+import { connect } from 'react-redux';
+import { TabbarRemove } from '../../redux/action/tab';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -7,7 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import Context from '../../library/Context';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-
+import IconButton from '@material-ui/core/IconButton';
+import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import AppModal from './AppModal';
 
 const ColorButton = withStyles(theme => ({
@@ -47,33 +50,49 @@ const StyledTab = withStyles(theme => ({
         height: 56,
         margin: 5,
         borderRadius: 5,
-        width: 120,
+        minWidth: 100,
         border: '1px solid #333',
         backgroundColor: 'transparent',
         '&:hover': {
             opacity: 1,
-            borderBottom: '2px solid #f07000',
+            backgroundColor: 'rgba(0,0,0,.3)',
         },
         '&$selected': {
             color: '#b5b5b5',
-            borderBottom: '2px solid #f07000',
+            borderBottom: '2px solid #638cd1',
         }
     },
     selected: {}
 }))(props => <Tab disableRipple {...props} />);
 
-function tabGenerator(props) {
+function tabGenerator(id, props, onRemove) {
+    let icon = [];
+    if (props.type == 'crypto') {
+        props.name.split('/').forEach((i) => {
+            icon.push(<i className={"cc " + i} />)
+        });
+    }
+    else if (props.type == 'forex') {
+        props.name.split('/').forEach((i) => {
+            icon.push(<i class={"currency-flag currency-flag-" + i.toLowerCase()} />)
+        });
+    }
     return (
         <div style={styles.list}>
-            {props.icon}
+            <div style={styles.listIcon} className="app-icon">
+                {icon}
+            </div>
             <div style={styles.listText}>
-                <Typography variant="subtitle1" display="block" style={{ color: '#fff' }} >
-                    {props.title}
+                <Typography variant="subtitle1" display="block" style={{ fontSize: 13, color: '#fff' }} >
+                    {props.name}
                 </Typography>
-                <Typography variant="subtitle2" display="block" style={{ fontSize: 10, marginPop: -4 }} >
+                <Typography variant="subtitle2" display="block" style={{ fontSize: 11, marginPop: -4 }} >
                     {props.type}
                 </Typography>
             </div>
+            <IconButton color="secondary" style={styles.listRemove} onClick={() => onRemove(id)}>
+                <CloseRoundedIcon style={{ fontSize: 18, color: 'rgb(195, 68, 110)' }} />
+            </IconButton>
         </div>
     )
 }
@@ -85,6 +104,12 @@ class Appbar extends Component {
         };
         autoBind(this);
     }
+    componentDidMount = () => {
+        if (Object.keys(this.props.tab.data).length === 0) {
+            this.list();
+        }
+    };
+
     handleChangeList(e, tab) {
         this.context.setState({ tabbar: tab });
     }
@@ -92,7 +117,11 @@ class Appbar extends Component {
         let modal = this.context.app('modal');
         modal.show(<AppModal />);
     }
+    onRemove(id) {
+        this.props.dispatch(TabbarRemove(id));
+    }
     render() {
+        const tab = this.props.tab.data || {};
         return (
             <div style={styles.root}>
                 <div style={{ ...styles.tabs }} >
@@ -104,10 +133,15 @@ class Appbar extends Component {
                         indicatorColor="primary"
                         textColor="primary"
                     >
-                        <StyledTab label={tabGenerator({ title: 'Bitcoin', icon: <i class="cc BTC" />, type: 'Crpto' })} />
+                        {Object.keys(tab).map((item, i) => {
+                            return (
+                                <StyledTab label={tabGenerator(item, tab[item], this.onRemove)} />
+                            )
+                        })
+                        }
                     </StyledTabs>
                 </div>
-                <ColorButton onClick={this.list} variant="contained" color="primary" style={{ margin: 5 }}>
+                <ColorButton onClick={this.list} variant="contained" color="primary" style={{ margin: 5, height: 56 }}>
                     <AddIcon style={{ fontSize: 30 }} />
                 </ColorButton>
             </div>
@@ -134,6 +168,18 @@ const styles = {
         width: '100%',
         flexDirection: 'column',
 
+    },
+    listIcon: {
+        marginRight: 12,
+        position: 'relative',
+        width: 30,
+        height: '100%'
+    },
+    listRemove: {
+        position: 'absolute',
+        bottom: -10,
+        right: -10,
+        zIndex: 9999
     }
 }
-export default Appbar;
+export default connect(state => state)(Appbar);

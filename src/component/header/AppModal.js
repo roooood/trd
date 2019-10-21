@@ -5,13 +5,13 @@ import { t } from '../../locales';
 import Context from '../../library/Context';
 import request from '../../library/Fetch';
 import { connect } from 'react-redux';
+import { TabbarAdd } from '../../redux/action/tab';
 import { Market } from '../../redux/action/market';
 import { withStyles, createMuiTheme, fade } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import InputBase from '@material-ui/core/InputBase';
 import Table from '@material-ui/core/Table';
@@ -33,7 +33,8 @@ const StyledTableCell = withStyles(theme => ({
     head: {
         backgroundColor: 'rgb(69, 71, 75)',
         color: '#eee',
-        padding: 10
+        padding: 10,
+        borderBottom: '1px solid rgb(193, 78, 192)'
     },
     body: {
         fontSize: 14,
@@ -122,6 +123,11 @@ class AppModal extends Component {
             }
         }
     }
+    addTab(id, name, type) {
+        this.props.dispatch(TabbarAdd({ key: id, value: { name, type } }));
+        let modal = this.context.app('modal');
+        modal.hide();
+    }
     loading(type) {
         if (this.props.market[type] == null || !this.state.load)
             return (
@@ -153,7 +159,7 @@ class AppModal extends Component {
                                     let regex = new RegExp(this.state.searchValue, 'gi')
                                     if (row.display.match(regex))
                                         return (
-                                            <StyledTableRow key={row.id}>
+                                            <StyledTableRow key={row.id} onClick={() => this.addTab(row.id, row.display, type)}>
                                                 <StyledTableCell component="td" scope="row">
                                                     {row.display}
                                                 </StyledTableCell>

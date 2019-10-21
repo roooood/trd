@@ -15,10 +15,10 @@ class Tabs extends Component {
     render() {
         return (
             <div style={styles.root}>
-                <div className="item1 charting">
-                    {/* <Chart /> */}
+                <div className="item1 chart">
+                    <Chart />
                 </div>
-                <div className="item2">
+                <div className="item2 action">
                     <Action />
                 </div>
             </div>

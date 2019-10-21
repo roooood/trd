@@ -19,11 +19,11 @@ class Modal extends React.Component {
             component: null
         };
         autoBind(this);
-        window.ee.on('hideModal', this.handleClose)
+        window.ee.on('hideModal', this.hide)
         window.ee.on('showModal', this.show)
     }
-    handleClose() {
-        this.setState({ open: false })
+    hide() {
+        this.setState({ open: false, component: null })
     }
     show(component) {
         this.setState({ open: true, component })
@@ -35,7 +35,7 @@ class Modal extends React.Component {
                 maxWidth={'md'}
                 open={this.state.open}
                 TransitionComponent={Transition}
-                onClose={this.handleClose}
+                onClose={this.hide}
                 className="modal"
             >
                 {/* <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle> */}
@@ -43,7 +43,7 @@ class Modal extends React.Component {
                     {this.state.component}
                 </DialogContent>
                 {/* <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
+                    <Button onClick={this.hide} color="primary">
                         Close
                     </Button>
                 </DialogActions> */}

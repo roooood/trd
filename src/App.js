@@ -12,6 +12,7 @@ import Snack from './component/Snack'
 import Modal from './component/Modal';
 
 import './assets/css/app.css';
+import './assets/forex/currency-flags.css';
 import './assets/crypto/cryptocoins.css';
 import './assets/crypto/cryptocoins-colors.css';
 

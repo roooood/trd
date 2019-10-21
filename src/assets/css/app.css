@@ -48,8 +48,35 @@ body {
   flex-direction: column;
 }
 .cc{
-  font-size:2em;
+  font-size:1.7em;
+  text-shadow: 0px 0px 2px #b1b1b3;
 }
+.app-icon .cc:first-child {
+  position: absolute;
+  top:-9px;
+  left:-6px;
+}
+.app-icon .cc:last-child{
+  position: absolute;
+  bottom:-9px;
+  right:-14px;
+}
+.app-icon .currency-flag {
+    width: 26px;
+    height: 18px;
+    border-radius: 5px;
+}
+.app-icon .currency-flag:first-child{
+  position: absolute;
+  top:0px;
+  left:-6px;
+}
+.app-icon .currency-flag:last-child{
+  position: absolute;
+  bottom:0px;
+  right:-14px;
+}
+
 .top{
   height: 65px;
   width:100%;
