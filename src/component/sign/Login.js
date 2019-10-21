@@ -106,7 +106,7 @@ class Login extends React.Component {
             this.setState({ loading: false })
             if (res.success) {
                 this.notify({ message: t('logined'), type: 'success' });
-                this.props.dispatch(User(res.data));
+                this.props.dispatch(User({ ...res.data, type: 'real' }));
             } else {
                 this.notify({ message: t('loginFailed'), type: 'error' });
             }

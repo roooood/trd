@@ -10,14 +10,13 @@ import DepositModal from './DepositModal';
 
 const ColorButton = withStyles(theme => ({
     root: {
+        width: 125,
         background: 'linear-gradient(90deg,  #5C91D9, #c84169)',
         '&:hover': {
 
         },
     },
 }))(Button);
-
-
 
 class Deposit extends Component {
     static contextType = Context;
@@ -35,7 +34,7 @@ class Deposit extends Component {
     render() {
         return (
             <ColorButton onClick={this.deposit} variant="contained" color="primary" style={{ margin: 5 }}>
-                <DynamicFeed style={{ marginRight: 20 }} /> {t('deposit')}
+                <DynamicFeed style={{ marginRight: 10 }} /> {t('deposit')}
             </ColorButton>
         );
     }

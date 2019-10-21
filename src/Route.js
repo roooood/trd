@@ -24,7 +24,7 @@ class Route extends Component {
             return <Sign />
         return (
             <div id="content" className={"container column theme-default"} >
-                <div className="container c1" >
+                <div className="container top" >
                     <div className="item1" >
                         <img style={{ width: '100%' }} src={require('./assets/img/logo.png')} />
                     </div>
@@ -36,17 +36,17 @@ class Route extends Component {
                         <Deposit />
                     </div>
                 </div>
-                <div className="container c2" >
+                <div className="container center" >
                     <div className="item1" >
                         <Sidebar />
                     </div>
-                    <div className="item2 t1" >
-                        {/* <Tabbar /> */}
+                    <div className="item2 main" >
+                        <Tabbar />
                     </div>
                 </div>
-                <Grid style={{ height: '5vh', borderTop: '1px solid #333' }} >
-                    c
-                </Grid>
+                <div className="container bottom" >
+                    test
+                </div>
             </div >
         );
     }

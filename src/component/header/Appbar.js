@@ -5,6 +5,23 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Context from '../../library/Context';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+
+import AppModal from './AppModal';
+
+const ColorButton = withStyles(theme => ({
+    root: {
+        background: 'transparent',
+        border: '1px solid #333',
+        margin: 5,
+        borderRadius: 5,
+        '&:hover': {
+            background: 'transparent',
+            borderBottom: '2px solid #f07000',
+        },
+    },
+}))(Button);
 
 const StyledTabs = withStyles({
     root: {
@@ -26,13 +43,12 @@ const StyledTab = withStyles(theme => ({
         color: '#b5b5b5',
         fontSize: theme.typography.pxToRem(13),
         minWidth: 30,
-        minHeight: '8.5vh',
-        height: '8.5vh',
+        minHeight: 56,
+        height: 56,
         margin: 5,
         borderRadius: 5,
         width: 120,
         border: '1px solid #333',
-        // padding: '10px 20px',
         backgroundColor: 'transparent',
         '&:hover': {
             opacity: 1,
@@ -46,12 +62,6 @@ const StyledTab = withStyles(theme => ({
     selected: {}
 }))(props => <Tab disableRipple {...props} />);
 
-function a11yProps(index) {
-    return {
-        id: `scrollable-force-tab-${index}`,
-        'aria-controls': `scrollable-force-tabpanel-${index}`,
-    };
-}
 function tabGenerator(props) {
     return (
         <div style={styles.list}>
@@ -78,27 +88,39 @@ class Appbar extends Component {
     handleChangeList(e, tab) {
         this.context.setState({ tabbar: tab });
     }
+    list() {
+        let modal = this.context.app('modal');
+        modal.show(<AppModal />);
+    }
     render() {
         return (
-            <div style={{ ...styles.root }} >
-                <StyledTabs
-                    value={this.context.state.tabbar}
-                    onChange={this.handleChangeList}
-                    variant="scrollable"
-                    scrollButtons="on"
-                    indicatorColor="primary"
-                    textColor="primary"
-                    aria-label="scrollable force tabs example"
-                >
-                    <StyledTab label={tabGenerator({ title: 'test', icon: <i class="cc BTC" />, type: 'Crpto' })}  {...a11yProps(0)} />
-                </StyledTabs>
+            <div style={styles.root}>
+                <div style={{ ...styles.tabs }} >
+                    <StyledTabs
+                        value={this.context.state.tabbar}
+                        onChange={this.handleChangeList}
+                        variant="scrollable"
+                        scrollButtons="on"
+                        indicatorColor="primary"
+                        textColor="primary"
+                    >
+                        <StyledTab label={tabGenerator({ title: 'Bitcoin', icon: <i class="cc BTC" />, type: 'Crpto' })} />
+                    </StyledTabs>
+                </div>
+                <ColorButton onClick={this.list} variant="contained" color="primary" style={{ margin: 5 }}>
+                    <AddIcon style={{ fontSize: 30 }} />
+                </ColorButton>
             </div>
         );
     }
 }
 const styles = {
     root: {
-        width: '100%'
+        display: 'flex',
+
+    },
+    tabs: {
+        maxWidth: '90%'
     },
     list: {
         display: 'flex',

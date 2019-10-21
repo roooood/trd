@@ -26,24 +26,6 @@ class Tabbar extends Component {
                 <TabPanel value={this.context.state.tabbar} index={0}>
                     <Tabs />
                 </TabPanel>
-                <TabPanel value={this.context.state.tabbar} index={1}>
-                    Item Two
-                </TabPanel>
-                <TabPanel value={this.context.state.tabbar} index={2}>
-                    Item Three
-                </TabPanel>
-                <TabPanel value={this.context.state.tabbar} index={3}>
-                    Item Four
-                </TabPanel>
-                <TabPanel value={this.context.state.tabbar} index={4}>
-                    Item Five
-                </TabPanel>
-                <TabPanel value={this.context.state.tabbar} index={5}>
-                    Item Six
-                </TabPanel>
-                <TabPanel value={this.context.state.tabbar} index={6}>
-                    Item Seven
-                </TabPanel>
             </>
         );
     }

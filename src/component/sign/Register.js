@@ -148,11 +148,10 @@ class Register extends React.Component {
         this.setState({ loading: true })
         let { username, password, email } = this.state
         request('user/add_account', { username, password, email }, res => {
-            console.log(res)
             this.setState({ loading: false })
             if (res.success) {
                 this.notify({ message: t('registered'), type: 'success' });
-                this.props.dispatch(User(res.data));
+                this.props.dispatch(User({ ...res.data, type: 'real' }));
             } else {
                 this.notify({ message: t('registerFailed'), type: 'error' });
                 this.checkErrors(res);

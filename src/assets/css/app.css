@@ -18,16 +18,25 @@ body {
             user-select: none; 
 }
 .theme-default{
-  background: #151515;
   color:#fff;
+  background-color: #151515;
+  background-image: url('../img/map.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 #root{
   width: 100vw;
   height: 100vh;
   display: flex;
   flex:1;
+  
 }
-
+#content{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
 *{
     font-family: 'IRANSemi'!important;
 }
@@ -41,66 +50,58 @@ body {
 .cc{
   font-size:2em;
 }
-.c1{
-  height: 10vh;
+.top{
+  height: 65px;
   width:100%;
   border-bottom: 1px solid #333
 }
-.c1 .item1 {
+.top .item1 {
   width: 120px;
+  justify-content: center;
+  align-items: center;
+  padding-left:5px;
+  display: flex;
 }
-.c1 .item2 { 
-  width: calc(100% - 320px);
+.top .item2 { 
+  width: calc(100% - 370px);
   overflow: hidden;
 }
-.c1 .item3 { 
-  width: 300px;
+.top .item3 { 
+  width: 350px;
   display: flex;
   justify-content: space-between;
+  align-items: stretch;
+  padding-right:5px;
 }
 
-.c2{
-  height: 84vh;
+.center{
+  height:84vh;
   width:100%;
 }
-.c2 .item1 {
+.center>.item1 {
   height:100%;
 }
 
-.c2 .item2 ,.bg{ 
+.center>.item2 { 
   height:100%;
   display: flex;
   flex: 1;
-  background-image: url('../img/map.png');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center; 
-  background-size: 85%;
 } 
-
-.t1 .tab2 {
-  width: 125px;
-  padding:10px;
-}
-.t1 .tab1 { 
+.center .main .item1 { 
   width: calc(100% - 130px);
   height:100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-.list-item,.account{
-  padding:0!important;
+.center .main .item2 {
+  width: 125px;
+  padding:10px;
 }
-.account span{
-  color:#f07000;
-  font-size:.8rem;
-}
-.account p{
-  color:#f07000;
-  font-size:.9rem;
-  font-weight: bold;
+.bottom{
+  height:25px;
+  width:100%;
+  border-top: 1px solid #333
 }
 .animated{
   border-right: 1px solid #333;
@@ -140,4 +141,7 @@ body {
 }
 .modal .MuiBackdrop-root{
   background:transparent!important;
+}
+.MuiButton-root {
+    text-transform: inherit!important;
 }

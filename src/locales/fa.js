@@ -43,7 +43,19 @@ export default {
     videoToturial: 'Video Toturial',
     more: 'More',
     practiceAccount: 'Practice Account',
+    realAccount: 'Real Account',
     amount: 'Amount',
     time: 'Time',
-    profit: 'Profit'
+    profit: 'Profit',
+
+    bitcoin: 'Bitcoin',
+    proccedToPayment: 'Procced To Payment',
+
+    crypto: 'Crypto',
+    forex: 'Forex',
+    stocks: 'Stocks',
+    asset: 'Asset',
+    profit: 'Profit',
+    change: 'Change',
+    description: 'Description',
 }

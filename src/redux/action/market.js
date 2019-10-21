@@ -1,18 +1,19 @@
-export const SNACK_DATA = 'SNACK_DATA';
+export const MARKET_DATA = 'MARKET_DATA';
 
-export const Snack = object => ({
-  type: SNACK_DATA,
+export const Market = object => ({
+  type: MARKET_DATA,
   data: object,
 });
 
 const initialState = {
-  message: '',
-  variant: ''
+  crypto: null,
+  forex: null,
+  stock: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SNACK_DATA:
+    case MARKET_DATA:
       if (action.data == null) {
         return {
           ...initialState,

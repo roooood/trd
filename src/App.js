@@ -18,7 +18,6 @@ import './assets/crypto/cryptocoins-colors.css';
 let EventEmitter = require('events')
 window.ee = new EventEmitter();
 
-
 class App extends Component {
   constructor(props) {
     super(props);

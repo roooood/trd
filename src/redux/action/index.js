@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
 import user from "./user";
-import snack from "./snack";
+import market from "./market";
 
 export default combineReducers({
   user,
-  snack
+  market
 });

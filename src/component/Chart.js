@@ -155,8 +155,8 @@ class Chart extends Component {
         autoBind(this);
     }
     resize() {
-        let p = document.querySelector(".tab1");
-        let t1 = document.querySelector(".tab2");
+        let p = document.querySelector(".center .item2 .item1");
+        let t1 = document.querySelector(".center .item1");
         // let t2 = document.querySelector(".item1");
         let t3 = document.querySelector(".sidebar");
         let xwidth = window.innerWidth - (t1.clientWidth + t3.offsetWidth + 20);
@@ -174,7 +174,7 @@ class Chart extends Component {
         new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
 
         let selector = document.getElementById('chart');
-        let p = document.querySelector(".tab1");
+        let p = document.querySelector(".center .item2 .item1");
         let xwidth = p.clientWidth;
         let xheight = p.clientHeight;
 
