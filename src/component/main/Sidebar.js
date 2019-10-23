@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import { t } from '../locales';
-import Context from '../library/Context';
+import { t } from '../../locales';
+import Context from '../../library/Context';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

@@ -83,7 +83,11 @@ class Login extends React.Component {
             });
         })
     }
-
+    handleKeyDown(e) {
+        if (e.key === 'Enter') {
+            this.submit()
+        }
+    }
     submit() {
         if (this.state.loading)
             return;
@@ -142,6 +146,7 @@ class Login extends React.Component {
                         />
                         <TextField
                             onChange={this.changePassword}
+                            onKeyDown={this.handleKeyDown}
                             variant="outlined"
                             margin="normal"
                             required

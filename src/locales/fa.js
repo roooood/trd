@@ -48,6 +48,8 @@ export default {
     time: 'Time',
     profit: 'Profit',
 
+    buy: 'Buy',
+    sell: 'Sell',
     bitcoin: 'Bitcoin',
     proccedToPayment: 'Procced To Payment',
 

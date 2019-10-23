@@ -63,18 +63,18 @@ const StyledTab = withStyles(theme => ({
         }
     },
     selected: {}
-}))(props => <Tab disableRipple {...props} />);
+}))(props => <Tab {...props} />);
 
 function tabGenerator(id, props, onRemove) {
     let icon = [];
     if (props.type == 'crypto') {
         props.name.split('/').forEach((i) => {
-            icon.push(<i className={"cc " + i} />)
+            icon.push(<i key={i} className={"cc " + i} />)
         });
     }
     else if (props.type == 'forex') {
         props.name.split('/').forEach((i) => {
-            icon.push(<i class={"currency-flag currency-flag-" + i.toLowerCase()} />)
+            icon.push(<i key={i} class={"currency-flag currency-flag-" + i.toLowerCase()} />)
         });
     }
     return (
@@ -98,7 +98,7 @@ function tabGenerator(id, props, onRemove) {
 }
 class Appbar extends Component {
     static contextType = Context;
-    constructor(props) {
+    constructor(props, context) {
         super(props);
         this.state = {
         };
@@ -111,7 +111,8 @@ class Appbar extends Component {
     };
 
     handleChangeList(e, tab) {
-        this.context.setState({ tabbar: tab });
+        if (tab != this.context.state.tabbar)
+            this.context.setState({ tabbar: tab });
     }
     list() {
         let modal = this.context.app('modal');
@@ -122,11 +123,12 @@ class Appbar extends Component {
     }
     render() {
         const tab = this.props.tab.data || {};
+        const active = this.context.state.tabbar == null ? this.props.tab.active : this.context.state.tabbar;
         return (
             <div style={styles.root}>
                 <div style={{ ...styles.tabs }} >
                     <StyledTabs
-                        value={this.context.state.tabbar}
+                        value={active + ""}
                         onChange={this.handleChangeList}
                         variant="scrollable"
                         scrollButtons="on"
@@ -135,7 +137,7 @@ class Appbar extends Component {
                     >
                         {Object.keys(tab).map((item, i) => {
                             return (
-                                <StyledTab label={tabGenerator(item, tab[item], this.onRemove)} />
+                                <StyledTab key={item} value={item} label={tabGenerator(item, tab[item], this.onRemove)} />
                             )
                         })
                         }

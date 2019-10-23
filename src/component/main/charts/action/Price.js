@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../library/Context';
-import { t } from '../locales';
+import Context from '../../../../library/Context';
+import { t } from '../../../../locales';
 import Typography from '@material-ui/core/Typography';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AddIcon from '@material-ui/icons/Add';

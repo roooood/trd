@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import Deposit from './component/header/Deposit';
 import Account from './component/header/Account';
 import Appbar from './component/header/Appbar';
-import Tabbar from './component/Tabbar';
-import Sidebar from './component/Sidebar';
+
+import Tabbar from './component/main/Tabbar';
+import Sidebar from './component/main/Sidebar';
 
 import Sign from './component/sign';
 
