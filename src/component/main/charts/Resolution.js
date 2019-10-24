@@ -45,15 +45,19 @@ class Resolution extends Component {
         };
         autoBind(this);
         this.actions = [
-            { icon: <span style={styles.text}>1m</span>, name: '1 ' + t('min') },
-            { icon: <span style={styles.text}>5m</span>, name: '5 ' + t('min') },
-            { icon: <span style={styles.text}>15m</span>, name: '15 ' + t('min') },
-            { icon: <span style={styles.text}>30m</span>, name: '30 ' + t('min') },
-            { icon: <span style={styles.text}>H</span>, name: t('hour') },
-            { icon: <span style={styles.text}>D</span>, name: t('day') },
-            { icon: <span style={styles.text}>W</span>, name: t('week') },
-            { icon: <span style={styles.text}>M</span>, name: t('Month') },
+            { value: '1m', icon: <span style={styles.text}>1m</span>, name: '1 ' + t('min') },
+            { value: '5m', icon: <span style={styles.text}>5m</span>, name: '5 ' + t('min') },
+            { value: '15m', icon: <span style={styles.text}>15m</span>, name: '15 ' + t('min') },
+            { value: '30m', icon: <span style={styles.text}>30m</span>, name: '30 ' + t('min') },
+            { value: 'H', icon: <span style={styles.text}>H</span>, name: t('hour') },
+            { value: 'D', icon: <span style={styles.text}>D</span>, name: t('day') },
+            { value: 'W', icon: <span style={styles.text}>W</span>, name: t('week') },
+            { value: 'M', icon: <span style={styles.text}>M</span>, name: t('Month') },
         ];
+    }
+    changeType(type) {
+        this.props.onChange(type)
+        this.handleClose();
     }
     handleOpen() {
         this.setState({ open: true });
@@ -65,7 +69,7 @@ class Resolution extends Component {
         return (
             <Fab
                 ariaLabel="resolution"
-                icon={<span style={styles.text}>1m </span >}
+                icon={<span style={styles.text}>{this.props.value}</span >}
                 onClose={this.handleClose}
                 onOpen={this.handleOpen}
                 open={this.state.open}
@@ -77,7 +81,7 @@ class Resolution extends Component {
                             key={action.name}
                             icon={action.icon}
                             tooltipTitle={action.name}
-                            onClick={this.handleClose}
+                            onClick={() => this.changeType(action.value)}
                         />
                     ))
                 }

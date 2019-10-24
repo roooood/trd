@@ -23,14 +23,12 @@ class Tabbar extends Component {
     }
     render() {
         const tab = this.props.tab.data || {};
-        const active = this.context.state.tabbar == null ? this.props.tab.active : this.context.state.tabbar;
-
         return (
             <>
-                {Object.keys(tab).map((item, i) => {
+                {Object.keys(tab).map((item) => {
                     return (
-                        <TabPanel key={i} className="swing-in-top-fwd" value={active} index={item}>
-                            <Tabs parent={item} />
+                        <TabPanel key={item} className="swing-in-top-fwd" value={this.props.tab.active} index={item}>
+                            <Tabs parent={tab[item]} inView={this.props.tab.active == item} />
                         </TabPanel>
                     )
                 })

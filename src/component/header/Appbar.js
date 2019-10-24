@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
-import { TabbarRemove } from '../../redux/action/tab';
+import { TabbarRemove, TabbarActive } from '../../redux/action/tab';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -111,8 +111,9 @@ class Appbar extends Component {
     };
 
     handleChangeList(e, tab) {
-        if (tab != this.context.state.tabbar)
-            this.context.setState({ tabbar: tab });
+        if (tab != this.context.state.tabbar) {
+            this.props.dispatch(TabbarActive(tab));
+        }
     }
     list() {
         let modal = this.context.app('modal');
@@ -123,19 +124,18 @@ class Appbar extends Component {
     }
     render() {
         const tab = this.props.tab.data || {};
-        const active = this.context.state.tabbar == null ? this.props.tab.active : this.context.state.tabbar;
         return (
             <div style={styles.root}>
                 <div style={{ ...styles.tabs }} >
                     <StyledTabs
-                        value={active + ""}
+                        value={this.props.tab.active + ""}
                         onChange={this.handleChangeList}
                         variant="scrollable"
                         scrollButtons="on"
                         indicatorColor="primary"
                         textColor="primary"
                     >
-                        {Object.keys(tab).map((item, i) => {
+                        {Object.keys(tab).map((item) => {
                             return (
                                 <StyledTab key={item} value={item} label={tabGenerator(item, tab[item], this.onRemove)} />
                             )

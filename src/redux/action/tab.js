@@ -1,5 +1,6 @@
 export const TABBAR_ADD = 'TABBAR_ADD';
 export const TABBAR_REMOVE = 'TABBAR_REMOVE';
+export const TABBAR_ACTIVE = 'TABBAR_ACTIVE';
 
 export const TabbarAdd = object => ({
   type: TABBAR_ADD,
@@ -8,6 +9,11 @@ export const TabbarAdd = object => ({
 
 export const TabbarRemove = object => ({
   type: TABBAR_REMOVE,
+  data: object,
+});
+
+export const TabbarActive = object => ({
+  type: TABBAR_ACTIVE,
   data: object,
 });
 
@@ -23,6 +29,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         active: action.data.key
+      };
+    case TABBAR_ACTIVE:
+      return {
+        ...state,
+        active: action.data
       };
     case TABBAR_REMOVE:
       delete state.data[action.data];

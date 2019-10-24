@@ -13,9 +13,9 @@ class Tabs extends Component {
     }
     render() {
         return (
-            <div style={styles.root} className={"chart-dir-" + this.props.parent}>
+            <div style={styles.root} className={"chart-dir-" + this.props.parent.id}>
                 <div className="item1 chart">
-                    <Chart parent={this.props.parent} />
+                    <Chart parent={this.props.parent} inView={this.props.parent} />
                 </div>
                 <div className="item2 action">
                     <Action parent={this.props.parent} />

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
+import request from '../../../library/Fetch';
 import Resolution from './Resolution';
 import Context from '../../../library/Context';
+import { TabbarAdd } from '../../../redux/action/tab';
 import * as LightweightCharts from 'lightweight-charts';
 
 const chartOptions = {
@@ -63,189 +65,207 @@ const volumeOption = {
     },
 }
 
-var candleSeries, chart, volumeSeries;
+// var candleSeries, volumeSeries;
 var data = [
     { time: '2018-10-19', open: 54.62, value: 54.62, color: '#25b940', high: 55.50, low: 54.52, close: 54.90 },
     { time: '2018-10-22', open: 55.08, value: 33.62, high: 55.27, low: 54.61, close: 54.98 },
     { time: '2018-10-23', open: 56.09, value: 55.62, color: '#fc155a', high: 57.47, low: 56.09, close: 57.21 },
-    { time: '2018-10-24', open: 57.00, value: 33.62, high: 58.44, low: 56.41, close: 57.42 },
-    { time: '2018-10-25', open: 57.46, value: 11.62, high: 57.63, low: 56.17, close: 56.43 },
-    { time: '2018-10-26', open: 56.26, value: 11.62, high: 56.62, low: 55.19, close: 55.51 },
-    { time: '2018-10-29', open: 55.81, value: 11.62, high: 57.15, low: 55.72, close: 56.48 },
-    { time: '2018-10-30', open: 56.92, value: 11.62, high: 58.80, low: 56.92, close: 58.18 },
-    { time: '2018-10-31', open: 58.32, value: 11.62, high: 58.32, low: 56.76, close: 57.09 },
-    { time: '2018-11-01', open: 56.98, value: 11.62, high: 57.28, low: 55.55, close: 56.05 },
-    { time: '2018-11-02', open: 56.34, value: 11.62, high: 57.08, low: 55.92, close: 56.63 },
-    { time: '2018-11-05', open: 56.51, value: 11.62, high: 57.45, low: 56.51, close: 57.21 },
-    { time: '2018-11-06', open: 57.02, value: 11.62, high: 57.35, low: 56.65, close: 57.21 },
-    { time: '2018-11-07', open: 57.55, value: 11.62, high: 57.78, low: 57.03, close: 57.65 },
-    { time: '2018-11-08', open: 57.70, value: 11.62, high: 58.44, low: 57.66, close: 58.27 },
-    { time: '2018-11-09', open: 58.32, value: 11.62, high: 59.20, low: 57.94, close: 58.46 },
-    { time: '2018-11-12', open: 58.84, value: 11.62, high: 59.40, low: 58.54, close: 58.72 },
-    { time: '2018-11-13', open: 59.09, value: 11.62, high: 59.14, low: 58.32, close: 58.66 },
 ];
 
-var lastClose = data[data.length - 1].close;
-var lastIndex = data.length - 1;
+// var lastClose = data[data.length - 1].close;
+// var lastIndex = data.length - 1;
 
-var targetIndex = lastIndex + 105 + Math.round(Math.random() + 30);
-var targetPrice = getRandomPrice();
+// var targetIndex = lastIndex + 105 + Math.round(Math.random() + 30);
+// var targetPrice = getRandomPrice();
 
-var currentIndex = lastIndex + 1;
-var currentBusinessDay = { day: 29, month: 5, year: 2019 };
-var ticksInCurrentBar = 0;
-var currentBar = {
-    open: null,
-    high: null,
-    low: null,
-    close: null,
-    time: currentBusinessDay,
-};
-function mergeTickToBar(price) {
-    if (currentBar.open === null) {
-        currentBar.open = price;
-        currentBar.high = price;
-        currentBar.low = price;
-        currentBar.close = price;
-    } else {
-        currentBar.close = price;
-        currentBar.high = Math.max(currentBar.high, price);
-        currentBar.low = Math.min(currentBar.low, price);
-    }
-    candleSeries.update(currentBar);
-}
+// var currentIndex = lastIndex + 1;
+// var currentBusinessDay = { day: 29, month: 5, year: 2019 };
+// var ticksInCurrentBar = 0;
+// var currentBar = {
+//     open: null,
+//     high: null,
+//     low: null,
+//     close: null,
+//     time: currentBusinessDay,
+// };
+// function mergeTickToBar(price) {
+//     if (currentBar.open === null) {
+//         currentBar.open = price;
+//         currentBar.high = price;
+//         currentBar.low = price;
+//         currentBar.close = price;
+//     } else {
+//         currentBar.close = price;
+//         currentBar.high = Math.max(currentBar.high, price);
+//         currentBar.low = Math.min(currentBar.low, price);
+//     }
+//     candleSeries.update(currentBar);
+// }
 
-function reset() {
-    candleSeries.setData(data);
-    lastClose = data[data.length - 1].close;
-    lastIndex = data.length - 1;
+// function reset() {
+//     candleSeries.setData(data);
+//     lastClose = data[data.length - 1].close;
+//     lastIndex = data.length - 1;
 
-    targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
-    targetPrice = getRandomPrice();
+//     targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
+//     targetPrice = getRandomPrice();
 
-    currentIndex = lastIndex + 1;
-    currentBusinessDay = { day: 29, month: 5, year: 2019 };
-    ticksInCurrentBar = 0;
-}
+//     currentIndex = lastIndex + 1;
+//     currentBusinessDay = { day: 29, month: 5, year: 2019 };
+//     ticksInCurrentBar = 0;
+// }
 
-function getRandomPrice() {
-    return 10 + Math.round(Math.random() * 10000) / 100;
-}
+// function getRandomPrice() {
+//     return 10 + Math.round(Math.random() * 10000) / 100;
+// }
 
-function nextBusinessDay(time) {
-    var d = new Date();
-    d.setUTCFullYear(time.year);
-    d.setUTCMonth(time.month - 1);
-    d.setUTCDate(time.day + 1);
-    d.setUTCHours(0, 0, 0, 0);
-    return {
-        year: d.getUTCFullYear(),
-        month: d.getUTCMonth() + 1,
-        day: d.getUTCDate(),
-    };
-}
+// function nextBusinessDay(time) {
+//     var d = new Date();
+//     d.setUTCFullYear(time.year);
+//     d.setUTCMonth(time.month - 1);
+//     d.setUTCDate(time.day + 1);
+//     d.setUTCHours(0, 0, 0, 0);
+//     return {
+//         year: d.getUTCFullYear(),
+//         month: d.getUTCMonth() + 1,
+//         day: d.getUTCDate(),
+//     };
+// }
 
 class Chart extends Component {
     static contextType = Context;
     constructor(props) {
         super(props);
         this.state = {
+            loading: false
         };
+        this.candle = {};
         this.timer = null;
-        this.inView = false;
-        this.id = props.parent;
+        this.id = props.parent.id;
         autoBind(this);
     }
     resize() {
-        if (!this.inView)
-            return;
-        let xwidth = window.innerWidth - (this.actionElement.clientWidth + this.sidebarElement.offsetWidth + 20);
-        let xheight = this.chartElemet.clientHeight - 10;
-        this.chart.applyOptions({ width: xwidth, height: xheight });
+        if (this.props.inView)
+            this.chart.applyOptions(this.getDimention());
     }
     debounce() {
         if (this.timer) clearTimeout(this.timer);
         this.timer = setTimeout(this.resize, 100);
     }
     componentWillReceiveProps(nextProps, contextProps) {
-        if ('parent' in nextProps) {
-            if (contextProps.state.tabbar == nextProps.parent) {
-                this.inView = true;
-                setTimeout(() => {
-                    this.resize();
-                }, 100);
-            }
-            else {
-                this.inView = false
-            }
+    }
+    active() {
+        return this.props.tab.active.replace('t', '');
+    }
+    getDimention() {
+        return {
+            width: window.innerWidth - (this.sidebarElement.offsetWidth + 150),
+            height: window.innerHeight - 100,
         }
     }
     componentDidMount() {
-        const active = this.context.state.tabbar == null ? this.props.tab.active : this.context.state.tabbar;
-        if (this.props.parent == active) {
-            this.inView = true;
-        }
-        this.chartElemet = document.querySelector(".center .chart-dir-" + this.props.parent + " .chart");
-        this.actionElement = document.querySelector(".center .chart-dir-" + this.props.parent + " .action");
+        this.getData();
         this.sidebarElement = document.querySelector(".sidebar");
-        this.selector = document.getElementById('chart' + this.props.parent);
+        this.selector = document.getElementById('chart' + this.id);
 
         window.addEventListener('resize', this.resize);
         new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
 
         this.chart = LightweightCharts.createChart(this.selector, {
-            width: this.chartElemet.clientWidth,
-            height: this.chartElemet.clientHeight,
+            ...this.getDimention(),
             ...chartOptions
         });
-        candleSeries = this.chart.addCandlestickSeries(candleOption);
-        candleSeries.setData(data);
+        this.candleSeries = this.chart.addCandlestickSeries(candleOption);
+        this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
 
-        volumeSeries = this.chart.addHistogramSeries(volumeOption);
-        volumeSeries.setData(data);
-    };
-
-    dynamicUpdate() {
-        setInterval(function () {
-            var deltaY = targetPrice - lastClose;
-            var deltaX = targetIndex - lastIndex;
-            var angle = deltaY / deltaX;
-            var basePrice = lastClose + (currentIndex - lastIndex) * angle;
-            var noise = (0.1 - Math.random() * 0.2) + 1.0;
-            var noisedPrice = basePrice * noise;
-            mergeTickToBar(noisedPrice);
-            if (++ticksInCurrentBar === 5) {
-                // move to next bar
-                currentIndex++;
-                currentBusinessDay = nextBusinessDay(currentBusinessDay);
-                currentBar = {
-                    open: null,
-                    high: null,
-                    low: null,
-                    close: null,
-                    time: currentBusinessDay,
-                };
-                ticksInCurrentBar = 0;
-                if (currentIndex === 5000) {
-                    reset();
-                    return;
-                }
-                if (currentIndex === targetIndex) {
-                    // change trend
-                    lastClose = noisedPrice;
-                    lastIndex = currentIndex;
-                    targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
-                    targetPrice = getRandomPrice();
-                }
-            }
-        }, 1000);
     }
+
+    getData() {
+        let type = this.props.parent.candle;
+        if (!(type in this.candle)) {
+            this.candle[type] = []
+
+            let post = {
+                market: this.id,
+                resolution: type
+            }
+            this.setState({ loading: true });
+            request('candle', post, res => {
+                if (typeof res == 'object' && !('success' in res)) {
+                    let i, id, open, high, low, close, value, time;
+                    for (i in res) {
+                        [id, open, high, low, close, value, time] = res[i];
+                        this.candle[type].push({ id, open, high, low, close, value, time })
+                    }
+                    this.setState({ loading: false });
+                    this.setValue(type);
+                }
+            });
+        } else {
+            this.setValue(type);
+        }
+    }
+    setValue(type) {
+        this.volumeSeries.setData(this.candle[type]);
+        this.candleSeries.setData(this.candle[type]);
+        this.chart.timeScale().fitContent()
+    }
+    changeResolution(candle) {
+        this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, candle } }));
+        this.getData();
+    }
+    // dynamicUpdate() {
+    //     setInterval(function () {
+    //         var deltaY = targetPrice - lastClose;
+    //         var deltaX = targetIndex - lastIndex;
+    //         var angle = deltaY / deltaX;
+    //         var basePrice = lastClose + (currentIndex - lastIndex) * angle;
+    //         var noise = (0.1 - Math.random() * 0.2) + 1.0;
+    //         var noisedPrice = basePrice * noise;
+    //         mergeTickToBar(noisedPrice);
+    //         if (++ticksInCurrentBar === 5) {
+    //             // move to next bar
+    //             currentIndex++;
+    //             currentBusinessDay = nextBusinessDay(currentBusinessDay);
+    //             currentBar = {
+    //                 open: null,
+    //                 high: null,
+    //                 low: null,
+    //                 close: null,
+    //                 time: currentBusinessDay,
+    //             };
+    //             ticksInCurrentBar = 0;
+    //             if (currentIndex === 5000) {
+    //                 reset();
+    //                 return;
+    //             }
+    //             if (currentIndex === targetIndex) {
+    //                 // change trend
+    //                 lastClose = noisedPrice;
+    //                 lastIndex = currentIndex;
+    //                 targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
+    //                 targetPrice = getRandomPrice();
+    //             }
+    //         }
+    //     }, 1000);
+    // }
+
     render() {
         return (
             <div style={styles.root}>
+                {this.state.loading &&
+                    <div class="loading-dir">
+                        <div class="loading">
+                            <div class="loading-1"></div>
+                            <div class="loading-2"></div>
+                            <div class="loading-3"></div>
+                            <div class="loading-4"></div>
+                        </div>
+                    </div>
+                }
                 <div id={"chart" + this.id} />
                 <div style={styles.actions}>
-                    <Resolution value={"1"} />
+                    <Resolution value={this.props.parent.candle} onChange={this.changeResolution} />
                 </div>
             </div>
         );
@@ -255,8 +275,8 @@ const styles = {
     root: {
         height: '100%',
         display: 'flex',
-        height: '100%'
-
+        height: '100%',
+        position: 'relative'
     },
     actions: {
         position: 'absolute',

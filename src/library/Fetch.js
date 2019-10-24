@@ -2,7 +2,7 @@ import axios from 'axios';
 import { t } from '../locales';
 const Api = axios.create({
   baseURL: 'http://localhost:2657/',
-  timeout: 5000,
+  timeout: 9000,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
   },
@@ -29,14 +29,13 @@ function Http(page, data = {}, callBack) {
     data = Object.entries(data)
       .map(([key, val]) => `${key}=${encodeURIComponent(val)}`)
       .join('&');
-
     Api.post(page, data)
       .then((response) => {
         callBack(response.data);
       })
       .catch((error) => {
         checkErr(error);
-        callBack({success:false});
+        callBack({ success: false });
       });
 
   }

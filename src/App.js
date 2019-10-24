@@ -24,7 +24,6 @@ class App extends Component {
     super(props);
     this.state = {
       isMobile: window.innerWidth < 1000,
-      tabbar: null
     };
     this.game = new GameServer('trade');
     autoBind(this);
