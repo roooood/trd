@@ -5,7 +5,7 @@ import request from '../../../library/Fetch';
 import Resolution from './Resolution';
 import Context from '../../../library/Context';
 import { TabbarAdd } from '../../../redux/action/tab';
-import * as LightweightCharts from 'lightweight-charts';
+import * as LightweightCharts from './lightweight-charts';
 
 const chartOptions = {
     layout: {
@@ -27,7 +27,16 @@ const chartOptions = {
         borderColor: 'transparent',
     },
     timeScale: {
+        rightOffset: 12,
+        barSpacing: 2,
+        fixLeftEdge: true,
+        lockVisibleTimeRangeOnResize: true,
+        rightBarStaysOnScroll: true,
+        borderVisible: false,
         borderColor: 'transparent',
+        visible: true,
+        timeVisible: true,
+        secondsVisible: false,
     },
 
     crosshair: {
@@ -44,6 +53,16 @@ const chartOptions = {
     },
 }
 const candleOption = {
+    priceFormat: {
+        minMove: 0.00000001,
+        formatter: function (price) {
+            return '$' + price;
+        },
+        scaleMargins: {
+            top: 0,
+            bottom: 0.5,
+        },
+    },
     upColor: '#25b940',
     downColor: '#fc155a',
     wickVisible: true,
@@ -53,11 +72,12 @@ const candleOption = {
     wickDownColor: '#fc155a',
 }
 const volumeOption = {
-    color: '#333',
+    color: 'rgba(0,0,0,.7)',
     priceFormat: {
         type: 'volume',
+        minMove: 0.00000001,
     },
-    priceLineVisible: false,
+    priceLineVisible: true,
     overlay: true,
     scaleMargins: {
         top: 0.85,
@@ -66,11 +86,6 @@ const volumeOption = {
 }
 
 // var candleSeries, volumeSeries;
-var data = [
-    { time: '2018-10-19', open: 54.62, value: 54.62, color: '#25b940', high: 55.50, low: 54.52, close: 54.90 },
-    { time: '2018-10-22', open: 55.08, value: 33.62, high: 55.27, low: 54.61, close: 54.98 },
-    { time: '2018-10-23', open: 56.09, value: 55.62, color: '#fc155a', high: 57.47, low: 56.09, close: 57.21 },
-];
 
 // var lastClose = data[data.length - 1].close;
 // var lastIndex = data.length - 1;
@@ -177,6 +192,11 @@ class Chart extends Component {
         });
         this.candleSeries = this.chart.addCandlestickSeries(candleOption);
         this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
+        // this.lineSeries = this.chart.addLineSeries({
+        //     overlay: true,
+        //     priceLineColor: '#4682B4',
+        //     priceLineStyle: 2,
+        // });
 
     }
 
@@ -206,9 +226,27 @@ class Chart extends Component {
         }
     }
     setValue(type) {
+        let len = this.candle[type].length;
         this.volumeSeries.setData(this.candle[type]);
         this.candleSeries.setData(this.candle[type]);
-        this.chart.timeScale().fitContent()
+
+        // this.lineSeries.setData(this.candle[type]);
+        this.chart.timeScale().fitContent();
+        this.candleSeries.setMarkers([
+            {
+                time: this.candle[type][len - 1].time,
+                position: 'aboveBar',
+                color: candleOption.upColor,
+                shape: 'arrowUp',
+            },
+            {
+                time: this.candle[type][len - 1].time,
+                position: 'belowBar',
+                color: candleOption.downColor,
+                shape: 'arrowDown',
+            },
+        ]);
+
     }
     changeResolution(candle) {
         this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, candle } }));
