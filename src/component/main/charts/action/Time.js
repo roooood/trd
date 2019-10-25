@@ -19,11 +19,16 @@ class Time extends Component {
         autoBind(this);
     }
     up() {
-        this.setState({ value: this.state.value + 1 });
+        this.setState({ value: this.state.value + 1 }, () => {
+            this.props.time(this.state.value)
+        });
     }
     down() {
-        if (this.state.value > 1)
-            this.setState({ value: this.state.value - 1 })
+        if (this.state.value > 1) {
+            this.setState({ value: this.state.value - 1 }, () => {
+                this.props.time(this.state.value)
+            })
+        }
     }
     render() {
         return (

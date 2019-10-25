@@ -18,6 +18,7 @@ const BuyButton = withStyles(theme => ({
         color: theme.palette.getContrastText(purple[500]),
         height: '100%',
         marginTop: 5,
+        fontSize: 25,
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
         '&:hover': {
             backgroundColor: purple[700],
@@ -30,6 +31,7 @@ const SellButton = withStyles(theme => ({
         color: theme.palette.getContrastText(purple[500]),
         height: '100%',
         marginTop: 5,
+        fontSize: 25,
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
         '&:hover': {
             backgroundColor: purple[700],
@@ -42,9 +44,20 @@ class Action extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            state: 'up'
+            state: 'up',
+            bet: 0,
+            tradeAt: 1
         };
         autoBind(this);
+    }
+    time(tradeAt) {
+        this.setState({ tradeAt })
+    }
+    amount(bet) {
+        this.setState({ bet })
+    }
+    onTrade(tradeType) {
+        window.ee.emit('trade', { tradeType, bet, tradeAt })
     }
     mouseOver(type) {
         window.ee.emit('actionHover', type)
@@ -53,10 +66,11 @@ class Action extends Component {
         window.ee.emit('actionBlur', type)
     }
     render() {
+        let profit = this.context.state.setting.profit || 0;
         return (
             <div style={styles.root}>
-                <Price />
-                <Time />
+                <Price amount={this.amount} />
+                <Time time={this.time} />
                 <div style={styles.profit}>
                     <div style={styles.info} >
                         <Typography variant="button" display="block" >
@@ -66,7 +80,7 @@ class Action extends Component {
                     </div>
                     <div style={styles.info} >
                         <Typography variant="h4" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
-                            +14%
+                            {profit}%
                         </Typography>
                     </div>
                     <div style={styles.info} >
@@ -78,6 +92,7 @@ class Action extends Component {
                 <BuyButton
                     variant="contained"
                     color="primary"
+                    onClick={() => this.onTrade('buy')}
                     onMouseEnter={() => this.mouseOver('buy')}
                     onMouseLeave={() => this.mouseOut('buy')}>
                     <TrendingUpIcon style={{ marginRight: 20 }} /> {t('buy')}
@@ -85,7 +100,8 @@ class Action extends Component {
                 <SellButton
                     variant="contained"
                     color="primary"
-                    onMouseEnter={() => this.mouseOver('cell')}
+                    onClick={() => this.onTrade('sell')}
+                    onMouseEnter={() => this.mouseOver('sell')}
                     onMouseLeave={() => this.mouseOut('sell')}>
                     <TrendingDownIcon style={{ marginRight: 20 }} /> {t('sell')}
                 </SellButton>

@@ -8,7 +8,7 @@ import Grow from '@material-ui/core/Grow';
 
 const styles = {
     snack: {
-        marginTop: 10
+        marginTop: 30
     },
     error: {
         background: '#d32f2f',

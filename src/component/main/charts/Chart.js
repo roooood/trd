@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
+import { t } from '../../../locales';
+import { canddleUrl, resolution, hub2candle, chartOptions, candleOption, volumeOption, getDimention } from './Const';
 import { connect } from 'react-redux';
 import request from '../../../library/Fetch';
 import Resolution from './Resolution';
@@ -7,145 +9,6 @@ import Context from '../../../library/Context';
 import { TabbarAdd } from '../../../redux/action/tab';
 import * as LightweightCharts from './lightweight-charts';
 
-const chartOptions = {
-    layout: {
-        backgroundColor: 'transparent',
-        textColor: '#b5b5b5'
-    },
-
-    grid: {
-        vertLines: {
-            color: '#333',
-            style: 1
-        },
-        horzLines: {
-            color: '#333',
-            style: 1
-        },
-    },
-    priceScale: {
-        borderColor: 'transparent',
-    },
-    timeScale: {
-        rightOffset: 12,
-        barSpacing: 2,
-        fixLeftEdge: true,
-        lockVisibleTimeRangeOnResize: true,
-        rightBarStaysOnScroll: true,
-        borderVisible: false,
-        borderColor: 'transparent',
-        visible: true,
-        timeVisible: true,
-        secondsVisible: false,
-    },
-
-    crosshair: {
-        // vertLine: {
-        //     width: 5,
-        //     color: 'rgba(224, 227, 235, 0.1)',
-        //     style: 0,
-        // },
-        // horzLine: {
-        //     width: 5,
-        //     color: 'rgba(224, 227, 235, 0.1)',
-        //     style: 0,
-        // },
-    },
-}
-const candleOption = {
-    priceFormat: {
-        minMove: 0.00000001,
-        formatter: function (price) {
-            return '$' + price;
-        },
-        scaleMargins: {
-            top: 0,
-            bottom: 0.5,
-        },
-    },
-    upColor: '#25b940',
-    downColor: '#fc155a',
-    wickVisible: true,
-    borderVisible: false,
-    wickColor: '#eee',
-    wickUpColor: '#25b940',
-    wickDownColor: '#fc155a',
-}
-const volumeOption = {
-    color: 'rgba(0,0,0,.7)',
-    priceFormat: {
-        type: 'volume',
-        minMove: 0.00000001,
-    },
-    priceLineVisible: true,
-    overlay: true,
-    scaleMargins: {
-        top: 0.85,
-        bottom: 0,
-    },
-}
-
-// var candleSeries, volumeSeries;
-
-// var lastClose = data[data.length - 1].close;
-// var lastIndex = data.length - 1;
-
-// var targetIndex = lastIndex + 105 + Math.round(Math.random() + 30);
-// var targetPrice = getRandomPrice();
-
-// var currentIndex = lastIndex + 1;
-// var currentBusinessDay = { day: 29, month: 5, year: 2019 };
-// var ticksInCurrentBar = 0;
-// var currentBar = {
-//     open: null,
-//     high: null,
-//     low: null,
-//     close: null,
-//     time: currentBusinessDay,
-// };
-// function mergeTickToBar(price) {
-//     if (currentBar.open === null) {
-//         currentBar.open = price;
-//         currentBar.high = price;
-//         currentBar.low = price;
-//         currentBar.close = price;
-//     } else {
-//         currentBar.close = price;
-//         currentBar.high = Math.max(currentBar.high, price);
-//         currentBar.low = Math.min(currentBar.low, price);
-//     }
-//     candleSeries.update(currentBar);
-// }
-
-// function reset() {
-//     candleSeries.setData(data);
-//     lastClose = data[data.length - 1].close;
-//     lastIndex = data.length - 1;
-
-//     targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
-//     targetPrice = getRandomPrice();
-
-//     currentIndex = lastIndex + 1;
-//     currentBusinessDay = { day: 29, month: 5, year: 2019 };
-//     ticksInCurrentBar = 0;
-// }
-
-// function getRandomPrice() {
-//     return 10 + Math.round(Math.random() * 10000) / 100;
-// }
-
-// function nextBusinessDay(time) {
-//     var d = new Date();
-//     d.setUTCFullYear(time.year);
-//     d.setUTCMonth(time.month - 1);
-//     d.setUTCDate(time.day + 1);
-//     d.setUTCHours(0, 0, 0, 0);
-//     return {
-//         year: d.getUTCFullYear(),
-//         month: d.getUTCMonth() + 1,
-//         day: d.getUTCDate(),
-//     };
-// }
 
 class Chart extends Component {
     static contextType = Context;
@@ -160,36 +23,27 @@ class Chart extends Component {
         autoBind(this);
         window.ee.on('actionHover', this.showAction)
         window.ee.on('actionBlur', this.hideAction)
+        window.ee.on('trade', this.trade)
     }
     resize() {
         if (this.props.inView)
-            this.chart.applyOptions(this.getDimention());
-    }
-    debounce() {
-        if (this.timer) clearTimeout(this.timer);
-        this.timer = setTimeout(this.resize, 100);
+            this.chart.applyOptions(getDimention());
     }
     componentWillReceiveProps(nextProps, contextProps) {
     }
-    active() {
-        return this.props.tab.active.replace('t', '');
-    }
-    getDimention() {
-        return {
-            width: window.innerWidth - (this.sidebarElement.offsetWidth + 150),
-            height: window.innerHeight - 100,
-        }
-    }
+
     componentDidMount() {
+        this.context.game.register('order', this.order);
+
         this.getData();
-        this.sidebarElement = document.querySelector(".sidebar");
+
         this.selector = document.getElementById('chart' + this.id);
 
         window.addEventListener('resize', this.resize);
         new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
 
         this.chart = LightweightCharts.createChart(this.selector, {
-            ...this.getDimention(),
+            ...getDimention(),
             ...chartOptions
         });
         this.candleSeries = this.chart.addCandlestickSeries(candleOption);
@@ -203,24 +57,29 @@ class Chart extends Component {
     }
 
     getData() {
-        let type = this.props.parent.candle;
-        if (!(type in this.candle)) {
-            this.candle[type] = []
+        let url = canddleUrl;
+        let { type, symbol, candle } = this.props.parent;
+        let post = {
+            type,
+            symbol,
+            resolution: resolution[candle],
+            count: 50,
+            token: this.context.state.token
+        }
+        for (let i in post) {
+            url = url.replace('{' + i + '}', post[i])
+        }
 
-            let post = {
-                market: this.id,
-                resolution: type
-            }
+        if (!(candle in this.candle)) {
             this.setState({ loading: true });
-            request('candle', post, res => {
-                if (typeof res == 'object' && !('success' in res)) {
-                    let i, id, open, high, low, close, value, time;
-                    for (i in res) {
-                        [id, open, high, low, close, value, time] = res[i];
-                        this.candle[type].push({ id, open, high, low, close, value, time })
+            request('candle/', { url }, res => {
+                this.setState({ loading: false });
+                if (typeof res == 'object') {
+                    let data = hub2candle(res);
+                    if (data != null) {
+                        this.candle[candle] = data;
+                        this.setValue();
                     }
-                    this.setState({ loading: false });
-                    this.setValue(type);
                 }
             });
         } else {
@@ -241,7 +100,7 @@ class Chart extends Component {
             return;
         }
         let len = this.candle[type].length;
-        let dm = this.getDimention();
+        let dm = getDimention();
         if (action == 'buy') {
             this.candleSeries.setMarkers([
                 {
@@ -276,9 +135,31 @@ class Chart extends Component {
             }
         ]);
     }
+    trade({ tradeType, bet, tradeAt }) {
+        // let { balance } = this.context.state.user;
+        let { id, candle } = this.props.parent;
+        if (!(candle in this.candle)) {
+            return;
+        }
+        let len = this.candle[candle].length;
+        let data = {
+            balanceType: this.props.user.type,
+            tradeType,
+            bet: bet,
+            marketId: id,
+            point: this.candle[candle][len - 1].time,
+            tradeAt: tradeAt
+        }
+        this.context.game.send({ trade: data });
+    }
+    order({ point }) {
+        this.notify({ message: t('orderSuccess'), type: 'success' });
+    }
     changeResolution(candle) {
         this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, candle } }));
-        this.getData();
+        setTimeout(() => {
+            this.getData();
+        }, 100);
     }
     // dynamicUpdate() {
     //     setInterval(function () {
@@ -315,7 +196,9 @@ class Chart extends Component {
     //         }
     //     }, 1000);
     // }
-
+    notify(data) {
+        window.ee.emit('notify', data)
+    }
     render() {
         return (
             <div style={styles.root}>

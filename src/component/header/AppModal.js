@@ -123,8 +123,8 @@ class AppModal extends Component {
             }
         }
     }
-    addTab(id, name, type) {
-        this.props.dispatch(TabbarAdd({ key: 't' + id, value: { id, name, type, candle: '1m' } }));
+    addTab(id, symbol, name, type) {
+        this.props.dispatch(TabbarAdd({ key: 't' + id, value: { id, symbol, name, type, candle: '1m' } }));
         let modal = this.context.app('modal');
         modal.hide();
     }
@@ -159,7 +159,7 @@ class AppModal extends Component {
                                     let regex = new RegExp(this.state.searchValue, 'gi')
                                     if (row.display.match(regex))
                                         return (
-                                            <StyledTableRow key={row.id} onClick={() => this.addTab(row.id, row.display, type)}>
+                                            <StyledTableRow key={row.id} onClick={() => this.addTab(row.id, row.symbol, row.display, type)}>
                                                 <StyledTableCell component="td" scope="row">
                                                     {row.display}
                                                 </StyledTableCell>

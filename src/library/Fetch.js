@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { t } from '../locales';
+import { apiUrl } from './Helper';
 const Api = axios.create({
-  baseURL: 'http://localhost:2657/',
+  baseURL: apiUrl,
   timeout: 9000,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",

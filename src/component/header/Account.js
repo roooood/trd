@@ -58,7 +58,8 @@ class Account extends Component {
         this.props.dispatch(User({ type }));
     }
     render() {
-        let { type, balance } = this.props.user;
+        let { type } = this.props.user;
+        let { balance } = this.context.state.user;
         return (
             <>
                 <List disablePadding={true} component="div" >

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
+import { connect } from 'react-redux';
 import Context from '../../../../library/Context';
 import { t } from '../../../../locales';
 import Typography from '@material-ui/core/Typography';
@@ -15,16 +16,22 @@ class Price extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 1
+            value: 0
         };
         autoBind(this);
     }
     up() {
-        this.setState({ value: this.state.value + 1 });
+        if (this.state.value <= this.context.state.user.balance[this.props.user.type])
+            this.setState({ value: this.state.value + 1 }, () => {
+                this.props.amount(this.state.value)
+            });
     }
     down() {
-        if (this.state.value > 1)
-            this.setState({ value: this.state.value - 1 })
+        if (this.state.value > 1) {
+            this.setState({ value: this.state.value - 1 }, () => {
+                this.props.amount(this.state.value)
+            })
+        }
     }
     render() {
         return (
@@ -90,4 +97,4 @@ const styles = {
         marginTop: 5
     }
 }
-export default Price;
+export default connect(state => state)(Price);

@@ -52,7 +52,7 @@ class Resolution extends Component {
             { value: 'H', icon: <span style={styles.text}>H</span>, name: t('hour') },
             { value: 'D', icon: <span style={styles.text}>D</span>, name: t('day') },
             { value: 'W', icon: <span style={styles.text}>W</span>, name: t('week') },
-            { value: 'M', icon: <span style={styles.text}>M</span>, name: t('Month') },
+            { value: 'M', icon: <span style={styles.text}>M</span>, name: t('month') },
         ];
     }
     changeType(type) {

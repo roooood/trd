@@ -60,4 +60,15 @@ export default {
     profit: 'Profit',
     change: 'Change',
     description: 'Description',
+
+    min: 'minute',
+    hour: 'Hour',
+    day: 'Day',
+    week: 'Week',
+    month: 'Month',
+
+    balanceError: 'Your balance is less than your trade amont',
+    marketError: 'The market not found',
+    orderError: 'Problem in your order ,please try again',
+    orderSuccess: 'Your order trade submited',
 }
