@@ -153,6 +153,14 @@ class Chart extends Component {
         this.context.game.send({ trade: data });
     }
     order({ point }) {
+        this.candleSeries.setMarkers([
+            {
+                time: point,
+                position: 'inBar',
+                color: '#5C91D9',
+                shape: 'circle',
+            }
+        ]);
         this.notify({ message: t('orderSuccess'), type: 'success' });
     }
     changeResolution(candle) {

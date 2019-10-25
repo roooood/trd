@@ -45,9 +45,10 @@ class Action extends Component {
         super(props);
         this.state = {
             state: 'up',
-            bet: 0,
+            bet: 1,
             tradeAt: 1
         };
+        this.noOver = false;
         autoBind(this);
     }
     time(tradeAt) {
@@ -57,13 +58,17 @@ class Action extends Component {
         this.setState({ bet })
     }
     onTrade(tradeType) {
-        window.ee.emit('trade', { tradeType, bet, tradeAt })
+        window.ee.emit('actionBlur')
+        this.noOver = true;
+        window.ee.emit('trade', { tradeType, bet: this.state.bet, tradeAt: this.state.tradeAt })
     }
     mouseOver(type) {
+        this.noOver = false;
         window.ee.emit('actionHover', type)
     }
     mouseOut(type) {
-        window.ee.emit('actionBlur', type)
+        if (!this.noOver)
+            window.ee.emit('actionBlur', type)
     }
     render() {
         let profit = this.context.state.setting.profit || 0;
@@ -85,7 +90,7 @@ class Action extends Component {
                     </div>
                     <div style={styles.info} >
                         <Typography variant="h5" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
-                            +20$
+                            {(this.state.bet * profit / 100).toFixed(2)}$
                         </Typography>
                     </div>
                 </div>

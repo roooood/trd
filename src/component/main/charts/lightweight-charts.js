@@ -2855,9 +2855,6 @@ function buysell(up, ctx, centerX, centerY, color) {
         linear.addColorStop(1, color[1]);
         ctx.fillStyle = linear;
     }
-    console.log('====================================');
-    console.log(height, size, centerY);
-    console.log('====================================');
     ctx.fillStyle = linear;
     ctx.fill();
 }
@@ -2963,7 +2960,7 @@ function drawItem(item, ctx) {
             drawArrow(true, ctx, item.x, item.y-15, item.color[2], 30);
             return;
         case 'circle':
-            drawCircle(ctx, item.x, item.y, item.color, item.size);
+            drawCircle(ctx, item.x, item.y, item.color, 30);
             return;
         case 'square':
             drawSquare(ctx, item.x, item.y, item.color, item.size);
