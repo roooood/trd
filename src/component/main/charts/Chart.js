@@ -158,6 +158,8 @@ class Chart extends Component {
         this.timer = null;
         this.id = props.parent.id;
         autoBind(this);
+        window.ee.on('actionHover', this.showAction)
+        window.ee.on('actionBlur', this.hideAction)
     }
     resize() {
         if (this.props.inView)
@@ -222,31 +224,57 @@ class Chart extends Component {
                 }
             });
         } else {
-            this.setValue(type);
+            this.setValue();
         }
     }
-    setValue(type) {
-        let len = this.candle[type].length;
+    setValue() {
+        let type = this.props.parent.candle;
         this.volumeSeries.setData(this.candle[type]);
         this.candleSeries.setData(this.candle[type]);
 
         // this.lineSeries.setData(this.candle[type]);
         this.chart.timeScale().fitContent();
+    }
+    showAction(action) {
+        let type = this.props.parent.candle;
+        if (!(type in this.candle)) {
+            return;
+        }
+        let len = this.candle[type].length;
+        let dm = this.getDimention();
+        if (action == 'buy') {
+            this.candleSeries.setMarkers([
+                {
+                    time: this.candle[type][len - 1].time,
+                    position: 'aboveBar',
+                    color: ['rgba(5, 253, 50,.2) ', 'rgba(0, 0, 0,0)', 'rgb(5, 253, 50)', dm],
+                    shape: 'buy',
+                }
+            ]);
+        }
+        else {
+            this.candleSeries.setMarkers([
+                {
+                    time: this.candle[type][len - 1].time,
+                    position: 'belowBar',
+                    color: ['rgba(252, 21, 90,.3)', 'rgba(0, 0, 0, 0)', 'rgb(252, 21, 90)', dm],
+                    shape: 'sell',
+                },
+            ]);
+        }
+    }
+    hideAction() {
+        let type = this.props.parent.candle;
+        if (!(type in this.candle)) {
+            return;
+        }
+        let len = this.candle[type].length;
         this.candleSeries.setMarkers([
             {
                 time: this.candle[type][len - 1].time,
-                position: 'aboveBar',
-                color: candleOption.upColor,
-                shape: 'arrowUp',
-            },
-            {
-                time: this.candle[type][len - 1].time,
-                position: 'belowBar',
-                color: candleOption.downColor,
-                shape: 'arrowDown',
-            },
+                shape: 'null',
+            }
         ]);
-
     }
     changeResolution(candle) {
         this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, candle } }));

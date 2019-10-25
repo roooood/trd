@@ -2834,6 +2834,33 @@ function hitTestSquare(centerX, centerY, size, x, y) {
         y >= top && y <= top + squareSize;
 }
 
+function buysell(up, ctx, centerX, centerY, color) {
+    let width = color[3].width;
+    let height = color[3].height;
+    let linear, size;
+    if (up) {
+        size =  centerY;
+        ctx.rect(0, 0, width, size);
+        linear = ctx.createLinearGradient(0, 0, 0, size);
+        linear.addColorStop(0, color[1]);
+        linear.addColorStop(.3, color[1]);
+        linear.addColorStop(1, color[0]);
+    } else {
+        size = height - centerY;
+        ctx.rect(0, centerY, width, size );
+        linear = ctx.createLinearGradient(0, 0, 0, height  );
+        // linear = ctx.createLinearGradient(window.x[0], window.x[1], window.x[2], window.x[3] );
+        linear.addColorStop(0, color[0]);
+        linear.addColorStop(.3, color[0]);
+        linear.addColorStop(1, color[1]);
+        ctx.fillStyle = linear;
+    }
+    console.log('====================================');
+    console.log(height, size, centerY);
+    console.log('====================================');
+    ctx.fillStyle = linear;
+    ctx.fill();
+}
 function drawArrow(up, ctx, centerX, centerY, color, size) {
     var arrowSize = shapeSize('arrowUp', size);
     var halfArrowSize = (arrowSize - 1) / 2;
@@ -2922,10 +2949,18 @@ var SeriesMarkersRenderer = /** @class */ (function () {
 function drawItem(item, ctx) {
     switch (item.shape) {
         case 'arrowDown':
-            drawArrow(false, ctx, item.x, item.y, item.color, item.size);
+            drawArrow(false, ctx, item.x, item.y , item.color, item.size);
+            return;
+        case 'sell':
+            buysell(false, ctx, item.x, item.y, item.color, item.size);
+            drawArrow(false, ctx, item.x, item.y+15 , item.color[2], 30);
             return;
         case 'arrowUp':
             drawArrow(true, ctx, item.x, item.y, item.color, item.size);
+            return;
+        case 'buy':
+            buysell(true, ctx, item.x, item.y, item.color, item.size);
+            drawArrow(true, ctx, item.x, item.y-15, item.color[2], 30);
             return;
         case 'circle':
             drawCircle(ctx, item.x, item.y, item.color, item.size);

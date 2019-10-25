@@ -223,6 +223,9 @@ body {
 @keyframes loading {
   50% { height: 100px; margin-top: 0px; }
 }*/
+.loading>*{
+  margin-right:3px;
+}
 .loading .loading-1 {
   height: 10px;
   width: 30px;

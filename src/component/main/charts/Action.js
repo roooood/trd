@@ -46,6 +46,12 @@ class Action extends Component {
         };
         autoBind(this);
     }
+    mouseOver(type) {
+        window.ee.emit('actionHover', type)
+    }
+    mouseOut(type) {
+        window.ee.emit('actionBlur', type)
+    }
     render() {
         return (
             <div style={styles.root}>
@@ -69,10 +75,18 @@ class Action extends Component {
                         </Typography>
                     </div>
                 </div>
-                <BuyButton variant="contained" color="primary">
+                <BuyButton
+                    variant="contained"
+                    color="primary"
+                    onMouseEnter={() => this.mouseOver('buy')}
+                    onMouseLeave={() => this.mouseOut('buy')}>
                     <TrendingUpIcon style={{ marginRight: 20 }} /> {t('buy')}
                 </BuyButton>
-                <SellButton variant="contained" color="primary">
+                <SellButton
+                    variant="contained"
+                    color="primary"
+                    onMouseEnter={() => this.mouseOver('cell')}
+                    onMouseLeave={() => this.mouseOut('sell')}>
                     <TrendingDownIcon style={{ marginRight: 20 }} /> {t('sell')}
                 </SellButton>
             </div>
