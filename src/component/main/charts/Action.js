@@ -18,7 +18,7 @@ const BuyButton = withStyles(theme => ({
         color: theme.palette.getContrastText(purple[500]),
         height: '100%',
         marginTop: 5,
-        fontSize: 25,
+        fontSize: 20,
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
         '&:hover': {
             backgroundColor: purple[700],
@@ -31,7 +31,7 @@ const SellButton = withStyles(theme => ({
         color: theme.palette.getContrastText(purple[500]),
         height: '100%',
         marginTop: 5,
-        fontSize: 25,
+        fontSize: 20,
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
         '&:hover': {
             backgroundColor: purple[700],

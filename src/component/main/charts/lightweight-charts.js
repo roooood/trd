@@ -10759,6 +10759,21 @@ var ChartApi = /** @class */ (function () {
         this._private__dataLayer.destroy();
         delete this._private__dataLayer;
     };
+    ChartApi.prototype.clear = function () {
+        this._private__seriesMap.forEach((series, seriesObj) =>{
+            var update = this._private__dataLayer.removeSeries(series);
+            var model = this._private__chartWidget.model();
+            model.removeSeries(series);
+            var timeScaleUpdate = update.timeScaleUpdate;
+            model.updateTimeScale(timeScaleUpdate.index, timeScaleUpdate.changes, timeScaleUpdate.marks, true);
+            timeScaleUpdate.seriesUpdates.forEach(function (value, key) {
+                key.setData(value.update);
+            });
+            model.updateTimeScaleBaseIndex(0);
+            this._private__seriesMap.delete(seriesObj);
+            this._private__seriesMapReversed.delete(series);
+        });
+    };
     ChartApi.prototype.resize = function (height, width, forceRepaint) {
         this._private__chartWidget.resize(height, width, forceRepaint);
     };

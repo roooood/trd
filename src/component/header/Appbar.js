@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
-import AppModal from './AppModal';
+import AppModal from './marketModal';
 
 const ColorButton = withStyles(theme => ({
     root: {

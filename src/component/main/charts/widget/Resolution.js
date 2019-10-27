@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../../../library/Context';
-import { t } from '../../../locales';
+import Context from '../../../../library/Context';
+import { t } from '../../../../locales';
 
 import { withStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
@@ -67,29 +67,35 @@ class Resolution extends Component {
     }
     render() {
         return (
-            <Fab
-                ariaLabel="resolution"
-                icon={<span style={styles.text}>{this.props.value}</span >}
-                onClose={this.handleClose}
-                onOpen={this.handleOpen}
-                open={this.state.open}
-                direction={"right"}
-            >
-                {
-                    this.actions.map(action => (
-                        <FabAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            onClick={() => this.changeType(action.value)}
-                        />
-                    ))
-                }
-            </Fab >
+            <div style={styles.root} >
+                <Fab
+                    ariaLabel="resolution"
+                    icon={<span style={styles.text}>{this.props.value}</span >}
+                    onClose={this.handleClose}
+                    onOpen={this.handleOpen}
+                    open={this.state.open}
+                    direction={"right"}
+                >
+                    {
+                        this.actions.map(action => (
+                            <FabAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                tooltipPlacement="top"
+                                onClick={() => this.changeType(action.value)}
+                            />
+                        ))
+                    }
+                </Fab >
+            </div>
         );
     }
 }
 const styles = {
+    root: {
+        margin: 4
+    },
     text: {
         textTransform: 'none'
     }

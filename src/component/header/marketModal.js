@@ -124,7 +124,17 @@ class AppModal extends Component {
         }
     }
     addTab(id, symbol, name, type) {
-        this.props.dispatch(TabbarAdd({ key: 't' + id, value: { id, symbol, name, type, candle: '1m' } }));
+        this.props.dispatch(TabbarAdd({
+            key: 't' + id,
+            value: {
+                id,
+                symbol,
+                name,
+                type,
+                resolution: this.context.state.setting.reolution,
+                chartType: this.context.state.setting.chartType
+            }
+        }));
         let modal = this.context.app('modal');
         modal.hide();
     }

@@ -15,6 +15,7 @@ class Loading extends Component {
                         <div className="loading-2"></div>
                         <div className="loading-3"></div>
                         <div className="loading-4"></div>
+                        <div className="loading-5"></div>
                     </div>
                 </div>
             </div>

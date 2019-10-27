@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { t } from '../../../locales';
-import { canddleUrl, resolution, hub2candle, chartOptions, candleOption, volumeOption, getDimention } from './Const';
+import { canddleUrl, resolutionEx, hub2candle, chartOptions, candleOption, volumeOption, lineOption, barOption, areaOption, getDimention } from './Const';
 import { connect } from 'react-redux';
 import request from '../../../library/Fetch';
-import Resolution from './Resolution';
+import Resolution from './widget/Resolution';
+import ChartType from './widget/chartTypes';
 import Context from '../../../library/Context';
 import { TabbarAdd } from '../../../redux/action/tab';
 import * as LightweightCharts from './lightweight-charts';
@@ -17,7 +18,8 @@ class Chart extends Component {
         this.state = {
             loading: false
         };
-        this.candle = {};
+        this.chartData = {};
+        this.chartType = {};
         this.timer = null;
         this.id = props.parent.id;
         autoBind(this);
@@ -42,69 +44,80 @@ class Chart extends Component {
         window.addEventListener('resize', this.resize);
         new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
 
-        this.chart = LightweightCharts.createChart(this.selector, {
-            ...getDimention(),
-            ...chartOptions
-        });
-        this.candleSeries = this.chart.addCandlestickSeries(candleOption);
-        this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
-        // this.lineSeries = this.chart.addLineSeries({
-        //     overlay: true,
-        //     priceLineColor: '#4682B4',
-        //     priceLineStyle: 2,
-        // });
-
+        this.createChart();
     }
 
     getData() {
         let url = canddleUrl;
-        let { type, symbol, candle } = this.props.parent;
+        let { type, symbol, resolution } = this.props.parent;
         let post = {
             type,
             symbol,
-            resolution: resolution[candle],
-            count: 50,
+            resolution: resolutionEx[resolution],
+            count: this.context.state.setting.maxData,
             token: this.context.state.token
         }
         for (let i in post) {
             url = url.replace('{' + i + '}', post[i])
         }
 
-        if (!(candle in this.candle)) {
+        if (!(resolution in this.chartData)) {
             this.setState({ loading: true });
             request('candle/', { url }, res => {
                 this.setState({ loading: false });
                 if (typeof res == 'object') {
                     let data = hub2candle(res);
                     if (data != null) {
-                        this.candle[candle] = data;
-                        this.setValue();
+                        this.chartData[resolution] = data;
+                        this.changeData();
                     }
                 }
             });
         } else {
-            this.setValue();
+            this.changeData();
         }
     }
-    setValue() {
-        let type = this.props.parent.candle;
-        this.volumeSeries.setData(this.candle[type]);
-        this.candleSeries.setData(this.candle[type]);
+    createChart() {
+        this.chart = LightweightCharts.createChart(this.selector, {
+            ...getDimention(),
+            ...chartOptions
+        });
 
-        // this.lineSeries.setData(this.candle[type]);
+        this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
+    }
+    createSeries() {
+        this.chartType['candle'] = this.chart.addCandlestickSeries(candleOption);
+        this.chartType['line'] = this.chart.addLineSeries(lineOption);
+        this.chartType['area'] = this.chart.addAreaSeries(areaOption);
+        this.chartType['bar'] = this.chart.addBarSeries(barOption);
+    }
+    changeData(ok) {
+        this.chart.clear();
+        this.createSeries();
+        let { resolution, chartType } = this.props.parent;
+        this.volumeSeries.setData(this.chartData[resolution]);
+        for (let i of ['candle', 'line', 'area', 'bar']) {
+            if (i == chartType) {
+                this.chartType[i].setData(this.chartData[resolution]);
+            }
+            else {
+                this.chart.removeSeries(this.chartType[i]);
+                this.chartType[i] = null;
+            }
+        }
         this.chart.timeScale().fitContent();
     }
     showAction(action) {
-        let type = this.props.parent.candle;
-        if (!(type in this.candle)) {
+        let { resolution } = this.props.parent;
+        if (!(resolution in this.chartData)) {
             return;
         }
-        let len = this.candle[type].length;
+        let len = this.chartData[resolution].length;
         let dm = getDimention();
         if (action == 'buy') {
-            this.candleSeries.setMarkers([
+            this.chartType[this.props.parent.chartType].setMarkers([
                 {
-                    time: this.candle[type][len - 1].time,
+                    time: this.chartData[resolution][len - 1].time,
                     position: 'aboveBar',
                     color: ['rgba(5, 253, 50,.2) ', 'rgba(0, 0, 0,0)', 'rgb(5, 253, 50)', dm],
                     shape: 'buy',
@@ -112,9 +125,9 @@ class Chart extends Component {
             ]);
         }
         else {
-            this.candleSeries.setMarkers([
+            this.chartType[this.props.parent.chartType].setMarkers([
                 {
-                    time: this.candle[type][len - 1].time,
+                    time: this.chartData[resolution][len - 1].time,
                     position: 'belowBar',
                     color: ['rgba(252, 21, 90,.3)', 'rgba(0, 0, 0, 0)', 'rgb(252, 21, 90)', dm],
                     shape: 'sell',
@@ -123,37 +136,37 @@ class Chart extends Component {
         }
     }
     hideAction() {
-        let type = this.props.parent.candle;
-        if (!(type in this.candle)) {
+        let { resolution } = this.props.parent;
+        if (!(resolution in this.chartData)) {
             return;
         }
-        let len = this.candle[type].length;
-        this.candleSeries.setMarkers([
+        let len = this.chartData[resolution].length;
+        this.chartType[this.props.parent.chartType].setMarkers([
             {
-                time: this.candle[type][len - 1].time,
+                time: this.chartData[resolution][len - 1].time,
                 shape: 'null',
             }
         ]);
     }
     trade({ tradeType, bet, tradeAt }) {
         // let { balance } = this.context.state.user;
-        let { id, candle } = this.props.parent;
-        if (!(candle in this.candle)) {
+        let { id, resolution } = this.props.parent;
+        if (!(resolution in this.chartData)) {
             return;
         }
-        let len = this.candle[candle].length;
+        let len = this.chartData[resolution].length;
         let data = {
             balanceType: this.props.user.type,
             tradeType,
             bet: bet,
             marketId: id,
-            point: this.candle[candle][len - 1].time,
+            point: this.chartData[resolution][len - 1].time,
             tradeAt: tradeAt
         }
         this.context.game.send({ trade: data });
     }
     order({ point }) {
-        this.candleSeries.setMarkers([
+        this.chartType[this.props.parent.chartType].setMarkers([
             {
                 time: point,
                 position: 'inBar',
@@ -163,12 +176,19 @@ class Chart extends Component {
         ]);
         this.notify({ message: t('orderSuccess'), type: 'success' });
     }
-    changeResolution(candle) {
-        this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, candle } }));
+    changeResolution(resolution) {
+        this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, resolution } }));
         setTimeout(() => {
             this.getData();
         }, 100);
     }
+    changeChartType(chartType) {
+        this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, chartType } }));
+        setTimeout(() => {
+            this.changeData(true);
+        }, 300);
+    }
+
     // dynamicUpdate() {
     //     setInterval(function () {
     //         var deltaY = targetPrice - lastClose;
@@ -222,7 +242,8 @@ class Chart extends Component {
                 }
                 <div id={"chart" + this.id} />
                 <div style={styles.actions}>
-                    <Resolution value={this.props.parent.candle} onChange={this.changeResolution} />
+                    <Resolution value={this.props.parent.resolution} onChange={this.changeResolution} />
+                    <ChartType value={this.props.parent.chartType} onChange={this.changeChartType} />
                 </div>
             </div>
         );
@@ -244,6 +265,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'baseline',
+        zIndex: 999
     }
 }
 export default connect(state => state)(Chart);

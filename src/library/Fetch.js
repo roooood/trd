@@ -34,10 +34,10 @@ function Http(page, data = {}, callBack) {
       .then((response) => {
         callBack(response.data);
       })
-      .catch((error) => {
-        checkErr(error);
-        callBack({ success: false });
-      });
+    // .catch((error) => {
+    //   checkErr(error);
+    //   callBack({ success: false });
+    // });
 
   }
 }

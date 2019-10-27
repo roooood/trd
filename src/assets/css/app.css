@@ -188,7 +188,6 @@ body {
   left: 50%;
   height: 120px;
   padding: 0px;
-  width: 160px;
   margin-top: -50px;
   margin-left: -70px;
   padding: 10px;
@@ -198,20 +197,20 @@ body {
 
 @keyframes loading {
   0% {
-    background-color: #cd0a00;
+    background-color: rgba(205, 10, 0, 0.2);
   }
   30% {
-    background-color: #fa8a00;
+    background-color: rgba(250, 138, 0, 0.2);
   }
   50% {
     height: 100px;
     margin-top: 0px;
   }
   80% {
-    background-color: #91d700;
+    background-color: rgba(145, 215, 0, 0.2);
   }
   100% {
-    background-color: #cd0a00;
+    background-color: rgba(205, 10, 0, 0.2);
   }
 }
 /*@-moz-keyframes loading {
@@ -229,153 +228,80 @@ body {
 .loading .loading-1 {
   height: 10px;
   width: 30px;
-  background-color: #fff;
+  background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
   -webkit-animation: loading 2.5s infinite;
   -moz-animation: loading 2.5s infinite;
   -o-animation: loading 2.5s infinite;
   animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   -webkit-animation-delay: 0.25s;
   animation-delay: 0.25s;
 }
 .loading .loading-2 {
   height: 10px;
   width: 30px;
-  background-color: #fff;
+  background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
   -webkit-animation: loading 2.5s infinite;
   -moz-animation: loading 2.5s infinite;
   -o-animation: loading 2.5s infinite;
   animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   -webkit-animation-delay: 0.5s;
   animation-delay: 0.5s;
 }
 .loading .loading-3 {
   height: 10px;
   width: 30px;
-  background-color: #fff;
+  background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
   -webkit-animation: loading 2.5s infinite;
   -moz-animation: loading 2.5s infinite;
   -o-animation: loading 2.5s infinite;
   animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   -webkit-animation-delay: 0.75s;
   animation-delay: 0.75s;
 }
 .loading .loading-4 {
   height: 10px;
   width: 30px;
-  background-color: #fff;
+  background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
   -webkit-animation: loading 2.5s infinite;
   -moz-animation: loading 2.5s infinite;
   -o-animation: loading 2.5s infinite;
   animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   -webkit-animation-delay: 1s;
   animation-delay: 1s;
 }
 .loading .loading-5 {
   height: 10px;
   width: 30px;
-  background-color: #fff;
+  background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
   -webkit-animation: loading 2.5s infinite;
   -moz-animation: loading 2.5s infinite;
   -o-animation: loading 2.5s infinite;
   animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   -webkit-animation-delay: 1.25s;
   animation-delay: 1.25s;
 }
-.loading .loading-6 {
-  height: 10px;
-  width: 30px;
-  background-color: #fff;
-  display: inline-block;
-  margin-top: 90px;
-  -webkit-animation: loading 2.5s infinite;
-  -moz-animation: loading 2.5s infinite;
-  -o-animation: loading 2.5s infinite;
-  animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  -webkit-animation-delay: 1.5s;
-  animation-delay: 1.5s;
-}
-.loading .loading-7 {
-  height: 10px;
-  width: 30px;
-  background-color: #fff;
-  display: inline-block;
-  margin-top: 90px;
-  -webkit-animation: loading 2.5s infinite;
-  -moz-animation: loading 2.5s infinite;
-  -o-animation: loading 2.5s infinite;
-  animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  -webkit-animation-delay: 1.75s;
-  animation-delay: 1.75s;
-}
-.loading .loading-8 {
-  height: 10px;
-  width: 30px;
-  background-color: #fff;
-  display: inline-block;
-  margin-top: 90px;
-  -webkit-animation: loading 2.5s infinite;
-  -moz-animation: loading 2.5s infinite;
-  -o-animation: loading 2.5s infinite;
-  animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  -webkit-animation-delay: 2s;
-  animation-delay: 2s;
-}
-.loading .loading-9 {
-  height: 10px;
-  width: 30px;
-  background-color: #fff;
-  display: inline-block;
-  margin-top: 90px;
-  -webkit-animation: loading 2.5s infinite;
-  -moz-animation: loading 2.5s infinite;
-  -o-animation: loading 2.5s infinite;
-  animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  -webkit-animation-delay: 2.25s;
-  animation-delay: 2.25s;
-}
-.loading .loading-10 {
-  height: 10px;
-  width: 30px;
-  background-color: #fff;
-  display: inline-block;
-  margin-top: 90px;
-  -webkit-animation: loading 2.5s infinite;
-  -moz-animation: loading 2.5s infinite;
-  -o-animation: loading 2.5s infinite;
-  animation: loading 2.5s infinite;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  -webkit-animation-delay: 2.5s;
-  animation-delay: 2.5s;
-}
+
+
 
 .swing-in-top-fwd{-webkit-animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both;animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both}
 
