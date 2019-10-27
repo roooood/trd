@@ -7,6 +7,7 @@ import request from '../../../library/Fetch';
 import Resolution from './widget/Resolution';
 import ChartType from './widget/chartTypes';
 import Context from '../../../library/Context';
+import { clone } from '../../../library/Helper';
 import { TabbarAdd } from '../../../redux/action/tab';
 import * as LightweightCharts from './lightweight-charts';
 
@@ -36,7 +37,6 @@ class Chart extends Component {
 
     componentDidMount() {
         this.context.game.register('order', this.order);
-        this.context.live.register(this.props.parent.symbol, this.update);
 
         this.getData();
         this.createChart();
@@ -69,6 +69,7 @@ class Chart extends Component {
                     if (data != null) {
                         this.chartData[resolution] = data;
                         this.changeData();
+                        this.syncTime();
                     }
                 }
             });
@@ -77,19 +78,20 @@ class Chart extends Component {
         }
     }
     createChart() {
+        this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
             ...getDimention(),
             ...chartOptions
         });
-
-        this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
     }
     createSeries() {
         this.chartType['candle'] = this.chart.addCandlestickSeries(candleOption);
         this.chartType['line'] = this.chart.addLineSeries(lineOption);
         this.chartType['area'] = this.chart.addAreaSeries(areaOption);
         this.chartType['bar'] = this.chart.addBarSeries(barOption);
+        this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
+
     }
     changeData() {
         this.chart.clear();
@@ -112,7 +114,7 @@ class Chart extends Component {
         if (!(resolution in this.chartData)) {
             return;
         }
-        let data = this.chartData[resolution].slice(-1);
+        let data = this.lastItem();
         let dm = getDimention();
         if (action == 'buy') {
             this.chartType[this.props.parent.chartType].setMarkers([
@@ -140,7 +142,7 @@ class Chart extends Component {
         if (!(resolution in this.chartData)) {
             return;
         }
-        let data = this.chartData[resolution].slice(-1);
+        let data = this.lastItem();
         this.chartType[this.props.parent.chartType].setMarkers([
             {
                 time: data.time,
@@ -186,18 +188,29 @@ class Chart extends Component {
             this.changeData();
         }, 100);
     }
+    lastItem() {
+        let { resolution } = this.props.parent;
+        if (resolution in this.chartData) {
+            let len = this.chartData[resolution].length;
+            if (len > 0)
+                return clone(this.chartData[resolution][len - 1]);
+            else
+                return false;
+        }
+        return false;
+    }
     syncTime() {
         let timestamp = Math.round(new Date() / 1000);
-        let data = this.chartData[this.props.parent.resolution].slice(-1);
+        let data = this.lastItem();
         this.timeDifference = data.time - timestamp + 60;
     }
     update(targetPrice) {
-        let { resolution } = this.props.parent;
-        if (!(resolution in this.chartData || resolution != '1m')) {
+        let { resolution, chartType } = this.props.parent;
+        let lastData = this.lastItem();
+        if (!(resolution in this.chartData) || resolution != '1m' || !lastData || this.chartType[chartType] == null) {
             return;
         }
         let time = Math.round(new Date() / 1000) + this.timeDifference;
-        let lastData = this.chartData[resolution].slice(-1);
         let isNew = time - lastData.time > 60;
         let updateData = isNew
             ? {
@@ -205,15 +218,23 @@ class Chart extends Component {
                 high: targetPrice,
                 low: targetPrice,
                 close: targetPrice,
-                time: time,
-                volume: 0
+                time: Number(time),
+                volume: targetPrice
             }
             : lastData;
 
-        updateData.high = Math.max(updateData.high, targetPrice);
-        updateData.low = Math.max(updateData.low, targetPrice);
         updateData.close = targetPrice;
-        this.chartType[i].update(updateData);
+        updateData.high = Math.max(updateData.high, targetPrice);
+        updateData.low = Math.min(updateData.low, targetPrice);
+        console.log(updateData);
+        if (!isNew) {
+            this.chartType[chartType].update(updateData);
+            let len = this.chartData[resolution].length;
+            this.chartData[resolution][len] = updateData;
+        } else {
+            this.chartData[resolution].push(updateData);
+            this.chartType[chartType].setData(this.chartData[resolution]);
+        }
     }
 
     notify(data) {
