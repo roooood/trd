@@ -6,6 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
 
 import GameServer from './library/Game';
+import Finnhub from './library/Finnhub';
 import Context from './library/Context';
 import Route from './Route';
 import Snack from './component/Snack'
@@ -27,6 +28,7 @@ class App extends Component {
       setting: {}
     };
     this.game = new GameServer('trade');
+    this.finnhub = new Finnhub();
     autoBind(this);
   }
   changeState(obj) {
@@ -42,7 +44,7 @@ class App extends Component {
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={this.renderLoading()}>
-          <Context.Provider value={{ game: this.game, state: this.state, app: this.app, setState: this.changeState }}>
+          <Context.Provider value={{ game: this.game, live: this.finnhub, state: this.state, app: this.app, setState: this.changeState }}>
             <Snack />
             <Modal ref={r => this.modal = r} />
             <Route />

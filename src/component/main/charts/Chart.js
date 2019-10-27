@@ -36,15 +36,14 @@ class Chart extends Component {
 
     componentDidMount() {
         this.context.game.register('order', this.order);
+        this.context.live.register(this.props.parent.symbol, this.update);
 
         this.getData();
-
-        this.selector = document.getElementById('chart' + this.id);
+        this.createChart();
 
         window.addEventListener('resize', this.resize);
         new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
 
-        this.createChart();
     }
 
     getData() {
@@ -78,6 +77,7 @@ class Chart extends Component {
         }
     }
     createChart() {
+        this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
             ...getDimention(),
             ...chartOptions
@@ -91,7 +91,7 @@ class Chart extends Component {
         this.chartType['area'] = this.chart.addAreaSeries(areaOption);
         this.chartType['bar'] = this.chart.addBarSeries(barOption);
     }
-    changeData(ok) {
+    changeData() {
         this.chart.clear();
         this.createSeries();
         let { resolution, chartType } = this.props.parent;
@@ -112,12 +112,12 @@ class Chart extends Component {
         if (!(resolution in this.chartData)) {
             return;
         }
-        let len = this.chartData[resolution].length;
+        let data = this.chartData[resolution].slice(-1);
         let dm = getDimention();
         if (action == 'buy') {
             this.chartType[this.props.parent.chartType].setMarkers([
                 {
-                    time: this.chartData[resolution][len - 1].time,
+                    time: data.time,
                     position: 'aboveBar',
                     color: ['rgba(5, 253, 50,.2) ', 'rgba(0, 0, 0,0)', 'rgb(5, 253, 50)', dm],
                     shape: 'buy',
@@ -127,7 +127,7 @@ class Chart extends Component {
         else {
             this.chartType[this.props.parent.chartType].setMarkers([
                 {
-                    time: this.chartData[resolution][len - 1].time,
+                    time: data.time,
                     position: 'belowBar',
                     color: ['rgba(252, 21, 90,.3)', 'rgba(0, 0, 0, 0)', 'rgb(252, 21, 90)', dm],
                     shape: 'sell',
@@ -140,27 +140,25 @@ class Chart extends Component {
         if (!(resolution in this.chartData)) {
             return;
         }
-        let len = this.chartData[resolution].length;
+        let data = this.chartData[resolution].slice(-1);
         this.chartType[this.props.parent.chartType].setMarkers([
             {
-                time: this.chartData[resolution][len - 1].time,
+                time: data.time,
                 shape: 'null',
             }
         ]);
     }
     trade({ tradeType, bet, tradeAt }) {
         // let { balance } = this.context.state.user;
-        let { id, resolution } = this.props.parent;
+        let { symbol, resolution } = this.props.parent;
         if (!(resolution in this.chartData)) {
             return;
         }
-        let len = this.chartData[resolution].length;
         let data = {
             balanceType: this.props.user.type,
             tradeType,
             bet: bet,
-            marketId: id,
-            point: this.chartData[resolution][len - 1].time,
+            market: symbol,
             tradeAt: tradeAt
         }
         this.context.game.send({ trade: data });
@@ -185,45 +183,39 @@ class Chart extends Component {
     changeChartType(chartType) {
         this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, chartType } }));
         setTimeout(() => {
-            this.changeData(true);
-        }, 300);
+            this.changeData();
+        }, 100);
+    }
+    syncTime() {
+        let timestamp = Math.round(new Date() / 1000);
+        let data = this.chartData[this.props.parent.resolution].slice(-1);
+        this.timeDifference = data.time - timestamp + 60;
+    }
+    update(targetPrice) {
+        let { resolution } = this.props.parent;
+        if (!(resolution in this.chartData || resolution != '1m')) {
+            return;
+        }
+        let time = Math.round(new Date() / 1000) + this.timeDifference;
+        let lastData = this.chartData[resolution].slice(-1);
+        let isNew = time - lastData.time > 60;
+        let updateData = isNew
+            ? {
+                open: targetPrice,
+                high: targetPrice,
+                low: targetPrice,
+                close: targetPrice,
+                time: time,
+                volume: 0
+            }
+            : lastData;
+
+        updateData.high = Math.max(updateData.high, targetPrice);
+        updateData.low = Math.max(updateData.low, targetPrice);
+        updateData.close = targetPrice;
+        this.chartType[i].update(updateData);
     }
 
-    // dynamicUpdate() {
-    //     setInterval(function () {
-    //         var deltaY = targetPrice - lastClose;
-    //         var deltaX = targetIndex - lastIndex;
-    //         var angle = deltaY / deltaX;
-    //         var basePrice = lastClose + (currentIndex - lastIndex) * angle;
-    //         var noise = (0.1 - Math.random() * 0.2) + 1.0;
-    //         var noisedPrice = basePrice * noise;
-    //         mergeTickToBar(noisedPrice);
-    //         if (++ticksInCurrentBar === 5) {
-    //             // move to next bar
-    //             currentIndex++;
-    //             currentBusinessDay = nextBusinessDay(currentBusinessDay);
-    //             currentBar = {
-    //                 open: null,
-    //                 high: null,
-    //                 low: null,
-    //                 close: null,
-    //                 time: currentBusinessDay,
-    //             };
-    //             ticksInCurrentBar = 0;
-    //             if (currentIndex === 5000) {
-    //                 reset();
-    //                 return;
-    //             }
-    //             if (currentIndex === targetIndex) {
-    //                 // change trend
-    //                 lastClose = noisedPrice;
-    //                 lastIndex = currentIndex;
-    //                 targetIndex = lastIndex + 5 + Math.round(Math.random() + 30);
-    //                 targetPrice = getRandomPrice();
-    //             }
-    //         }
-    //     }, 1000);
-    // }
     notify(data) {
         window.ee.emit('notify', data)
     }

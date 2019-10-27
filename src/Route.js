@@ -55,6 +55,7 @@ class Route extends Component {
     }
     connected(data) {
         this.context.setState(data);
+        this.context.live.connect();
         this.setState({ loading: false });
     }
     balance({ type, balance }) {
