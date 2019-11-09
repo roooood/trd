@@ -42,11 +42,11 @@ class Finnhub {
 
     onMessage(evt) {
         let data = JSON.parse(evt.data);
-        if (data.type == 52) {
+        if (data.type == 52 && 'price' in data.content) {
             let key = data.content.ticker;
             if (this.Listen[key] != null) {
                 for (let cb of this.Listen[key]) {
-                    cb(data.content.updatePrice);
+                    cb(data.content.price);
                 }
             }
             else {
@@ -63,7 +63,6 @@ class Finnhub {
         if (this.isConnect) {
             this.websocket.send('{"type":50,"ticker":"' + symbol + '"}');
         }
-        console.log('{"type":50,"ticker":"' + symbol + '"}');
     }
 
     writeToScreen(message) {

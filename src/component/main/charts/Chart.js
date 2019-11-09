@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { t } from '../../../locales';
-import { canddleUrl, resolutionEx, hub2candle, chartOptions, candleOption, volumeOption, lineOption, barOption, areaOption, getDimention } from './Const';
+import { canddleUrl, resolutionEx, hub2candle, chartOptions, candleOption, volumeOption, lineOption, barOption, areaOption, getDimention, timeRange } from './Const';
 import { connect } from 'react-redux';
 import request from '../../../library/Fetch';
 import Resolution from './widget/Resolution';
@@ -91,7 +91,6 @@ class Chart extends Component {
         this.chartType['area'] = this.chart.addAreaSeries(areaOption);
         this.chartType['bar'] = this.chart.addBarSeries(barOption);
         this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
-
     }
     changeData() {
         this.chart.clear();
@@ -152,7 +151,7 @@ class Chart extends Component {
     }
     trade({ tradeType, bet, tradeAt }) {
         // let { balance } = this.context.state.user;
-        let { symbol, resolution } = this.props.parent;
+        let { id, resolution } = this.props.parent;
         if (!(resolution in this.chartData)) {
             return;
         }
@@ -160,7 +159,7 @@ class Chart extends Component {
             balanceType: this.props.user.type,
             tradeType,
             bet: bet,
-            market: symbol,
+            marketId: id,
             tradeAt: tradeAt
         }
         this.context.game.send({ trade: data });
@@ -188,12 +187,12 @@ class Chart extends Component {
             this.changeData();
         }, 100);
     }
-    lastItem() {
+    lastItem(end = 1) {
         let { resolution } = this.props.parent;
         if (resolution in this.chartData) {
             let len = this.chartData[resolution].length;
             if (len > 0)
-                return clone(this.chartData[resolution][len - 1]);
+                return clone(this.chartData[resolution][len - end]);
             else
                 return false;
         }
@@ -207,11 +206,12 @@ class Chart extends Component {
     update(targetPrice) {
         let { resolution, chartType } = this.props.parent;
         let lastData = this.lastItem();
-        if (!(resolution in this.chartData) || resolution != '1m' || !lastData || this.chartType[chartType] == null) {
+        let timeLimit = timeRange[resolution]
+        if (!(resolution in this.chartData) || !lastData || this.chartType[chartType] == null) {
             return;
         }
         let time = Math.round(new Date() / 1000) + this.timeDifference;
-        let isNew = time - lastData.time > 60;
+        let isNew = time - lastData.time > timeLimit;
         let updateData = isNew
             ? {
                 open: targetPrice,
@@ -219,14 +219,14 @@ class Chart extends Component {
                 low: targetPrice,
                 close: targetPrice,
                 time: Number(time),
-                volume: targetPrice
+                value: targetPrice
             }
             : lastData;
 
         updateData.close = targetPrice;
+        updateData.value = targetPrice;
         updateData.high = Math.max(updateData.high, targetPrice);
         updateData.low = Math.min(updateData.low, targetPrice);
-        console.log(updateData);
         if (!isNew) {
             this.chartType[chartType].update(updateData);
             let len = this.chartData[resolution].length;

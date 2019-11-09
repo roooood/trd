@@ -1,5 +1,9 @@
+import BigNumber from 'bignumber.js';
+
+
 export const canddleUrl = 'https://finnhub.io/api/v1/{type}/candle?symbol={symbol}&resolution={resolution}&count={count}&token={token}';
 export const resolutionEx = { '1m': '1', '5m': '5', '15m': '15', '30m': '30', 'H': '60', 'D': 'D', 'W': 'W', 'M': 'M' };
+export const timeRange = { '1m': 60, '5m': 300, '15m': 900, '30m': 1800, 'H': 3600, 'D': 86400, 'W': 604800, 'M': 2592000 };
 
 export const chartOptions = {
     layout: {
@@ -7,7 +11,11 @@ export const chartOptions = {
         textColor: '#b5b5b5'
     },
     localization: {
-        priceFormatter: function (price) { return '$' + price.toFixed(0); },
+        priceFormatter: (price) => {
+            let c = new BigNumber(price);
+            let f = c.plus(0);
+            return f.toNumber();
+        },
     },
     grid: {
         vertLines: {
@@ -38,9 +46,6 @@ export const chartOptions = {
 export const candleOption = {
     priceFormat: {
         minMove: 0.00000001,
-        formatter: function (price) {
-            return '$' + price;
-        },
         scaleMargins: {
             top: 0,
             bottom: 0.5,
@@ -56,10 +61,6 @@ export const candleOption = {
 }
 export const volumeOption = {
     color: 'rgba(0,0,0,.7)',
-    priceFormat: {
-        type: 'volume',
-        minMove: 0.00000001,
-    },
     base: 0,
     priceLineVisible: false,
     overlay: true,
@@ -70,6 +71,7 @@ export const volumeOption = {
 }
 export const barOption = {
     thinBars: false,
+
     downColor: '#25b940',
     upColor: '#fc155a',
 }
@@ -91,6 +93,10 @@ export const lineOption = {
     crosshairMarkerVisible: false,
     crosshairMarkerRadius: 3,
     lineType: 2,
+    priceFormat: {
+        type: 'open',
+        minMove: 0.00000001,
+    },
 }
 
 export function getDimention() {
@@ -112,7 +118,8 @@ export function hub2candle(data) {
             high: data.h[i],
             low: data.l[i],
             close: data.c[i],
-            value: data.v[i],
+            value: data.c[i],
+            volume: data.v[i],
             time: data.t[i],
         })
     }

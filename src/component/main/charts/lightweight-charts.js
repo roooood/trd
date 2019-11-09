@@ -10201,6 +10201,17 @@ function convertTime(time) {
     }
     return businessDayConverter(time);
 }
+function getxLineBasedSeriesItemValue(item, palette) {
+    var val = item.volume;
+    // default value
+    var color = null;
+    if ('color' in item) {
+        if (item.color !== undefined) {
+            color = palette.addColor(item.color);
+        }
+    }
+    return [val, val, val, val, color];
+}
 function getLineBasedSeriesItemValue(item, palette) {
     var val = item.value;
     // default value
@@ -10219,7 +10230,7 @@ var seriesItemValueFnMap = {
     Candlestick: getOHLCBasedSeriesItemValue,
     Bar: getOHLCBasedSeriesItemValue,
     Area: getLineBasedSeriesItemValue,
-    Histogram: getLineBasedSeriesItemValue,
+    Histogram: getxLineBasedSeriesItemValue,
     Line: getLineBasedSeriesItemValue,
 };
 function seriesItemValueFn(seriesType) {
