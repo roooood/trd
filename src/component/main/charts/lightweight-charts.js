@@ -2894,6 +2894,21 @@ function drawCircle(ctx, centerX, centerY, color, size) {
     var circleSize = shapeSize('circle', size);
     var halfSize = (circleSize - 1) / 2;
     ctx.fillStyle = color;
+    // ctx.shadowColor = '#fff';
+    // ctx.shadowBlur = 1;
+    // for (var i = 0; i < 3; i++) {
+    //     ctx.shadowBlur += 0.25;
+    // }
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.lineCap = "round";
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(20000, centerY);
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.stroke();
+
     ctx.beginPath();
     ctx.arc(centerX, centerY, halfSize, 0, 2 * Math.PI, false);
     ctx.fill();
@@ -2960,7 +2975,7 @@ function drawItem(item, ctx) {
             drawArrow(true, ctx, item.x, item.y-15, item.color[2], 30);
             return;
         case 'circle':
-            drawCircle(ctx, item.x, item.y, item.color, 30);
+            drawCircle(ctx, item.x, item.y, item.color, 15);
             return;
         case 'square':
             drawSquare(ctx, item.x, item.y, item.color, item.size);

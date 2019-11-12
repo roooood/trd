@@ -164,12 +164,14 @@ class Chart extends Component {
         }
         this.context.game.send({ trade: data });
     }
-    order({ point }) {
+    order([order]) {
+        let lastData = this.lastItem();
+        console.log(order)
         this.chartType[this.props.parent.chartType].setMarkers([
             {
-                time: point,
-                position: 'inBar',
-                color: '#5C91D9',
+                time: lastData.time,
+                position: order.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
+                color: order.tradeType == 'buy' ? '#25b940' : '#fc155a',
                 shape: 'circle',
             }
         ]);
