@@ -42,7 +42,7 @@ class Chart extends Component {
         this.createChart();
 
         window.addEventListener('resize', this.resize);
-        new ResizeObserver(this.resize).observe(document.querySelector(".sidebar"))
+        new ResizeObserver(this.resize).observe(document.getElementById("sidebar"))
 
     }
 
@@ -78,7 +78,7 @@ class Chart extends Component {
         }
     }
     createChart() {
-        this.context.live.register(this.props.parent.symbol, this.update);
+        // this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
             ...getDimention(),
@@ -90,13 +90,13 @@ class Chart extends Component {
         this.chartType['line'] = this.chart.addLineSeries(lineOption);
         this.chartType['area'] = this.chart.addAreaSeries(areaOption);
         this.chartType['bar'] = this.chart.addBarSeries(barOption);
-        this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
+        // this.volumeSeries = this.chart.addHistogramSeries(volumeOption);
     }
     changeData() {
         this.chart.clear();
         this.createSeries();
         let { resolution, chartType } = this.props.parent;
-        this.volumeSeries.setData(this.chartData[resolution]);
+        // this.volumeSeries.setData(this.chartData[resolution]);
         for (let i of ['candle', 'line', 'area', 'bar']) {
             if (i == chartType) {
                 this.chartType[i].setData(this.chartData[resolution]);
@@ -166,7 +166,6 @@ class Chart extends Component {
     }
     order([order]) {
         let lastData = this.lastItem();
-        console.log(order)
         this.chartType[this.props.parent.chartType].setMarkers([
             {
                 time: lastData.time,

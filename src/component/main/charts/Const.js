@@ -6,6 +6,7 @@ export const resolutionEx = { '1m': '1', '5m': '5', '15m': '15', '30m': '30', 'H
 export const timeRange = { '1m': 60, '5m': 300, '15m': 900, '30m': 1800, 'H': 3600, 'D': 86400, 'W': 604800, 'M': 2592000 };
 
 export const chartOptions = {
+    autoScale: true,
     layout: {
         backgroundColor: 'transparent',
         textColor: '#b5b5b5'
@@ -62,7 +63,19 @@ export const candleOption = {
 export const volumeOption = {
     color: 'rgba(0,0,0,.7)',
     base: 0,
-    priceLineVisible: false,
+    priceScale: {
+        position: 'none',
+        borderVisible: false,
+    },
+    grid: {
+        vertLines: {
+            visible: false,
+        },
+        horzLines: {
+            visible: false,
+        },
+    },
+    priceLineVisible: true,
     overlay: true,
     scaleMargins: {
         top: 0.85,
@@ -100,7 +113,7 @@ export const lineOption = {
 }
 
 export function getDimention() {
-    let sidebarElement = document.querySelector(".sidebar")
+    let sidebarElement = window.document.getElementById("sidebar")
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + 150),
         height: window.innerHeight - 100,

@@ -8,11 +8,12 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Work from '@material-ui/icons/WorkOutline';
-import History from '@material-ui/icons/History';
+import HistoryIcon from '@material-ui/icons/History';
 import Chat from '@material-ui/icons/ChatBubbleOutline';
 import StarBorderRounded from '@material-ui/icons/StarBorderRounded';
 import Videocam from '@material-ui/icons/OndemandVideo';
 import MoreOutlined from '@material-ui/icons/MoreOutlined';
+import History from './sidebar/History';
 
 const StyledTab = withStyles(theme => ({
     root: {
@@ -48,15 +49,9 @@ function TabPanel(props) {
             className={prev == null ? "animate" : "animated"}
             {...other}
         >
-            <Box p={3}>{children}</Box>
+            {children}
         </Typography>
     );
-}
-function a11yProps(index) {
-    return {
-        id: `vertical-tab-${index}`,
-        'aria-controls': `vertical-tabpanel-${index}`,
-    };
 }
 class Sidebar extends Component {
     constructor(props) {
@@ -74,7 +69,7 @@ class Sidebar extends Component {
     }
     render() {
         return (
-            <div style={styles.root} className="sidebar">
+            <div style={styles.root} className="sidebar" id="sidebar">
                 <Tabs
                     orientation="vertical"
                     variant="scrollable"
@@ -83,19 +78,19 @@ class Sidebar extends Component {
                     aria-label="Vertical tabs example"
                     style={styles.tabs}
                 >
-                    <StyledTab label={t('totalPortfolio')} icon={<Work />} {...a11yProps(0)} />
-                    <StyledTab label={t('tradingHistory')} icon={<History />} {...a11yProps(1)} />
-                    <StyledTab label={t('chatSupport')} icon={<Chat />} {...a11yProps(2)} />
-                    <StyledTab label={t('leaderBoard')} icon={<StarBorderRounded />} {...a11yProps(3)} />
-                    <StyledTab label={t('videoToturial')} icon={<Videocam />}{...a11yProps(4)} />
-                    <StyledTab label={t('more')} icon={<MoreOutlined />}{...a11yProps(5)} />
+                    <StyledTab label={t('totalPortfolio')} icon={<Work />} />
+                    <StyledTab label={t('tradingHistory')} icon={<HistoryIcon />} />
+                    <StyledTab label={t('chatSupport')} icon={<Chat />} />
+                    <StyledTab label={t('leaderBoard')} icon={<StarBorderRounded />} />
+                    <StyledTab label={t('videoToturial')} icon={<Videocam />} />
+                    <StyledTab label={t('more')} icon={<MoreOutlined />} />
                 </Tabs>
                 <TabPanel value={this.state.tab} prev={this.prev} index={0}>
                     Item One
       </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={1}>
-                    Item Two
-      </TabPanel>
+                    <History />
+                </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={2}>
                     Item Three
       </TabPanel>

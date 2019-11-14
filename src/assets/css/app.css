@@ -132,7 +132,7 @@ body {
 }
 .animated{
   border-right: 1px solid #333;
-  width:200px;
+  width:250px;
 }
 .animate{
   border-right: 1px solid #333;
@@ -159,7 +159,7 @@ body {
   }
   100% {
     opacity:1;
-    width:200px;
+    width:250px;
   }
 }
 .modal .MuiPaper-root{

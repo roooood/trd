@@ -71,4 +71,10 @@ export default {
     marketError: 'The market not found',
     orderError: 'Problem in your order ,please try again',
     orderSuccess: 'Your order trade submited',
+
+    open: 'Open',
+    real: 'Real',
+    practice: 'Practice',
+    uWin: 'You Win',
+    uLose: 'You Lose',
 }
