@@ -78,7 +78,7 @@ class Chart extends Component {
         }
     }
     createChart() {
-        // this.context.live.register(this.props.parent.symbol, this.update);
+        this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
             ...getDimention(),

@@ -31,14 +31,14 @@ class Price extends Component {
     componentDidMount() {
         this.context.game.register('orders', this.order);
         this.context.game.register('order', this.order);
-        this.context.game.register('orderResult', orderResult);
+        this.context.game.register('orderResult', this.orderResult);
         this.context.game.send({ get: 'Orders' });
     }
     orderResult(order) {
         let i;
         for (i in this.state.open) {
             if (this.state.open[i].id == order.id) {
-                this.state.open[i].splice(i, 1);
+                this.state.open.splice(i, 1);
                 break;
             }
         }
@@ -50,7 +50,6 @@ class Price extends Component {
         else {
             this.notify({ message: t('uLose') + ' : -$' + order.bet, type: 'error' });
         }
-        console.log(order);
     }
     order(orders) {
         let i;
@@ -75,7 +74,6 @@ class Price extends Component {
         return [(("" + hour).length == 1 ? '0' + hour : hour) + ':' + (("" + min).length == 1 ? '0' + min : min), (date + ' ' + month)];
     }
     render() {
-
         return (
             <div style={styles.root} className="swing-in-top-fwd" >
                 <Typography align="center" gutterBottom > {t('tradingHistory')}</Typography >
