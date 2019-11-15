@@ -70,11 +70,13 @@ export default {
     balanceError: 'Your balance is less than your trade amont',
     marketError: 'The market not found',
     orderError: 'Problem in your order ,please try again',
-    orderSuccess: 'Your order trade submited',
+    orderSuccess: 'Your order submited',
 
     open: 'Open',
     real: 'Real',
     practice: 'Practice',
     uWin: 'You Win',
     uLose: 'You Lose',
+
+    type: 'Write a new message'
 }

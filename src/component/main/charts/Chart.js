@@ -10,6 +10,7 @@ import Context from '../../../library/Context';
 import { clone } from '../../../library/Helper';
 import { TabbarAdd } from '../../../redux/action/tab';
 import * as LightweightCharts from './lightweight-charts';
+import play from 'library/Sound';
 
 
 class Chart extends Component {
@@ -78,7 +79,7 @@ class Chart extends Component {
         }
     }
     createChart() {
-        this.context.live.register(this.props.parent.symbol, this.update);
+        // this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
             ...getDimention(),
@@ -162,6 +163,7 @@ class Chart extends Component {
             marketId: id,
             tradeAt: tradeAt
         }
+        play('click')
         this.context.game.send({ trade: data });
     }
     order([order]) {

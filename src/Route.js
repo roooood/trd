@@ -98,9 +98,9 @@ class Route extends Component {
                             <Tabbar />
                         </div>
                     </div>
-                    <div className="container bottom" >
+                    {/* <div className="container bottom" >
                         test
-                </div>
+                    </div> */}
                 </div >
             );
     }

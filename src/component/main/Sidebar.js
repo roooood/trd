@@ -9,11 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Work from '@material-ui/icons/WorkOutline';
 import HistoryIcon from '@material-ui/icons/History';
-import Chat from '@material-ui/icons/ChatBubbleOutline';
+import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import StarBorderRounded from '@material-ui/icons/StarBorderRounded';
 import Videocam from '@material-ui/icons/OndemandVideo';
 import MoreOutlined from '@material-ui/icons/MoreOutlined';
 import History from './sidebar/History';
+import Chat from './sidebar/Chat';
 
 const StyledTab = withStyles(theme => ({
     root: {
@@ -80,7 +81,7 @@ class Sidebar extends Component {
                 >
                     <StyledTab label={t('totalPortfolio')} icon={<Work />} />
                     <StyledTab label={t('tradingHistory')} icon={<HistoryIcon />} />
-                    <StyledTab label={t('chatSupport')} icon={<Chat />} />
+                    <StyledTab label={t('chatSupport')} icon={<ChatIcon />} />
                     <StyledTab label={t('leaderBoard')} icon={<StarBorderRounded />} />
                     <StyledTab label={t('videoToturial')} icon={<Videocam />} />
                     <StyledTab label={t('more')} icon={<MoreOutlined />} />
@@ -92,8 +93,8 @@ class Sidebar extends Component {
                     <History />
                 </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={2}>
-                    Item Three
-      </TabPanel>
+                    <Chat />
+                </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={3}>
                     Item Four
       </TabPanel>
