@@ -61,6 +61,7 @@ class Sidebar extends Component {
             tab: null,
         };
         autoBind(this);
+        window.ee.on('sideBar', this.handleChange)
     }
     handleChange(e, tab) {
         this.prev = this.state.tab;

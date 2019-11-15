@@ -78,5 +78,6 @@ export default {
     uWin: 'You Win',
     uLose: 'You Lose',
 
-    type: 'Write a new message'
+    type: 'Write a new message',
+    chatSupport: 'Chat & Support'
 }

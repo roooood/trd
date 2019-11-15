@@ -80,7 +80,7 @@ class ChatBubble extends Component {
       <>
         <Typography align="center" gutterBottom > {t('chatSupport')}</Typography >
         <div className="chats">
-          <Scrollbars style={{ height: '70vh' }} ref="scroll" >
+          <Scrollbars style={{ height: '69vh' }} ref="scroll" >
             <div className="chat-list">
               {chatList}
             </div>

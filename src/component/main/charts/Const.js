@@ -116,7 +116,7 @@ export function getDimention() {
     let sidebarElement = window.document.getElementById("sidebar")
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + 150),
-        height: window.innerHeight - 100,
+        height: window.innerHeight - 120,
     }
 }
 

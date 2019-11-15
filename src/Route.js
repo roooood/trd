@@ -13,6 +13,8 @@ import Appbar from './component/header/Appbar';
 import Tabbar from './component/main/Tabbar';
 import Sidebar from './component/main/Sidebar';
 
+import Bottom from './component/bottom/Bottom';
+
 import Sign from './component/sign';
 
 class Route extends Component {
@@ -98,9 +100,9 @@ class Route extends Component {
                             <Tabbar />
                         </div>
                     </div>
-                    {/* <div className="container bottom" >
-                        test
-                    </div> */}
+                    <div className="container bottom" >
+                        <Bottom />
+                    </div>
                 </div >
             );
     }

@@ -102,7 +102,7 @@ body {
 }
 
 .center{
-  height:90vh;
+  height:83vh;
   width:100%;
 }
 .center>.item1 {
@@ -126,9 +126,9 @@ body {
   padding:10px;
 }
 .bottom{
-  height:25px;
+  height:100%;
   width:100%;
-  border-top: 1px solid #333
+  border-top: 1px solid #333;
 }
 .animated{
   border-right: 1px solid #333;
