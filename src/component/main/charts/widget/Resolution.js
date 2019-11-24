@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../../../../library/Context';
-import { t } from '../../../../locales';
+import Context from 'library/Context';
+import { t } from 'locales';
 
 import { withStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';

@@ -12,11 +12,7 @@ export const chartOptions = {
         textColor: '#b5b5b5'
     },
     localization: {
-        priceFormatter: (price) => {
-            let c = new BigNumber(price);
-            let f = c.plus(0);
-            return f.toNumber();
-        },
+        priceFormatter: (price) => price,
     },
     grid: {
         vertLines: {
@@ -113,7 +109,7 @@ export const lineOption = {
 }
 
 export function getDimention() {
-    let sidebarElement = window.document.getElementById("sidebar")
+    let sidebarElement = window.document.getElementById("sidebar");
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + 150),
         height: window.innerHeight - 120,
@@ -121,7 +117,11 @@ export function getDimention() {
 }
 
 export function hub2candle(data) {
-    if (!('s' in data)) {
+    console.log(data)
+    if (data == 'null') {
+        return null;
+    }
+    if (!('s' in data) || data.s == 'no_data') {
         return null;
     }
     let len = data.c.length, i, ret = [];

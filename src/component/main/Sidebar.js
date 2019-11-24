@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import { t } from '../../locales';
-import Context from '../../library/Context';
+import { t } from 'locales';
+import Context from 'library/Context';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -9,12 +9,15 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Work from '@material-ui/icons/WorkOutline';
 import HistoryIcon from '@material-ui/icons/History';
-import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import StarBorderRounded from '@material-ui/icons/StarBorderRounded';
+import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import Videocam from '@material-ui/icons/OndemandVideo';
 import MoreOutlined from '@material-ui/icons/MoreOutlined';
+
 import History from './sidebar/History';
 import Chat from './sidebar/Chat';
+import Video from './sidebar/Video';
+import LeadBoard from './sidebar/LeadBoard';
 
 const StyledTab = withStyles(theme => ({
     root: {
@@ -88,8 +91,7 @@ class Sidebar extends Component {
                     <StyledTab label={t('more')} icon={<MoreOutlined />} />
                 </Tabs>
                 <TabPanel value={this.state.tab} prev={this.prev} index={0}>
-                    Item One
-      </TabPanel>
+                </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={1}>
                     <History />
                 </TabPanel>
@@ -97,17 +99,13 @@ class Sidebar extends Component {
                     <Chat />
                 </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={3}>
-                    Item Four
-      </TabPanel>
+                    <LeadBoard />
+                </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={4}>
-                    Item Five
-      </TabPanel>
+                    <Video />
+                </TabPanel>
                 <TabPanel value={this.state.tab} prev={this.prev} index={5}>
-                    Item Six
-      </TabPanel>
-                <TabPanel value={this.state.tab} prev={this.prev} index={6}>
-                    Item Seven
-      </TabPanel>
+                </TabPanel>
             </div>
         );
     }

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../../../library/Context';
+import Context from 'library/Context';
 import Price from './action/Price';
 import Time from './action/Time';
-import { t } from '../../../locales';
+import { t } from 'locales';
 
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -120,7 +120,8 @@ const styles = {
         display: 'flex',
         height: '100%',
         justifyContent: 'space-between',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflow: 'hidden',
     },
     profit: {
         border: '1px solid #333',

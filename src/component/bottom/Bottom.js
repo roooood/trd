@@ -38,7 +38,7 @@ class Bottom extends Component {
         return (
             <div style={styles.root}>
                 <ColorButton variant="outlined" size="small" onClick={this.chat}  >
-                    <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10 }} fontSize="#fff" /> {t('chatSupport')}
+                    <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10, color: '#fff' }} /> {t('chatSupport')}
                 </ColorButton>
                 <IconButton size="medium">
                     <SettingsIcon style={{ color: '#fff' }} />

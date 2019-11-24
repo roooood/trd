@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
+import Hidden from '@material-ui/core/Hidden';
 
 import Context from './library/Context';
 import { t } from './locales';
@@ -82,7 +83,9 @@ class Route extends Component {
                 <div id="content" className={"container column theme-default"} >
                     <div className="container top" >
                         <div className="item1" >
-                            <img style={{ width: '100%' }} src={require('./assets/img/logo.png')} />
+                            <Hidden only={['xs', 'sm']}>
+                                <img style={{ width: 120 }} src={require('./assets/img/logo.png')} />
+                            </Hidden>
                         </div>
                         <div className="item2">
                             <Appbar />

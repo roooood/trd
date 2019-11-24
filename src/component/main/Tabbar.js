@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
-import Context from '../../library/Context';
+import Context from 'library/Context';
 import Tabs from './charts/Tabs';
 import Typography from '@material-ui/core/Typography';
 

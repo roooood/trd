@@ -64,7 +64,6 @@ class Price extends Component {
             }
         }
         this.setState({ test: Math.random() })
-        console.log(orders)
     }
     timeConverter(timestamp) {
         var a = new Date(timestamp * 1000);
@@ -81,7 +80,7 @@ class Price extends Component {
                 <Typography align="center" gutterBottom > {t('tradingHistory')}</Typography >
                 <ButtonGroup color="primary" fullWidth size="small">
                     {['open', 'real', 'practice'].map((item, i) => (
-                        <Button style={{ color: this.state.type == item ? "#fff" : "rgb(83, 81, 81)" }} onClick={() => this.show(item)}>{t(item)}</Button>
+                        <Button key={i} style={{ color: this.state.type == item ? "#fff" : "rgb(83, 81, 81)" }} onClick={() => this.show(item)}>{t(item)}</Button>
                     ))
                     }
                 </ButtonGroup>
@@ -89,7 +88,7 @@ class Price extends Component {
                     {this.state[this.state.type].map((item, i) => {
                         let date = this.timeConverter(item.point)
                         return (
-                            <div style={styles.item}>
+                            <div key={i} style={styles.item}>
                                 <div style={styles.subItem}>
                                     <div>{date[0]}</div>
                                     <div style={styles.subItemDesc}>{date[1]}</div>

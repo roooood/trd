@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import { getQuery } from '../library/Helper';
+import { getQuery } from 'library/Helper';
 // import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './en.js';
 import fa from './fa.js';
@@ -7,7 +7,7 @@ import fa from './fa.js';
 i18n
     // .use(LanguageDetector)
     .init({
-        lng: getQuery('lang') || 'fa', // 'en' | 'es'
+        lng: getQuery('lang') || 'en', // 'en' | 'es'
         resources: {
             en: {
                 translations: en

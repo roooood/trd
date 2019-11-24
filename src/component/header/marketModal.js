@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { t } from '../../locales';
-import Context from '../../library/Context';
-import request from '../../library/Fetch';
+import { t } from 'locales';
+import Context from 'library/Context';
+import request from 'library/Fetch';
 import { connect } from 'react-redux';
-import { TabbarAdd } from '../../redux/action/tab';
-import { Market } from '../../redux/action/market';
+import { TabbarAdd } from 'redux/action/tab';
+import { Market } from 'redux/action/market';
 import { withStyles, createMuiTheme, fade } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

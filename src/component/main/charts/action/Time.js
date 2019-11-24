@@ -1,54 +1,127 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../../../../library/Context';
-import { t } from '../../../../locales';
+import Context from 'library/Context';
+import { t } from 'locales';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import HelpIcon from '@material-ui/icons/Help';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import Menu from '@material-ui/core/Menu';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
 
+const StyledMenu = withStyles({
+    paper: {
+        background: '#25272b',
+        color: '#fff',
+        transform: 'translateX(-100px) translateY(-5px)!important'
+    },
+})(props => (
+    <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+        }}
+        {...props}
+    />
+));
 
 class Time extends Component {
     static contextType = Context;
     constructor(props) {
         super(props);
         this.state = {
+            open: null,
             value: 1
         };
+        this.range = [1, 2, 5, 10, 15, 30, 60, 120, 300]
         autoBind(this);
     }
+    openMenu(event) {
+        this.setState({ menu: event.currentTarget })
+    }
+    closeMenu() {
+        this.setState({ menu: null })
+    }
     up() {
-        this.setState({ value: this.state.value + 1 }, () => {
-            this.props.time(this.state.value)
-        });
+        this.changeValue(this.state.value + 1);
     }
     down() {
-        if (this.state.value > 1) {
-            this.setState({ value: this.state.value - 1 }, () => {
-                this.props.time(this.state.value)
+        this.changeValue(this.state.value - 1);
+    }
+    change(value) {
+        this.changeValue(value);
+        this.closeMenu();
+    }
+    changeValue(value) {
+        value = parseInt(value);
+        if (this.context.state.setting.tradeTimeMax <= value) {
+            value = this.context.state.setting.tradeTimeMax;
+        }
+        if (value > 0) {
+            this.setState({ value }, () => {
+                this.props.time(value)
             })
         }
     }
     render() {
         return (
-            <div style={styles.root}>
-                <div style={styles.info} >
-                    <Typography variant="button" display="block" style={styles.color}>
-                        {t('time')}
-                    </Typography>
-                    <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
+            <>
+                <div style={styles.root}>
+                    <div style={styles.info} onClick={this.openMenu} >
+                        <Typography variant="button" display="block" style={styles.color}>
+                            {t('time')}
+                        </Typography>
+                        <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
+                    </div>
+                    <div style={styles.display} >
+                        <AccessTimeIcon onClick={this.openMenu} style={{ ...styles.color, fontSize: '1.6em', marginRight: 15 }} />
+                        <input
+                            type="text"
+                            onChange={e => this.changeValue(e.target.value)}
+                            style={styles.input}
+                            value={this.state.value} />
+                    </div>
+                    <div style={styles.picker} >
+                        <IconButton size="small" onClick={this.down}>
+                            <RemoveIcon style={styles.color} />
+                        </IconButton>
+                        <div style={styles.diver} />
+                        <IconButton size="small" onClick={this.up}>
+                            <AddIcon style={styles.color} />
+                        </IconButton>
+                    </div>
                 </div>
-                <div style={styles.display} >
-                    <AccessTimeIcon style={{ ...styles.color, fontSize: '1.6em', marginRight: 15 }} />
-                    <input type="text" style={styles.input} value={this.state.value} />
-                </div>
-                <div style={styles.picker} >
-                    <RemoveIcon onClick={this.down} style={styles.color} />
-                    <div style={styles.diver} />
-                    <AddIcon onClick={this.up} style={styles.color} />
-                </div>
-            </div>
+                <StyledMenu
+                    open={Boolean(this.state.menu)}
+                    anchorEl={this.state.menu}
+                    onClose={this.closeMenu}
+                >
+                    <List style={{ padding: '0 10px' }}>
+                        {this.range.map(item => {
+                            if (this.context.state.setting.tradeTimeMax >= item)
+                                return (
+                                    <ListItem style={styles.listItem} key={item} button onClick={() => this.change(item)}>
+                                        <Typography style={styles.color}>
+                                            {item}  min
+                                </Typography>
+                                    </ListItem>
+                                )
+                            return null
+                        }
+                        )}
+                    </List>
+                </StyledMenu>
+            </>
         );
     }
 }
@@ -93,6 +166,12 @@ const styles = {
         fontSize: '1.6em',
         padding: 0,
         marginTop: 5
+    },
+    listItem: {
+        marginBottom: 5,
+        border: '1px solid #595959',
+        padding: '3px 10px',
+        borderRadius: 5
     }
 }
 export default Time;

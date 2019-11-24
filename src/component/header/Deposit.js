@@ -3,14 +3,14 @@ import autoBind from 'react-autobind';
 import DynamicFeed from '@material-ui/icons/DynamicFeed';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { t } from '../../locales';
-import Context from '../../library/Context';
+import { t } from 'locales';
+import Context from 'library/Context';
+import Hidden from '@material-ui/core/Hidden';
 
 import DepositModal from './DepositModal';
 
 const ColorButton = withStyles(theme => ({
     root: {
-        width: 125,
         background: 'linear-gradient(90deg,  #5C91D9, #c84169)',
         '&:hover': {
 
@@ -34,7 +34,15 @@ class Deposit extends Component {
     render() {
         return (
             <ColorButton onClick={this.deposit} variant="contained" color="primary" style={{ margin: 5 }}>
-                <DynamicFeed style={{ marginRight: 10 }} /> {t('deposit')}
+                <Hidden only={['md', 'lg', 'xl']}>
+                    <DynamicFeed />
+                </Hidden>
+                <Hidden only={['xs', 'sm']}>
+                    <DynamicFeed style={{ marginRight: 10 }} />
+                    <div style={{ width: 60 }}>
+                        {t('deposit')}
+                    </div>
+                </Hidden>
             </ColorButton>
         );
     }

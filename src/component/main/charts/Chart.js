@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import { t } from '../../../locales';
+import { t } from 'locales';
 import { canddleUrl, resolutionEx, hub2candle, chartOptions, candleOption, volumeOption, lineOption, barOption, areaOption, getDimention, timeRange } from './Const';
 import { connect } from 'react-redux';
-import request from '../../../library/Fetch';
+import request from 'library/Fetch';
 import Resolution from './widget/Resolution';
 import ChartType from './widget/chartTypes';
-import Context from '../../../library/Context';
-import { clone } from '../../../library/Helper';
-import { TabbarAdd } from '../../../redux/action/tab';
+import Context from 'library/Context';
+import { clone } from 'library/Helper';
+import { TabbarAdd } from 'redux/action/tab';
 import * as LightweightCharts from './lightweight-charts';
 import play from 'library/Sound';
 
@@ -79,7 +79,7 @@ class Chart extends Component {
         }
     }
     createChart() {
-        // this.context.live.register(this.props.parent.symbol, this.update);
+        this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
             ...getDimention(),
@@ -247,12 +247,12 @@ class Chart extends Component {
         return (
             <div style={styles.root}>
                 {this.state.loading &&
-                    <div class="loading-dir">
-                        <div class="loading">
-                            <div class="loading-1"></div>
-                            <div class="loading-2"></div>
-                            <div class="loading-3"></div>
-                            <div class="loading-4"></div>
+                    <div className="loading-dir">
+                        <div className="loading">
+                            <div className="loading-1"></div>
+                            <div className="loading-2"></div>
+                            <div className="loading-3"></div>
+                            <div className="loading-4"></div>
                         </div>
                     </div>
                 }

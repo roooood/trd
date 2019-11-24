@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../../library/Context';
+import Context from 'library/Context';
 
 import { connect } from 'react-redux';
-import { User } from '../../redux/action/user';
+import { User } from 'redux/action/user';
 
 import Login from './Login';
 import Register from './Register';

@@ -1,57 +1,137 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
-import Context from '../../../../library/Context';
-import { t } from '../../../../locales';
+import Context from 'library/Context';
+import { t } from 'locales';
 import Typography from '@material-ui/core/Typography';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import HelpIcon from '@material-ui/icons/Help';
+import Menu from '@material-ui/core/Menu';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import { toMoney } from 'library/Helper';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
 
-
+const StyledMenu = withStyles({
+    paper: {
+        background: '#25272b',
+        color: '#fff',
+        transform: 'translateX(-90px) translateY(-5px)!important'
+    },
+})(props => (
+    <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+        }}
+        {...props}
+    />
+));
 
 class Price extends Component {
     static contextType = Context;
-    constructor(props) {
+    constructor(props, context) {
         super(props);
         this.state = {
-            value: 1
+            open: null,
+            value: context.state.user.balance[this.props.user.type] > 0 ? 1 : 0
         };
+        this.range = [1, 5, 10, 20, 50, 100, 200, 500, 1000]
         autoBind(this);
     }
+    openMenu(event) {
+        this.setState({ menu: event.currentTarget })
+    }
+    closeMenu() {
+        this.setState({ menu: null })
+    }
     up() {
-        if (this.state.value <= this.context.state.user.balance[this.props.user.type])
-            this.setState({ value: this.state.value + 1 }, () => {
-                this.props.amount(this.state.value)
-            });
+        this.changeValue(this.state.value + 1);
+
     }
     down() {
-        if (this.state.value > 1) {
-            this.setState({ value: this.state.value - 1 }, () => {
-                this.props.amount(this.state.value)
-            })
+        this.changeValue(this.state.value - 1);
+    }
+    change(value) {
+        this.changeValue(value);
+        this.closeMenu();
+    }
+    changeValue(value) {
+        value = parseInt(value);
+        if (this.context.state.setting.tradePriceMax <= value) {
+            value = this.context.state.setting.tradePriceMax;
         }
+        if (value > 0) {
+            if (value <= this.context.state.user.balance[this.props.user.type])
+                this.setState({ value }, () => {
+                    this.props.amount(value)
+                });
+            else
+                this.notify({ message: t('balanceError'), type: 'warning' });
+
+        }
+    }
+    notify(data) {
+        window.ee.emit('notify', data)
     }
     render() {
         return (
-            <div style={styles.root}>
-                <div style={styles.info} >
-                    <Typography variant="button" display="block" style={styles.color}>
-                        {t('amount')}
-                    </Typography>
-                    <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
+            <>
+                <div style={styles.root} >
+                    <div style={styles.info} onClick={this.openMenu}>
+                        <Typography variant="button" display="block" style={styles.color}>
+                            {t('amount')}
+                        </Typography>
+                        <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
+                    </div>
+                    <div style={styles.display} >
+                        <AttachMoneyIcon onClick={this.openMenu} style={{ ...styles.color, fontSize: '1.9em', marginRight: 10 }} />
+                        <input
+                            type="text"
+                            style={styles.input}
+                            onChange={e => this.changeValue(e.target.value)}
+                            value={this.state.value} />
+                    </div>
+                    <div style={styles.picker} >
+                        <IconButton size="small" onClick={this.down}>
+                            <RemoveIcon style={styles.color} />
+                        </IconButton>
+                        <div style={styles.diver} />
+                        <IconButton size="small" onClick={this.up}>
+                            <AddIcon style={styles.color} />
+                        </IconButton>
+                    </div>
                 </div>
-                <div style={styles.display} >
-                    <AttachMoneyIcon style={{ ...styles.color, fontSize: '1.9em', marginRight: 10 }} />
-                    <input type="text" style={styles.input} value={this.state.value} />
-                </div>
-                <div style={styles.picker} >
-                    <RemoveIcon onClick={this.down} style={styles.color} />
-                    <div style={styles.diver} />
-                    <AddIcon onClick={this.up} style={styles.color} />
-                </div>
-            </div>
+                <StyledMenu
+                    open={Boolean(this.state.menu)}
+                    anchorEl={this.state.menu}
+                    onClose={this.closeMenu}
+                >
+                    <List style={{ padding: '0 10px' }}>
+                        {this.range.map(item => {
+                            if (this.context.state.setting.tradePriceMax >= item)
+                                return (
+                                    <ListItem style={styles.listItem} key={item} button onClick={() => this.change(item)}>
+                                        <Typography style={styles.color}>
+                                            ${toMoney(item)}
+                                        </Typography>
+                                    </ListItem>
+                                )
+                            return null
+                        }
+                        )}
+                    </List>
+                </StyledMenu>
+            </>
         );
     }
 }
@@ -94,7 +174,12 @@ const styles = {
         color: '#fff',
         fontSize: '1.6em',
         padding: 0,
-        marginTop: 5
+    },
+    listItem: {
+        marginBottom: 5,
+        border: '1px solid #595959',
+        padding: '3px 10px',
+        borderRadius: 5
     }
 }
 export default connect(state => state)(Price);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { t } from '../locales';
+import { t } from 'locales';
 import { apiUrl } from './Helper';
 const Api = axios.create({
   baseURL: apiUrl,

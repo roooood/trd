@@ -10,12 +10,28 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Typography from '@material-ui/core/Typography';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import Hidden from '@material-ui/core/Hidden';
+import Button from '@material-ui/core/Button';
 
-import { t } from '../../locales';
+import { t } from 'locales';
 import { connect } from 'react-redux';
-import Context from '../../library/Context';
-import { User } from '../../redux/action/user';
-import { toMoney } from '../../library/Helper';
+import Context from 'library/Context';
+import { User } from 'redux/action/user';
+import { toMoney } from 'library/Helper';
+
+const ColorButton = withStyles(theme => ({
+    root: {
+        background: 'transparent',
+        border: '1px solid #333',
+        padding: ' 6px 10px',
+        margin: 5,
+        borderRadius: 5,
+        '&:hover': {
+            background: 'transparent',
+            border: '1px solid #555',
+        },
+    },
+}))(Button);
 
 const StyledMenu = withStyles({
     paper: {
@@ -62,33 +78,21 @@ class Account extends Component {
         let { balance } = this.context.state.user;
         return (
             <>
-                <List disablePadding={true} component="div" >
-                    <ListItem onClick={this.openMenu} button style={{ paddingBottom: 0, paddingRight: 30, width: 200 }}>
-                        <ListItemAvatar style={{ minWidth: 20, marginRight: 5 }}>
-                            <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: type == 'real' ? '#25b940' : '#fc155a' }} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<Typography
-                                component="div"
-                                style={styles.account}
-                            >
-                                {type == 'real' ? t('realAccount') : t('practiceAccount')}
+                <ColorButton onClick={this.openMenu} variant="contained" color="primary" style={{ margin: 5 }}>
+                    <Hidden only={['md', 'lg', 'xl']}>
+                        <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: type == 'real' ? '#25b940' : '#fc155a' }} />
+                    </Hidden>
+                    <Hidden only={['xs', 'sm']}>
+                        <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: type == 'real' ? '#25b940' : '#fc155a' }} />
+                        <Typography component="div" style={{...styles.account, width: 100 }}>
+                            {type == 'real' ? t('realAccount') : t('practiceAccount')}
+                            <Typography component="div" align="left" style={styles.accountSub}  >
+                                $ {toMoney(balance[type])}
                             </Typography>
-                            }
-                            secondary={
-                                <Typography
-                                    component="div"
-                                    style={styles.accountSub}
-                                >
-                                    $ {toMoney(balance[type])}
-                                </Typography>
-                            }
-                        />
-                        <ListItemSecondaryAction style={{ top: '60%', right: 0 }}>
-                            <ExpandMoreRoundedIcon />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
+                        </Typography>
+                        <ExpandMoreRoundedIcon />
+                    </Hidden>
+                </ColorButton>
                 <StyledMenu
                     open={Boolean(this.state.menu)}
                     anchorEl={this.state.menu}
@@ -139,7 +143,8 @@ const styles = {
     accountSub: {
         fontSize: 17,
         fontWeight: 'bold',
-        color: 'rgb(247, 183, 28)'
+        color: 'rgb(247, 183, 28)',
+        paddingLeft: 15,
     }
 }
 

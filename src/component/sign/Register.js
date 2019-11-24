@@ -12,44 +12,17 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LockOpenOutlined from '@material-ui/icons/LockOpenOutlined';
 
-import { t } from '../../locales';
-import { emailPattern } from '../../library/Helper';
-import request from '../../library/Fetch';
+import { t } from 'locales';
+import { emailPattern } from 'library/Helper';
+import request from 'library/Fetch';
 
 import { connect } from 'react-redux';
-import { User } from '../../redux/action/user';
+import { User } from 'redux/action/user';
 
-let theme = createMuiTheme()
-const styles = {
-    paper: {
-        marginTop: theme.spacing(3),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-        padding: theme.spacing(2),
-    },
-    terms: {
-        margin: theme.spacing(0, .4),
-    },
-    close: {
-        padding: theme.spacing(0.5),
-    },
-    label: {
-        color: '#454545'
-    }
-}
+
 
 class Register extends React.Component {
     constructor(props) {
@@ -179,6 +152,15 @@ class Register extends React.Component {
         return (
             <Container component="main" maxWidth="xs">
                 <div style={styles.paper}>
+                    <Button
+                        onClick={() => this.props.goto('login')}
+                        type="button"
+                        variant="outlined"
+                        color="primary"
+                        style={styles.back}
+                    >
+                        <ArrowBackIcon />
+                    </Button>
                     <Avatar style={styles.avatar}>
                         <LockOpenOutlined />
                     </Avatar>
@@ -261,5 +243,39 @@ class Register extends React.Component {
         );
     }
 }
-
+let theme = createMuiTheme()
+const styles = {
+    paper: {
+        marginTop: theme.spacing(3),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+        padding: theme.spacing(2),
+    },
+    terms: {
+        margin: theme.spacing(0, .4),
+    },
+    close: {
+        padding: theme.spacing(0.5),
+    },
+    label: {
+        color: '#454545'
+    },
+    back: {
+        position: 'absolute',
+        left: -10,
+        top: -10
+    }
+}
 export default connect(state => state)(Register);

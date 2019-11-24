@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import Context from '../../../library/Context';
+import Context from 'library/Context';
 import Action from './Action';
 import Chart from './Chart';
 class Tabs extends Component {

@@ -36,7 +36,7 @@ class ChatBubble extends Component {
         <div className={`bubble-container ${bubbleDirection}`} key={index}>
           <div className="message-time" >
             {new Date(message.time).toDateString()}
-            <div classname="message-status" >
+            <div className="message-status" >
               {
                 message.seen == false
                   ? <CheckIcon fontSize="small" style={{ color: '#fff' }} />

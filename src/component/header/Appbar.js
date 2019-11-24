@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
-import { TabbarRemove, TabbarActive } from '../../redux/action/tab';
+import { TabbarRemove, TabbarActive, TabbarAdd } from 'redux/action/tab';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Context from '../../library/Context';
+import Context from 'library/Context';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -74,7 +74,7 @@ function tabGenerator(id, props, onRemove) {
     }
     else if (props.type == 'forex') {
         props.name.split('/').forEach((i) => {
-            icon.push(<i key={i} class={"currency-flag currency-flag-" + i.toLowerCase()} />)
+            icon.push(<i key={i} className={"currency-flag currency-flag-" + i.toLowerCase()} />)
         });
     }
     return (
@@ -90,9 +90,11 @@ function tabGenerator(id, props, onRemove) {
                     {props.type}
                 </Typography>
             </div>
-            <IconButton color="secondary" style={styles.listRemove} onClick={() => onRemove(id)}>
-                <CloseRoundedIcon style={{ fontSize: 18, color: 'rgb(195, 68, 110)' }} />
-            </IconButton>
+            {onRemove != null &&
+                <IconButton color="secondary" style={styles.listRemove} onClick={() => onRemove(id)}>
+                    <CloseRoundedIcon style={{ fontSize: 18, color: 'rgb(195, 68, 110)' }} />
+                </IconButton>
+            }
         </div>
     )
 }
@@ -104,15 +106,33 @@ class Appbar extends Component {
         };
         autoBind(this);
     }
-    componentDidMount = () => {
+    componentDidMount() {
         if (Object.keys(this.props.tab.data).length === 0) {
-            this.list();
+            if (this.context.state.market !== null) {
+                this.addTab(this.context.state.market);
+            }
+            else
+                this.list();
         }
-    };
-
+    }
+    addTab({ id, symbol, display, type }) {
+        this.props.dispatch(TabbarAdd({
+            key: 't' + id,
+            value: {
+                id,
+                symbol,
+                name: display,
+                type,
+                resolution: this.context.state.setting.reolution,
+                chartType: this.context.state.setting.chartType
+            }
+        }));
+    }
     handleChangeList(e, tab) {
         if (tab != this.context.state.tabbar) {
-            this.props.dispatch(TabbarActive(tab));
+            let keys = Object.keys(this.props.tab.data);
+            if (keys.includes(tab))
+                this.props.dispatch(TabbarActive(tab));
         }
     }
     list() {
@@ -121,9 +141,19 @@ class Appbar extends Component {
     }
     onRemove(id) {
         this.props.dispatch(TabbarRemove(id));
+        let keys = Object.keys(this.props.tab.data);
+        let index = keys.indexOf(id);
+
+        if (keys[index + 1] != 'undefined') {
+            this.handleChangeList(null, keys[index + 1])
+        }
+        else if (keys[index - 1] != 'undefined') {
+            this.handleChangeList(null, keys[index - 1])
+        }
     }
     render() {
         const tab = this.props.tab.data || {};
+        const keys = Object.keys(tab);
         return (
             <div style={styles.root}>
                 <div style={{ ...styles.tabs }} >
@@ -135,9 +165,9 @@ class Appbar extends Component {
                         indicatorColor="primary"
                         textColor="primary"
                     >
-                        {Object.keys(tab).map((item) => {
+                        {keys.map((item) => {
                             return (
-                                <StyledTab key={item} value={item} label={tabGenerator(item, tab[item], this.onRemove)} />
+                                <StyledTab key={item} value={item} label={tabGenerator(item, tab[item], keys.length == 1 ? null : this.onRemove)} />
                             )
                         })
                         }

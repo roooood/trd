@@ -13,12 +13,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import LockOpenOutlined from '@material-ui/icons/LockOpenOutlined';
 
-import { t } from '../../locales';
+import { t } from 'locales';
 
-import request from '../../library/Fetch';
+import request from 'library/Fetch';
 
 import { connect } from 'react-redux';
-import { User } from '../../redux/action/user';
+import { User } from 'redux/action/user';
 
 let theme = createMuiTheme()
 const styles = {
