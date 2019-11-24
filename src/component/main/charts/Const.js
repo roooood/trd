@@ -5,6 +5,28 @@ export const canddleUrl = 'https://finnhub.io/api/v1/{type}/candle?symbol={symbo
 export const resolutionEx = { '1m': '1', '5m': '5', '15m': '15', '30m': '30', 'H': '60', 'D': 'D', 'W': 'W', 'M': 'M' };
 export const timeRange = { '1m': 60, '5m': 300, '15m': 900, '30m': 1800, 'H': 3600, 'D': 86400, 'W': 604800, 'M': 2592000 };
 
+function fuck(n) {
+    let num = n + '';
+    let nums = num.split('.');
+    if (nums.length == 1)
+        return n;
+    let count = nums[0].length, prev = 0, check = 0;
+    for (let i of nums[1]) {
+        count++;
+        if (i == prev) {
+            check++;
+        }
+        else {
+            check = 0;
+        }
+        prev = i;
+        if (check == 3) {
+            break;
+        }
+    }
+
+    return check == 3 ? n.toFixed(count - 4) : n;
+}
 export const chartOptions = {
     autoScale: true,
     layout: {
@@ -12,7 +34,9 @@ export const chartOptions = {
         textColor: '#b5b5b5'
     },
     localization: {
-        priceFormatter: (price) => price,
+        priceFormatter: (price) => {
+            return fuck(price);
+        },
     },
     grid: {
         vertLines: {
