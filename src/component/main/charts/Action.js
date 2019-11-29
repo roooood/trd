@@ -5,9 +5,9 @@ import Price from './action/Price';
 import Time from './action/Time';
 import { t } from 'locales';
 
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { green, purple } from '@material-ui/core/colors';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import Typography from '@material-ui/core/Typography';
@@ -15,26 +15,28 @@ import HelpIcon from '@material-ui/icons/Help';
 
 const BuyButton = withStyles(theme => ({
     root: {
-        color: theme.palette.getContrastText(purple[500]),
-        height: '100%',
+        color: '#fff',
+        maxHeight: 80,
+        height: 80,
         marginTop: 5,
-        fontSize: 20,
+        fontSize: '1.1rem',
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
         '&:hover': {
-            backgroundColor: purple[700],
+
         },
     },
 }))(Button);
 
 const SellButton = withStyles(theme => ({
     root: {
-        color: theme.palette.getContrastText(purple[500]),
-        height: '100%',
+        color: '#fff',
+        maxHeight: 80,
+        height: 80,
         marginTop: 5,
-        fontSize: 20,
+        fontSize: '1.1rem',
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
         '&:hover': {
-            backgroundColor: purple[700],
+
         },
     },
 }))(Button);
@@ -58,24 +60,23 @@ class Action extends Component {
         this.setState({ bet })
     }
     onTrade(tradeType) {
-        window.ee.emit('actionBlur')
-        this.noOver = true;
-        window.ee.emit('trade', { tradeType, bet: this.state.bet, tradeAt: this.state.tradeAt })
+        window.ee.emit('actionBlur' + this.props.parent.id)
+        window.ee.emit('trade' + this.props.parent.id, { tradeType, bet: this.state.bet, tradeAt: this.state.tradeAt })
     }
     mouseOver(type) {
-        this.noOver = false;
-        window.ee.emit('actionHover', type)
+        window.ee.emit('actionHover' + this.props.parent.id, type)
     }
     mouseOut(type) {
-        if (!this.noOver)
-            window.ee.emit('actionBlur', type)
+        window.ee.emit('actionBlur' + this.props.parent.id, type)
     }
     render() {
         let profit = this.context.state.setting.profit || 0;
         return (
             <div style={styles.root}>
-                <Price amount={this.amount} />
-                <Time time={this.time} />
+                <div style={styles.group}>
+                    <Price amount={this.amount} />
+                    <Time time={this.time} />
+                </div>
                 <div style={styles.profit}>
                     <div style={styles.info} >
                         <Typography variant="button" display="block" >
@@ -94,22 +95,27 @@ class Action extends Component {
                         </Typography>
                     </div>
                 </div>
-                <BuyButton
-                    variant="contained"
-                    color="primary"
-                    onClick={() => this.onTrade('buy')}
-                    onMouseEnter={() => this.mouseOver('buy')}
-                    onMouseLeave={() => this.mouseOut('buy')}>
-                    <TrendingUpIcon style={{ marginRight: 20 }} /> {t('buy')}
-                </BuyButton>
-                <SellButton
-                    variant="contained"
-                    color="primary"
-                    onClick={() => this.onTrade('sell')}
-                    onMouseEnter={() => this.mouseOver('sell')}
-                    onMouseLeave={() => this.mouseOut('sell')}>
-                    <TrendingDownIcon style={{ marginRight: 20 }} /> {t('sell')}
-                </SellButton>
+                <div style={styles.group}>
+                    <BuyButton
+                        variant="contained"
+                        color="primary"
+                        onClick={() => this.onTrade('buy')}
+                        onMouseEnter={() => this.mouseOver('buy')}
+                        onMouseLeave={() => this.mouseOut('buy')}>
+                        <TrendingUpIcon style={{ marginRight: 20 }} /> {t('buy')}
+                    </BuyButton>
+                    <SellButton
+                        variant="contained"
+                        color="primary"
+                        onClick={() => this.onTrade('sell')}
+                        onMouseEnter={() => this.mouseOver('sell')}
+                        onMouseLeave={() => this.mouseOut('sell')}>
+                        <TrendingDownIcon style={{ marginRight: 20 }} /> {t('sell')}
+                    </SellButton>
+                    <Hidden only={['md', 'lg', 'xl']}>
+                        <div style={{ height: 50 }} />
+                    </Hidden>
+                </div>
             </div>
         );
     }
@@ -121,7 +127,11 @@ const styles = {
         height: '100%',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflow: 'auto',
+    },
+    group: {
+        display: 'flex',
+        flexDirection: 'column',
     },
     profit: {
         border: '1px solid #333',
@@ -131,6 +141,7 @@ const styles = {
         marginTop: 5,
         alignItems: 'center',
         justifyContent: 'center',
+        maxHeight: 100,
     },
     info: {
         width: '100%',

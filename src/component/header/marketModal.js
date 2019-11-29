@@ -23,6 +23,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
 import SearchIcon from '@material-ui/icons/Search';
 
+const AntTab = withStyles(theme => ({
+    wrapper: {
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+    },
+    selected: {},
+}))(props => <Tab disableRipple {...props} />);
+
 const ColorCircularProgress = withStyles({
     root: {
         color: '#fff',
@@ -209,9 +217,9 @@ class AppModal extends Component {
                     onChange={this.handleChange}
                     style={styles.tabs}
                 >
-                    <Tab label={tabGenerator({ title: t('crypto'), icon: <i class="cc BTC" /> })} />
-                    <Tab label={tabGenerator({ title: t('forex'), icon: <MonetizationOnRoundedIcon style={styles.forex} /> })} />
-                    <Tab label={tabGenerator({ title: t('stocks'), icon: <ApartmentIcon style={styles.stocks} /> })} />
+                    <AntTab label={tabGenerator({ title: t('crypto'), icon: <i class="cc BTC" /> })} />
+                    <AntTab label={tabGenerator({ title: t('forex'), icon: <MonetizationOnRoundedIcon style={styles.forex} /> })} />
+                    <AntTab label={tabGenerator({ title: t('stocks'), icon: <ApartmentIcon style={styles.stocks} /> })} />
                 </Tabs>
                 <TabPanel value={this.state.tab} index={0} style={styles.tableRoot}>
                     {this.loading('crypto')}
@@ -256,15 +264,16 @@ const styles = {
         width: '100%'
     },
     stocks: {
-        fontSize: 20,
+        fontSize: 17,
         background: '#369',
         borderRadius: '50%',
-        padding: 4,
+        padding: 3,
         color: '#25272b '
     },
     forex: {
-        fontSize: 33,
-        color: 'rgb(230, 47, 27)'
+        fontSize: 27,
+        color: 'rgb(230, 47, 27)',
+        marginLeft: -4
     },
     search: {
         position: 'relative',

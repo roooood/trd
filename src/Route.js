@@ -3,6 +3,8 @@ import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 
+import Rotate90DegreesCcwIcon from '@material-ui/icons/Rotate90DegreesCcw';
+
 import Context from './library/Context';
 import { t } from './locales';
 
@@ -36,6 +38,8 @@ class Route extends Component {
         if (this.props.user.isLogin)
             this.connectToServer();
         this.context.game.register('welcome', this.connected);
+        this.context.game.register('setting', this.setting);
+        this.context.game.register('user', this.user);
         this.context.game.register('error', this.showError);
         this.context.game.register('balance', this.balance);
     }
@@ -62,6 +66,12 @@ class Route extends Component {
             this.setState({ loading: false });
         });
     }
+    setting(setting) {
+        this.context.setState({ setting });
+    }
+    user(user) {
+        this.context.setState({ user });
+    }
     balance({ type, balance }) {
         let user = this.context.state.user;
         user.balance[type] = balance;
@@ -81,6 +91,9 @@ class Route extends Component {
         else
             return (
                 <div id="content" className={"container column theme-default"} >
+                    <div className="rotate">
+                        <Rotate90DegreesCcwIcon style={{ fontSize: 100 }} />
+                    </div>
                     <div className="container top" >
                         <div className="item1" >
                             <Hidden only={['xs', 'sm']}>

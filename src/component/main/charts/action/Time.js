@@ -165,7 +165,8 @@ const styles = {
         color: '#fff',
         fontSize: '1.6em',
         padding: 0,
-        marginTop: 5
+        marginTop: 5,
+        width: 60
     },
     listItem: {
         marginBottom: 5,

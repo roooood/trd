@@ -54,8 +54,8 @@ class Login extends React.Component {
         this.state = {
             loading: false,
 
-            username: '',
-            password: '',
+            username: 'siavasham',
+            password: 'qazwsxedc',
 
             uError: false,
             pError: false,
@@ -132,6 +132,8 @@ class Login extends React.Component {
                     <div style={styles.form} noValidate>
                         <TextField
                             onChange={this.changeUsername}
+                            onKeyDown={this.handleKeyDown}
+                            value={this.state.username}
                             onBlur={this.checkUsername}
                             variant="outlined"
                             margin="normal"
@@ -147,6 +149,7 @@ class Login extends React.Component {
                         <TextField
                             onChange={this.changePassword}
                             onKeyDown={this.handleKeyDown}
+                            value={this.state.password}
                             variant="outlined"
                             margin="normal"
                             required

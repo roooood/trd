@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js';
-
 
 export const canddleUrl = 'https://finnhub.io/api/v1/{type}/candle?symbol={symbol}&resolution={resolution}&count={count}&token={token}';
 export const resolutionEx = { '1m': '1', '5m': '5', '15m': '15', '30m': '30', 'H': '60', 'D': 'D', 'W': 'W', 'M': 'M' };
@@ -10,7 +8,7 @@ function fuck(n) {
     let nums = num.split('.');
     if (nums.length == 1)
         return n;
-    let count = nums[0].length, prev = 0, check = 0;
+    let count = nums[0].length, prev = -1, check = 0;
     for (let i of nums[1]) {
         count++;
         if (i == prev) {
@@ -134,6 +132,12 @@ export const lineOption = {
 
 export function getDimention() {
     let sidebarElement = window.document.getElementById("sidebar");
+    if (sidebarElement == null) {
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight - 120,
+        }
+    }
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + 150),
         height: window.innerHeight - 120,
@@ -141,7 +145,6 @@ export function getDimention() {
 }
 
 export function hub2candle(data) {
-    console.log(data)
     if (data == 'null') {
         return null;
     }

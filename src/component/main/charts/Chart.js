@@ -9,7 +9,7 @@ import ChartType from './widget/chartTypes';
 import Context from 'library/Context';
 import { clone } from 'library/Helper';
 import { TabbarAdd } from 'redux/action/tab';
-import * as LightweightCharts from './lightweight-charts';
+import * as LightweightCharts from 'library/lightweight-charts';
 import play from 'library/Sound';
 
 
@@ -18,26 +18,28 @@ class Chart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
         };
+        this.opens = [];
         this.chartData = {};
         this.chartType = {};
         this.timer = null;
         this.id = props.parent.id;
         autoBind(this);
-        window.ee.on('actionHover', this.showAction)
-        window.ee.on('actionBlur', this.hideAction)
-        window.ee.on('trade', this.trade)
+        window.ee.on('actionHover' + props.parent.id, this.showAction)
+        window.ee.on('actionBlur' + props.parent.id, this.hideAction)
+        window.ee.on('trade' + props.parent.id, this.trade)
     }
     resize() {
         if (this.props.inView)
             this.chart.applyOptions(getDimention());
     }
-    componentWillReceiveProps(nextProps, contextProps) {
-    }
 
     componentDidMount() {
         this.context.game.register('order', this.order);
+        this.context.game.register('opens', this.openOrders);
+        this.context.game.register('orderResult', this.orderResult);
+        this.context.game.send({ myOrder: this.props.parent.id });
 
         this.getData();
         this.createChart();
@@ -107,6 +109,7 @@ class Chart extends Component {
                 this.chartType[i] = null;
             }
         }
+        this.setMarkers();
         this.chart.timeScale().fitContent();
     }
     showAction(action) {
@@ -142,13 +145,7 @@ class Chart extends Component {
         if (!(resolution in this.chartData)) {
             return;
         }
-        let data = this.lastItem();
-        this.chartType[this.props.parent.chartType].setMarkers([
-            {
-                time: data.time,
-                shape: 'null',
-            }
-        ]);
+        this.setMarkers();
     }
     trade({ tradeType, bet, tradeAt }) {
         // let { balance } = this.context.state.user;
@@ -166,17 +163,61 @@ class Chart extends Component {
         play('click')
         this.context.game.send({ trade: data });
     }
-    order([order]) {
-        let lastData = this.lastItem();
-        this.chartType[this.props.parent.chartType].setMarkers([
-            {
-                time: lastData.time,
-                position: order.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
-                color: order.tradeType == 'buy' ? '#25b940' : '#fc155a',
-                shape: 'circle',
+    openOrders(orders) {
+        let i;
+        for (i of orders) {
+            if (this.props.parent.id == i.market_id) {
+                this.opens.push(i)
             }
-        ]);
-        this.notify({ message: t('orderSuccess'), type: 'success' });
+        }
+        this.setMarkers();
+    }
+    order([order]) {
+        console.log('====================================');
+        console.log(this.props.parent.id, order.market_id);
+        console.log('====================================');
+        if (this.props.parent.id == order.market_id) {
+            this.openOrders([order]);
+            this.notify({ message: t('orderSuccess'), type: 'success' });
+        }
+    }
+    orderResult(order) {
+        if (this.props.parent.id == order.market_id) {
+            let i;
+            for (i in this.opens) {
+                if (this.opens[i].id == order.id) {
+                    this.opens.splice(i, 1);
+                    break;
+                }
+            }
+            this.setMarkers();
+        }
+    }
+    setMarkers() {
+        let { resolution, chartType } = this.props.parent;
+        let i, j, point, marker = [];
+        if (resolution in this.chartData) {
+            let len = this.chartData[resolution].length;
+            for (j of this.opens) {
+                point = null;
+                for (i = 0; i < len; i++) {
+                    if (j.point <= this.chartData[resolution][i].time) {
+                        point = this.chartData[resolution][i].time;
+                        break;
+                    }
+                }
+                if (point == null) {
+                    point = this.lastItem().time
+                }
+                marker.push({
+                    time: point,
+                    position: j.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
+                    color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
+                    shape: 'circle',
+                })
+            }
+            this.chartType[chartType].setMarkers(marker);
+        }
     }
     changeResolution(resolution) {
         this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, resolution } }));

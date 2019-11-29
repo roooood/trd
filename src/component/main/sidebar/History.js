@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
 import Context from 'library/Context';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { t } from 'locales';
 import Typography from '@material-ui/core/Typography';
-import { Scrollbars } from 'react-custom-scrollbars';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
@@ -44,7 +44,7 @@ class Price extends Component {
             }
         }
         this.state[order.balanceType].unshift(order);
-        this.setState({ test: Math.random() });
+        this.forceUpdate();
         play(order.amount > 0 ? 'win' : 'lose')
         if (order.amount > 0) {
             this.notify({ message: t('uWin') + ' : +$' + order.amount, type: 'success' });
@@ -84,7 +84,7 @@ class Price extends Component {
                     ))
                     }
                 </ButtonGroup>
-                <Scrollbars style={{ height: '73vh' }}  >
+                <Scrollbars style={{ height: '70vh' }}  >
                     {this.state[this.state.type].map((item, i) => {
                         let date = this.timeConverter(item.point)
                         return (

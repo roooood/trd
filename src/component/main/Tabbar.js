@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
 import Context from 'library/Context';
-import Tabs from './charts/Tabs';
+import Action from './charts/Action';
+import Chart from './charts/Chart';
 import Typography from '@material-ui/core/Typography';
 
 function TabPanel(props) {
@@ -21,6 +22,9 @@ class Tabbar extends Component {
         };
         autoBind(this);
     }
+    componentDidMount() {
+
+    }
     render() {
         const tab = this.props.tab.data || {};
         return (
@@ -28,7 +32,14 @@ class Tabbar extends Component {
                 {Object.keys(tab).map((item) => {
                     return (
                         <TabPanel key={item} className="swing-in-top-fwd" value={this.props.tab.active} index={item}>
-                            <Tabs parent={tab[item]} inView={this.props.tab.active == item} />
+                            <div style={styles.root} className={"chart-dir-" + tab[item].id}>
+                                <div className="item1 chart">
+                                    <Chart parent={tab[item]} inView={this.props.tab.active == item} />
+                                </div>
+                                <div className="item2 action">
+                                    <Action parent={tab[item]} />
+                                </div>
+                            </div>
                         </TabPanel>
                     )
                 })
@@ -38,6 +49,11 @@ class Tabbar extends Component {
     }
 }
 const styles = {
+    root: {
+        height: '100%',
+        display: 'flex',
+        height: '100%'
 
+    }
 }
 export default connect(state => state)(Tabbar);

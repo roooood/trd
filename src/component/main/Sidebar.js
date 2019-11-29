@@ -83,29 +83,29 @@ class Sidebar extends Component {
                     aria-label="Vertical tabs example"
                     style={styles.tabs}
                 >
-                    <StyledTab label={t('totalPortfolio')} icon={<Work />} />
+                    {/* <StyledTab label={t('totalPortfolio')} icon={<Work />} /> */}
                     <StyledTab label={t('tradingHistory')} icon={<HistoryIcon />} />
                     <StyledTab label={t('chatSupport')} icon={<ChatIcon />} />
                     <StyledTab label={t('leaderBoard')} icon={<StarBorderRounded />} />
                     <StyledTab label={t('videoToturial')} icon={<Videocam />} />
-                    <StyledTab label={t('more')} icon={<MoreOutlined />} />
+                    {/* <StyledTab label={t('more')} icon={<MoreOutlined />} /> */}
                 </Tabs>
+                {/* <TabPanel value={this.state.tab} prev={this.prev} index={0}>
+                </TabPanel> */}
                 <TabPanel value={this.state.tab} prev={this.prev} index={0}>
-                </TabPanel>
-                <TabPanel value={this.state.tab} prev={this.prev} index={1}>
                     <History />
                 </TabPanel>
-                <TabPanel value={this.state.tab} prev={this.prev} index={2}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={1}>
                     <Chat />
                 </TabPanel>
-                <TabPanel value={this.state.tab} prev={this.prev} index={3}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={2}>
                     <LeadBoard />
                 </TabPanel>
-                <TabPanel value={this.state.tab} prev={this.prev} index={4}>
+                <TabPanel value={this.state.tab} prev={this.prev} index={3}>
                     <Video />
                 </TabPanel>
-                <TabPanel value={this.state.tab} prev={this.prev} index={5}>
-                </TabPanel>
+                {/* <TabPanel value={this.state.tab} prev={this.prev} index={5}>
+                </TabPanel> */}
             </div>
         );
     }

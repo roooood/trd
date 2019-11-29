@@ -6,7 +6,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Typography from '@material-ui/core/Typography';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -84,7 +83,7 @@ class Account extends Component {
                     </Hidden>
                     <Hidden only={['xs', 'sm']}>
                         <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: type == 'real' ? '#25b940' : '#fc155a' }} />
-                        <Typography component="div" style={{...styles.account, width: 100 }}>
+                        <Typography component="div" style={{ ...styles.account, width: 100 }}>
                             {type == 'real' ? t('realAccount') : t('practiceAccount')}
                             <Typography component="div" align="left" style={styles.accountSub}  >
                                 $ {toMoney(balance[type])}
@@ -138,6 +137,7 @@ const styles = {
     },
     account: {
         fontSize: 13,
+        whiteSpace: 'nowrap',
         color: '#fff'
     },
     accountSub: {
