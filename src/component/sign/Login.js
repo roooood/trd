@@ -54,8 +54,8 @@ class Login extends React.Component {
         this.state = {
             loading: false,
 
-            username: 'siavasham',
-            password: 'qazwsxedc',
+            username: '',
+            password: '',
 
             uError: false,
             pError: false,
