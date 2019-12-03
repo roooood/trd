@@ -47,14 +47,20 @@ export const chartOptions = {
         },
     },
     priceScale: {
-        borderColor: 'transparent',
+        autoScale: true,
+        invertScale: true,
+        borderVisible: false,
+        scaleMargins: {
+            top: 0.10,
+            bottom: 0.1,
+        },
     },
     timeScale: {
         rightOffset: 12,
         barSpacing: 2,
-        fixLeftEdge: true,
-        lockVisibleTimeRangeOnResize: true,
-        rightBarStaysOnScroll: true,
+        fixLeftEdge: false,
+        lockVisibleTimeRangeOnResize: false,
+        rightBarStaysOnScroll: false,
         borderVisible: false,
         borderColor: 'transparent',
         visible: true,
@@ -70,13 +76,8 @@ export const candleOption = {
             bottom: 0.5,
         },
     },
-    upColor: '#25b940',
-    downColor: '#fc155a',
-    wickVisible: true,
-    borderVisible: false,
-    wickColor: 'rgba(255,255,255,.3)',
-    wickUpColor: '#25b940',
-    wickDownColor: '#fc155a',
+    // upColor: '#25b940',
+    // downColor: '#fc155a',
 }
 export const volumeOption = {
     color: 'rgba(0,0,0,.7)',
@@ -145,23 +146,29 @@ export function getDimention() {
 }
 
 export function hub2candle(data) {
-    if (data == 'null') {
-        return null;
+    let ret = [];
+    try {
+        if (data == 'null') {
+            return null;
+        }
+        if (data.s == 'no_data' || !('s' in data)) {
+            return null;
+        }
+        let len = data.c.length, i;
+        for (i = 0; i < len; i++) {
+            ret.push({
+                open: data.o[i],
+                high: data.h[i],
+                low: data.l[i],
+                close: data.c[i],
+                value: data.c[i],
+                volume: data.v[i],
+                time: data.t[i],
+            })
+        }
+    } catch (error) {
+
     }
-    if (!('s' in data) || data.s == 'no_data') {
-        return null;
-    }
-    let len = data.c.length, i, ret = [];
-    for (i = 0; i < len; i++) {
-        ret.push({
-            open: data.o[i],
-            high: data.h[i],
-            low: data.l[i],
-            close: data.c[i],
-            value: data.c[i],
-            volume: data.v[i],
-            time: data.t[i],
-        })
-    }
+
     return ret;
 }

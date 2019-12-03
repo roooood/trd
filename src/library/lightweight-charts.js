@@ -4,6 +4,7 @@
  * Copyright (c) 2019 TradingView, Inc.
  * Licensed under Apache License 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
+
 var LineType;
 (function (LineType) {
     LineType[LineType["Simple"] = 0] = "Simple";
@@ -58,7 +59,7 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = function(d, b) {
+var extendStatics = function (d, b) {
     extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
         function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
@@ -71,7 +72,7 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var __assign = function() {
+var __assign = function () {
     __assign = Object.assign || function __assign(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -233,11 +234,11 @@ var PaneRendererMarks = /** @class */ (function () {
 function createEmptyMarkerData(chartOptions) {
     return {
         items: [{
-                x: 0,
-                y: 0,
-                time: 0,
-                price: 0,
-            }],
+            x: 0,
+            y: 0,
+            time: 0,
+            price: 0,
+        }],
         lineColor: '',
         backColor: chartOptions.layout.backgroundColor,
         radius: 0,
@@ -2838,17 +2839,18 @@ function buysell(up, ctx, centerX, centerY, color) {
     let width = color[3].width;
     let height = color[3].height;
     let linear, size;
+    ctx.save();
     if (up) {
-        size =  centerY;
-        ctx.rect(0, 0, width, size);
+        size = centerY;
+        ctx.rect(0, -10, width, size);
         linear = ctx.createLinearGradient(0, 0, 0, size);
         linear.addColorStop(0, color[1]);
         linear.addColorStop(.3, color[1]);
         linear.addColorStop(1, color[0]);
     } else {
         size = height - centerY;
-        ctx.rect(0, centerY, width, size );
-        linear = ctx.createLinearGradient(0, 0, 0, height  );
+        ctx.rect(0, centerY+10, width, size);
+        linear = ctx.createLinearGradient(0, 0, 0, height);
         // linear = ctx.createLinearGradient(window.x[0], window.x[1], window.x[2], window.x[3] );
         linear.addColorStop(0, color[0]);
         linear.addColorStop(.3, color[0]);
@@ -2857,12 +2859,14 @@ function buysell(up, ctx, centerX, centerY, color) {
     }
     ctx.fillStyle = linear;
     ctx.fill();
+    ctx.restore()
 }
 function drawArrow(up, ctx, centerX, centerY, color, size) {
     var arrowSize = shapeSize('arrowUp', size);
     var halfArrowSize = (arrowSize - 1) / 2;
     var baseSize = ceilToOdd(size / 2);
     var halfBaseSize = (baseSize - 1) / 2;
+    ctx.save();
     ctx.fillStyle = color;
     ctx.beginPath();
     if (up) {
@@ -2884,17 +2888,35 @@ function drawArrow(up, ctx, centerX, centerY, color, size) {
         ctx.lineTo(centerX - halfBaseSize, centerY);
     }
     ctx.fill();
+    ctx.restore()
 }
 function hitTestArrow(up, centerX, centerY, size, x, y) {
     // TODO: implement arrow hit test
     return hitTestSquare(centerX, centerY, size, x, y);
 }
 
+function drawGlow(ctx, centerX, centerY, color) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = color[1];
+    ctx.arc(centerX, centerY, 4, 0, Math.PI * 2, false);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.filter = "blur(" + color[0]+"px)";
+    ctx.fillStyle = color[1];
+    // ctx.shadowColor = color[1];
+    // ctx.shadowBlur = color[0];
+    ctx.arc(centerX, centerY, 14, 0, Math.PI * 2, false);
+    ctx.fill();
+    ctx.restore()
+}
+
 function drawCircle(ctx, centerX, centerY, color, size) {
     var circleSize = shapeSize('circle', size);
     var halfSize = (circleSize - 1) / 2;
+    ctx.save();
     ctx.fillStyle = color;
-    // ctx.shadowColor = '#fff';
+    // ctx.shadowColor = '#000';
     // ctx.shadowBlur = 1;
     // for (var i = 0; i < 3; i++) {
     //     ctx.shadowBlur += 0.25;
@@ -2904,14 +2926,14 @@ function drawCircle(ctx, centerX, centerY, color, size) {
     ctx.beginPath();
     ctx.lineCap = "round";
     ctx.moveTo(centerX, centerY);
-    ctx.lineTo(20000, centerY);
+    ctx.lineTo(2000, centerY);
     ctx.strokeStyle = color;
-    ctx.fillStyle = color;
     ctx.stroke();
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, halfSize, 0, 2 * Math.PI, false);
     ctx.fill();
+    ctx.restore()
 }
 function hitTestCircle(centerX, centerY, size, x, y) {
     var circleSize = shapeSize('circle', size);
@@ -2961,18 +2983,21 @@ var SeriesMarkersRenderer = /** @class */ (function () {
 function drawItem(item, ctx) {
     switch (item.shape) {
         case 'arrowDown':
-            drawArrow(false, ctx, item.x, item.y , item.color, item.size);
+            drawArrow(false, ctx, item.x, item.y, item.color, item.size);
             return;
         case 'sell':
             buysell(false, ctx, item.x, item.y, item.color, item.size);
-            drawArrow(false, ctx, item.x, item.y+15 , item.color[2], 30);
+            drawArrow(false, ctx, item.x, item.y + 25, item.color[2], 30);
             return;
         case 'arrowUp':
             drawArrow(true, ctx, item.x, item.y, item.color, item.size);
             return;
         case 'buy':
             buysell(true, ctx, item.x, item.y, item.color, item.size);
-            drawArrow(true, ctx, item.x, item.y-15, item.color[2], 30);
+            drawArrow(true, ctx, item.x, item.y - 25, item.color[2], 30);
+            return;
+        case 'glow':
+            drawGlow(ctx, item.x, item.y, item.color);
             return;
         case 'circle':
             drawCircle(ctx, item.x, item.y, item.color, 15);
@@ -3001,8 +3026,8 @@ function hitTestItem(item, x, y) {
 }
 
 function fillSizeAndY(
-// tslint:disable-next-line:max-params
-rendererItem, marker, seriesData, offsets, shapeMargin, priceScale, timeScale, firstValue) {
+    // tslint:disable-next-line:max-params
+    rendererItem, marker, seriesData, offsets, shapeMargin, priceScale, timeScale, firstValue) {
     var inBarPrice = isNumber(seriesData) ? seriesData : seriesData.close;
     var highPrice = isNumber(seriesData) ? seriesData : seriesData.high;
     var lowPrice = isNumber(seriesData) ? seriesData : seriesData.low;
@@ -3063,16 +3088,18 @@ var SeriesMarkersPaneView = /** @class */ (function () {
         var timeScale = this._private__model.timeScale();
         var seriesMarkers = this._private__series.indexedMarkers();
         if (this._private__dataInvalidated) {
-            this._private__data.items = seriesMarkers.map(function (marker) { return ({
-                time: marker.time,
-                x: 0,
-                y: 0,
-                size: 0,
-                shape: marker.shape,
-                color: marker.color,
-                internalId: marker.internalId,
-                externalId: marker.id,
-            }); });
+            this._private__data.items = seriesMarkers.map(function (marker) {
+                return ({
+                    time: marker.time,
+                    x: 0,
+                    y: 0,
+                    size: 0,
+                    shape: marker.shape,
+                    color: marker.color,
+                    internalId: marker.internalId,
+                    externalId: marker.id,
+                });
+            });
             this._private__dataInvalidated = false;
         }
         var shapeMargin$1 = shapeMargin(timeScale.barSpacing());
@@ -4227,14 +4254,16 @@ var Series = /** @class */ (function (_super) {
     };
     Series.prototype._private__recalculateMarkers = function () {
         var timeScalePoints = this.model().timeScale().points();
-        this._private__indexedMarkers = this._private__markers.map(function (marker, index) { return ({
-            time: ensureNotNull(timeScalePoints.indexOf(marker.time.timestamp, true)),
-            position: marker.position,
-            shape: marker.shape,
-            color: marker.color,
-            id: marker.id,
-            internalId: index,
-        }); });
+        this._private__indexedMarkers = this._private__markers.map(function (marker, index) {
+            return ({
+                time: ensureNotNull(timeScalePoints.indexOf(marker.time.timestamp, true)),
+                position: marker.position,
+                shape: marker.shape,
+                color: marker.color,
+                id: marker.id,
+                internalId: index,
+            });
+        });
     };
     return Series;
 }(PriceDataSource));
@@ -6011,8 +6040,10 @@ var getMonth = function (date) { return date.getUTCMonth() + 1; };
 var getDay = function (date) { return date.getUTCDate(); };
 var getYear = function (date) { return date.getUTCFullYear(); };
 var dd = function (date) { return numberToStringWithLeadingZero(getDay(date), 2); };
-var MMM = function (date, locale) { return new Date(date.getUTCFullYear(), date.getUTCMonth(), 1)
-    .toLocaleString(locale, { month: 'short' }); };
+var MMM = function (date, locale) {
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), 1)
+        .toLocaleString(locale, { month: 'short' });
+};
 var MM = function (date) { return numberToStringWithLeadingZero(getMonth(date), 2); };
 var yy = function (date) { return numberToStringWithLeadingZero(getYear(date) % 100, 2); };
 var yyyy = function (date) { return numberToStringWithLeadingZero(getYear(date), 4); };
@@ -7525,13 +7556,13 @@ var ChartModel = /** @class */ (function () {
     ChartModel.prototype.setPriceAutoScaleForAllMainSources = function () {
         this._private__panes.map(function (p) { return p.mainDataSource(); })
             .forEach(function (s) {
-            if (s !== null) {
-                var priceScale = ensureNotNull(s.priceScale());
-                priceScale.setMode({
-                    autoScale: true,
-                });
-            }
-        });
+                if (s !== null) {
+                    var priceScale = ensureNotNull(s.priceScale());
+                    priceScale.setMode({
+                        autoScale: true,
+                    });
+                }
+            });
     };
     ChartModel.prototype.rendererOptionsProvider = function () {
         return this._private__rendererOptionsProvider;
@@ -9484,8 +9515,8 @@ var TimeAxisWidget = /** @class */ (function () {
     TimeAxisWidget.prototype.optimalHeight = function () {
         var rendererOptions = this._private__getRendererOptions();
         return Math.ceil(
-        // rendererOptions.offsetSize +
-        rendererOptions.borderSize +
+            // rendererOptions.offsetSize +
+            rendererOptions.borderSize +
             rendererOptions.tickLength +
             rendererOptions.fontSize +
             rendererOptions.paddingTop +
@@ -10592,20 +10623,20 @@ var CandlestickSeriesApi = /** @class */ (function (_super) {
 }(SeriesApi));
 
 var candlestickStyleDefaults = {
-    upColor: '#26a69a',
-    downColor: '#ef5350',
+    upColor: '#fc155a',
+    downColor: '#25b940',
     wickVisible: true,
     borderVisible: true,
     borderColor: '#378658',
-    borderUpColor: '#26a69a',
-    borderDownColor: '#ef5350',
+    borderUpColor: '#fc155a',
+    borderDownColor: '#25b940',
     wickColor: '#737375',
-    wickUpColor: '#26a69a',
-    wickDownColor: '#ef5350',
+    wickUpColor: '#fc155a',
+    wickDownColor: '#25b940',
 };
 var barStyleDefaults = {
-    upColor: '#26a69a',
-    downColor: '#ef5350',
+    upColor: '#fc155a',
+    downColor: '#25b940',
     openVisible: true,
     thinBars: true,
 };
@@ -10626,7 +10657,7 @@ var areaStyleDefaults = {
     crosshairMarkerRadius: 4,
 };
 var histogramStyleDefaults = {
-    color: '#26a69a',
+    color: '#fc155a',
     base: 0,
     lineWidth: 2,
 };
@@ -10786,7 +10817,7 @@ var ChartApi = /** @class */ (function () {
         delete this._private__dataLayer;
     };
     ChartApi.prototype.clear = function () {
-        this._private__seriesMap.forEach((series, seriesObj) =>{
+        this._private__seriesMap.forEach((series, seriesObj) => {
             var update = this._private__dataLayer.removeSeries(series);
             var model = this._private__chartWidget.model();
             model.removeSeries(series);

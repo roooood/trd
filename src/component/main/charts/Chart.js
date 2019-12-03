@@ -25,6 +25,9 @@ class Chart extends Component {
         this.chartType = {};
         this.timer = null;
         this.id = props.parent.id;
+        this.markers = [];
+        this.shadow = 6;
+        this.up = true;
         autoBind(this);
         window.ee.on('actionHover' + props.parent.id, this.showAction)
         window.ee.on('actionBlur' + props.parent.id, this.hideAction)
@@ -111,41 +114,47 @@ class Chart extends Component {
         }
         this.setMarkers();
         this.chart.timeScale().fitContent();
+        this.chart.timeScale().scrollToRealTime();
+        // this.chart.subscribeVisibleTimeRangeChange((e) => console.log(e))
     }
     showAction(action) {
-        let { resolution } = this.props.parent;
+        let { resolution, chartType } = this.props.parent;
         if (!(resolution in this.chartData)) {
             return;
         }
         let data = this.lastItem();
         let dm = getDimention();
+        let item = {};
         if (action == 'buy') {
-            this.chartType[this.props.parent.chartType].setMarkers([
-                {
-                    time: data.time,
-                    position: 'aboveBar',
-                    color: ['rgba(5, 253, 50,.2) ', 'rgba(0, 0, 0,0)', 'rgb(5, 253, 50)', dm],
-                    shape: 'buy',
-                }
-            ]);
+            item = {
+                time: data.time,
+                position: 'aboveBar',
+                color: ['rgba(5, 253, 50,.2) ', 'rgba(0, 0, 0,0)', 'rgb(5, 253, 50)', dm],
+                shape: 'buy',
+                key: 'trade'
+            }
         }
         else {
-            this.chartType[this.props.parent.chartType].setMarkers([
-                {
-                    time: data.time,
-                    position: 'belowBar',
-                    color: ['rgba(252, 21, 90,.3)', 'rgba(0, 0, 0, 0)', 'rgb(252, 21, 90)', dm],
-                    shape: 'sell',
-                },
-            ]);
+            item = {
+                time: data.time,
+                position: 'belowBar',
+                color: ['rgba(252, 21, 90,.3)', 'rgba(0, 0, 0, 0)', 'rgb(252, 21, 90)', dm],
+                shape: 'sell',
+                key: 'trade'
+            }
         }
+        this.markers.push(item)
+        this.chartType[chartType].setMarkers(this.markers);
     }
     hideAction() {
-        let { resolution } = this.props.parent;
+        let { resolution, chartType } = this.props.parent;
         if (!(resolution in this.chartData)) {
             return;
         }
-        this.setMarkers();
+        this.markers = this.markers.filter((obj) => {
+            return obj.key !== 'trade';
+        });
+        this.chartType[chartType].setMarkers(this.markers);
     }
     trade({ tradeType, bet, tradeAt }) {
         // let { balance } = this.context.state.user;
@@ -173,9 +182,6 @@ class Chart extends Component {
         this.setMarkers();
     }
     order([order]) {
-        console.log('====================================');
-        console.log(this.props.parent.id, order.market_id);
-        console.log('====================================');
         if (this.props.parent.id == order.market_id) {
             this.openOrders([order]);
             this.notify({ message: t('orderSuccess'), type: 'success' });
@@ -195,7 +201,9 @@ class Chart extends Component {
     }
     setMarkers() {
         let { resolution, chartType } = this.props.parent;
-        let i, j, point, marker = [];
+        this.markers = [];
+        let i, j, point;
+        let lastTime = this.lastItem().time;
         if (resolution in this.chartData) {
             let len = this.chartData[resolution].length;
             for (j of this.opens) {
@@ -207,19 +215,66 @@ class Chart extends Component {
                     }
                 }
                 if (point == null) {
-                    point = this.lastItem().time
+                    point = lastTime
                 }
-                marker.push({
+                this.markers.push({
                     time: point,
-                    position: j.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
+                    position: j.tradeType == 'buy' ? 'belowBar' : 'aboveBar',
                     color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
                     shape: 'circle',
                 })
+
             }
-            this.chartType[chartType].setMarkers(marker);
+            this.chartType[chartType].setMarkers(this.markers);
+            this.glow();
+        }
+    }
+    glow() {
+        clearInterval(this.timer);
+        let { resolution, chartType } = this.props.parent;
+        if (resolution in this.chartData) {
+            this.timer = setInterval(() => {
+                if (this.up == true) {
+                    this.shadow += 2;
+
+                    if (this.shadow == 12) {
+                        this.up = false;
+                    }
+                } else {
+                    this.up = false
+                    this.shadow -= 2;
+
+                    if (this.shadow == 6) {
+                        this.up = true;
+                    }
+                }
+                let last = this.lastItem();
+                let item = {
+                    time: last.time,
+                    position: 'inBar',
+                    color: [this.shadow, last.open > last.close ? '#25b940' : '#fc155a'],
+                    shape: 'glow',
+                    key: 'glow'
+                }
+
+                let result = -1;
+                for (var i in this.markers) {
+                    if (this.markers[i].key == 'glow') {
+                        result = i;
+                    }
+                }
+                if (result > -1) {
+                    this.markers[result] = item;
+                }
+                else {
+                    this.markers.push(item);
+                }
+                this.chartType[chartType].setMarkers(this.markers);
+            }, 200);
         }
     }
     changeResolution(resolution) {
+        clearInterval(this.timer);
         this.props.dispatch(TabbarAdd({ key: this.props.tab.active, value: { ...this.props.parent, resolution } }));
         setTimeout(() => {
             this.getData();

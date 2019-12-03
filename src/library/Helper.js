@@ -64,15 +64,10 @@ export function amountLen(amount) {
     return 0;
 }
 export function toMoney(amount) {
-    if (isFloat(amount)) {
-        return add(amount, 0);
-    }
     if (typeof amount == 'undefined' || amount == 'null')
         return 0;
-
     if (amount.length < 2)
         return amount + '';
-    amount = Math.floor(amount);
     return ("" + amount).replace(/,/g, '').replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
 }
 export function numFa(num, dontTrim) {

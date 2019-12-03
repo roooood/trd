@@ -18,6 +18,15 @@ body {
             user-select: none; 
   -webkit-overflow-scrolling: touch;
 }
+.scrollbar::-webkit-scrollbar {
+   width: 0 !important 
+  }
+.scrollbar { 
+    scrollbar-width: none!important;
+    -ms-overflow-style: none!important 
+  }
+
+
 .theme-default{
   color:#fff;
   background-color: #151515;

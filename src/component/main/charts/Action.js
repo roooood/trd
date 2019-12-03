@@ -72,7 +72,7 @@ class Action extends Component {
     render() {
         let profit = this.context.state.setting.profit || 0;
         return (
-            <div style={styles.root}>
+            <div style={styles.root} className="scrollbar">
                 <div style={styles.group}>
                     <Price amount={this.amount} />
                     <Time time={this.time} />

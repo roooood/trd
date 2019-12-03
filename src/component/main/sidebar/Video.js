@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import Context from 'library/Context';
 import autoBind from 'react-autobind';
 import { Scrollbars } from 'react-custom-scrollbars';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 class Video extends Component {
   static contextType = Context;
@@ -19,19 +23,22 @@ class Video extends Component {
   videos(videos) {
     this.setState({ videos });
   }
+  play(url) {
+    let modal = this.context.app('modal');
+    modal.show(<video src={url} style={{ width: '100%' }} autoplay controls></video>);
+  }
   render() {
     return (
       <div style={styles.root} className="swing-in-top-fwd" >
         <Scrollbars style={{ height: '81vh' }}  >
           {this.state.videos.map((video, i) =>
-            <div key={i} style={styles.item} >
-              <img src={video.image} style={styles.image} />
-              <div style={styles.itemText}>
-                {video.title}
-              </div>
-            </div>
-          )
-          }
+            <GridListTile key={i} style={styles.item} >
+              <ButtonBase focusRipple onClick={() => this.play(video.link)}>
+                <img src={video.image} alt={video.title} style={styles.image} />
+                <GridListTileBar title={video.title} />
+              </ButtonBase>
+            </GridListTile>
+          )}
         </Scrollbars>
       </div>
     );
@@ -47,12 +54,11 @@ const styles = {
     cursor: 'pointer',
     width: '100%',
     position: 'relative',
-    marginBottom: 10,
   },
   image: {
+    borderRadius: 5,
     width: '100%',
-    opacity: '0.6',
-    borderRadius: 5
+    transform: 'translateY(0)'
   },
   itemText: {
     position: 'absolute',
