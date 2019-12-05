@@ -30,7 +30,7 @@ class Video extends Component {
   render() {
     return (
       <div style={styles.root} className="swing-in-top-fwd" >
-        <Scrollbars style={{ height: '81vh' }}  >
+        <Scrollbars style={{ height: this.context.state.isMobile ? '52vh' : '81vh' }}  >
           {this.state.videos.map((video, i) =>
             <GridListTile key={i} style={styles.item} >
               <ButtonBase focusRipple onClick={() => this.play(video.link)}>

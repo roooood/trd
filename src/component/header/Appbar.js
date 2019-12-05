@@ -19,6 +19,11 @@ const ColorButton = withStyles(theme => ({
         border: '1px solid #333',
         margin: 5,
         borderRadius: 5,
+        height: 56,
+        [theme.breakpoints.between('sm', 'md')]: {
+            minHeight: 48,
+            height: 48,
+        },
         '&:hover': {
             background: 'transparent',
             borderBottom: '2px solid #f07000',
@@ -48,6 +53,10 @@ const StyledTab = withStyles(theme => ({
         minWidth: 30,
         minHeight: 56,
         height: 56,
+        [theme.breakpoints.between('sm', 'md')]: {
+            minHeight: 48,
+            height: 48,
+        },
         margin: 5,
         borderRadius: 5,
         minWidth: 100,
@@ -173,7 +182,7 @@ class Appbar extends Component {
                         }
                     </StyledTabs>
                 </div>
-                <ColorButton onClick={this.list} variant="contained" color="primary" style={{ margin: 5, height: 56 }}>
+                <ColorButton onClick={this.list} variant="contained" color="primary" >
                     <AddIcon style={{ fontSize: 30 }} />
                 </ColorButton>
             </div>

@@ -35,7 +35,18 @@ export default {
     agree: 'I am over 18 & agree with the',
     terms: 'Terms of Service',
 
+    logOut: 'Logout',
     deposit: 'Deposit',
+    depositExpireLimit: 'Attention , this addresses expire after one hour',
+    makeDeposit: 'Make Deposit',
+    withdraw: 'Withdraw',
+    makeWithdraw: 'Make Withdraw',
+    history: 'History',
+    address: 'Address',
+    wallet: 'Wallet',
+    date: 'Date',
+    status: 'Status',
+    amount: 'Amount',
     totalPortfolio: 'Total Portfolio',
     tradingHistory: 'Trading History',
     chatSupport: 'Chat & Support',
@@ -44,7 +55,6 @@ export default {
     more: 'More',
     practiceAccount: 'Practice Account',
     realAccount: 'Real Account',
-    amount: 'Amount',
     time: 'Time',
     profit: 'Profit',
 
@@ -83,6 +93,8 @@ export default {
     uWin: 'You Win',
     uLose: 'You Lose',
 
-    type: 'Write a new message',
-    chatSupport: 'Chat & Support'
+    typing: 'Write a new message',
+    chatSupport: 'Chat & Support',
+
+    copied: 'Copied To Clipboard'
 }

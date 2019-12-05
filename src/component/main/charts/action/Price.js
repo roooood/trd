@@ -14,6 +14,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { toMoney } from 'library/Helper';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
+import Hidden from '@material-ui/core/Hidden';
 
 const StyledMenu = withStyles({
     paper: {
@@ -87,20 +88,33 @@ class Price extends Component {
         return (
             <>
                 <div style={styles.root} >
-                    <div style={styles.info} onClick={this.openMenu}>
-                        <Typography variant="button" display="block" style={styles.color}>
-                            {t('amount')}
-                        </Typography>
-                        <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
-                    </div>
-                    <div style={styles.display} >
-                        <AttachMoneyIcon onClick={this.openMenu} style={{ ...styles.color, fontSize: '1.9em', marginRight: 10 }} />
-                        <input
-                            type="text"
-                            style={styles.input}
-                            onChange={e => this.changeValue(e.target.value)}
-                            value={this.state.value} />
-                    </div>
+                    <Hidden only={['xs', 'sm']}>
+                        <div style={styles.info} onClick={this.openMenu}>
+                            <Typography variant="button" display="block" style={styles.color}>
+                                {t('amount')}
+                            </Typography>
+                            <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
+                        </div>
+                        <div style={styles.display} >
+                            <AttachMoneyIcon onClick={this.openMenu} style={{ ...styles.color, fontSize: '1.6em', marginRight: 10 }} />
+                            <input
+                                type="text"
+                                style={styles.input}
+                                onChange={e => this.changeValue(e.target.value)}
+                                value={this.state.value} />
+                        </div>
+                    </Hidden>
+                    <Hidden only={['md', 'lg', 'xl']}>
+                        <div style={styles.display} onClick={this.openMenu}>
+                            <AttachMoneyIcon style={{ ...styles.color, fontSize: '1.6em', marginRight: 10 }} />
+                            <input
+                                type="text"
+                                style={styles.input}
+                                disabled
+                                onChange={e => this.changeValue(e.target.value)}
+                                value={this.state.value} />
+                        </div>
+                    </Hidden>
                     <div style={styles.picker} >
                         <IconButton size="small" onClick={this.down}>
                             <RemoveIcon style={styles.color} />
@@ -159,7 +173,7 @@ const styles = {
         borderTop: '1px solid #111',
         display: 'flex',
         justifyContent: 'space-around',
-        height: 25,
+        height: '1em',
         alignItems: 'center',
         paddingTop: 5
     },
@@ -172,9 +186,10 @@ const styles = {
         background: 'transparent',
         border: 0,
         color: '#fff',
-        fontSize: '1.6em',
+        fontSize: '1.4em',
         padding: 0,
-        width: 60
+        width: 60,
+        height: '1.4em'
     },
     listItem: {
         marginBottom: 5,

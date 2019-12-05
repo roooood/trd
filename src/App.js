@@ -24,7 +24,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isMobile: window.innerWidth < 1000,
+      isMobile: window.innerWidth <= 900,
       setting: {}
     };
     this.game = new GameServer('trade');

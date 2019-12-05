@@ -18,6 +18,10 @@ const BuyButton = withStyles(theme => ({
         color: '#fff',
         maxHeight: 80,
         height: 80,
+        [theme.breakpoints.down('sm')]: {
+            height: 48,
+            maxHeight: 48,
+        },
         marginTop: 5,
         fontSize: '1.1rem',
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
@@ -32,6 +36,10 @@ const SellButton = withStyles(theme => ({
         color: '#fff',
         maxHeight: 80,
         height: 80,
+        [theme.breakpoints.down('sm')]: {
+            height: 48,
+            maxHeight: 48,
+        },
         marginTop: 5,
         fontSize: '1.1rem',
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
@@ -77,24 +85,26 @@ class Action extends Component {
                     <Price amount={this.amount} />
                     <Time time={this.time} />
                 </div>
-                <div style={styles.profit}>
-                    <div style={styles.info} >
-                        <Typography variant="button" display="block" >
-                            {t('profit')}
+                <Hidden only={['xs', 'sm']}>
+                    <div style={styles.profit}>
+                        <div style={styles.info} >
+                            <Typography variant="button" display="block" >
+                                {t('profit')}
+                            </Typography>
+                            <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
+                        </div>
+                        <div style={styles.info} >
+                            <Typography variant="h4" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
+                                {profit}%
                         </Typography>
-                        <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
-                    </div>
-                    <div style={styles.info} >
-                        <Typography variant="h4" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
-                            {profit}%
+                        </div>
+                        <div style={styles.info} >
+                            <Typography variant="h5" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
+                                {(this.state.bet * profit / 100).toFixed(2)}$
                         </Typography>
+                        </div>
                     </div>
-                    <div style={styles.info} >
-                        <Typography variant="h5" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
-                            {(this.state.bet * profit / 100).toFixed(2)}$
-                        </Typography>
-                    </div>
-                </div>
+                </Hidden>
                 <div style={styles.group}>
                     <BuyButton
                         variant="contained"
@@ -102,7 +112,7 @@ class Action extends Component {
                         onClick={() => this.onTrade('buy')}
                         onMouseEnter={() => this.mouseOver('buy')}
                         onMouseLeave={() => this.mouseOut('buy')}>
-                        <TrendingUpIcon style={{ marginRight: 20 }} /> {t('buy')}
+                        <TrendingUpIcon style={{ marginRight: '1vw' }} /> {t('buy')}
                     </BuyButton>
                     <SellButton
                         variant="contained"
@@ -110,11 +120,8 @@ class Action extends Component {
                         onClick={() => this.onTrade('sell')}
                         onMouseEnter={() => this.mouseOver('sell')}
                         onMouseLeave={() => this.mouseOut('sell')}>
-                        <TrendingDownIcon style={{ marginRight: 20 }} /> {t('sell')}
+                        <TrendingDownIcon style={{ marginRight: '1vw' }} /> {t('sell')}
                     </SellButton>
-                    <Hidden only={['md', 'lg', 'xl']}>
-                        <div style={{ height: 50 }} />
-                    </Hidden>
                 </div>
             </div>
         );
@@ -127,7 +134,7 @@ const styles = {
         height: '100%',
         justifyContent: 'space-between',
         flexDirection: 'column',
-        overflow: 'auto',
+        overflow: 'hidden',
     },
     group: {
         display: 'flex',

@@ -9,7 +9,7 @@ import Context from './library/Context';
 import { t } from './locales';
 
 import Loading from './component/Loading';
-import Deposit from './component/header/Deposit';
+import Setting from './component/header/Setting';
 import Account from './component/header/Account';
 import Appbar from './component/header/Appbar';
 
@@ -105,7 +105,7 @@ class Route extends Component {
                         </div>
                         <div className="item3" >
                             <Account />
-                            <Deposit />
+                            <Setting />
                         </div>
                     </div>
                     <div className="container center" >

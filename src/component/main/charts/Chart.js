@@ -35,7 +35,7 @@ class Chart extends Component {
     }
     resize() {
         if (this.props.inView)
-            this.chart.applyOptions(getDimention());
+            this.chart.applyOptions(getDimention(this.context.state.isMobile));
     }
 
     componentDidMount() {
@@ -87,7 +87,7 @@ class Chart extends Component {
         this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
-            ...getDimention(),
+            ...getDimention(this.context.state.isMobile),
             ...chartOptions
         });
     }
@@ -123,7 +123,7 @@ class Chart extends Component {
             return;
         }
         let data = this.lastItem();
-        let dm = getDimention();
+        let dm = getDimention(this.context.state.isMobile);
         let item = {};
         if (action == 'buy') {
             item = {
@@ -211,6 +211,7 @@ class Chart extends Component {
                 for (i = 0; i < len; i++) {
                     if (j.point <= this.chartData[resolution][i].time) {
                         point = this.chartData[resolution][i].time;
+                        this.chartData[resolution][i].marker = true;
                         break;
                     }
                 }
@@ -219,8 +220,8 @@ class Chart extends Component {
                 }
                 this.markers.push({
                     time: point,
-                    position: j.tradeType == 'buy' ? 'belowBar' : 'aboveBar',
-                    color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
+                    position: j.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
+                    color: j.tradeType == 'buy' ? '#98FB98' : '#FFA07A',
                     shape: 'circle',
                 })
 
@@ -252,7 +253,7 @@ class Chart extends Component {
                 let item = {
                     time: last.time,
                     position: 'inBar',
-                    color: [this.shadow, last.open > last.close ? '#25b940' : '#fc155a'],
+                    color: [this.shadow, last.open < last.close ? '#01FF70' : '#fc155a', this.context.state.isMobile],
                     shape: 'glow',
                     key: 'glow'
                 }
@@ -310,7 +311,7 @@ class Chart extends Component {
             return;
         }
         let time = Math.round(new Date() / 1000) + this.timeDifference;
-        let isNew = time - lastData.time > timeLimit;
+        let isNew = time - lastData.time > timeLimit || ('marker' in lastData);
         let updateData = isNew
             ? {
                 open: targetPrice,
@@ -335,7 +336,6 @@ class Chart extends Component {
             this.chartType[chartType].setData(this.chartData[resolution]);
         }
     }
-
     notify(data) {
         window.ee.emit('notify', data)
     }

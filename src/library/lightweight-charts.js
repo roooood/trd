@@ -2896,17 +2896,18 @@ function hitTestArrow(up, centerX, centerY, size, x, y) {
 }
 
 function drawGlow(ctx, centerX, centerY, color) {
+    let mul = color[2] ? 1 : 2;
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = color[1];
-    ctx.arc(centerX, centerY, 4, 0, Math.PI * 2, false);
+    ctx.arc(centerX, centerY, 2*mul, 0, Math.PI * 2, false);
     ctx.fill();
     ctx.beginPath();
     ctx.filter = "blur(" + color[0]+"px)";
     ctx.fillStyle = color[1];
     // ctx.shadowColor = color[1];
     // ctx.shadowBlur = color[0];
-    ctx.arc(centerX, centerY, 14, 0, Math.PI * 2, false);
+    ctx.arc(centerX, centerY, 8*mul, 0, Math.PI * 2, false);
     ctx.fill();
     ctx.restore()
 }
@@ -10622,21 +10623,23 @@ var CandlestickSeriesApi = /** @class */ (function (_super) {
     return CandlestickSeriesApi;
 }(SeriesApi));
 
+// upColor: '#fc155a',
+//     downColor: '#25b940',
 var candlestickStyleDefaults = {
-    upColor: '#fc155a',
-    downColor: '#25b940',
+    upColor: '#2ECC40',
+    downColor: '#FF4136',
     wickVisible: true,
     borderVisible: true,
     borderColor: '#378658',
-    borderUpColor: '#fc155a',
-    borderDownColor: '#25b940',
+    borderUpColor: '#2ECC40',
+    borderDownColor: '#FF4136',
     wickColor: '#737375',
-    wickUpColor: '#fc155a',
-    wickDownColor: '#25b940',
+    wickUpColor: '#2ECC40',
+    wickDownColor: '#FF4136',
 };
 var barStyleDefaults = {
-    upColor: '#fc155a',
-    downColor: '#25b940',
+    upColor: '#2ECC40',
+    downColor: '#FF4136',
     openVisible: true,
     thinBars: true,
 };

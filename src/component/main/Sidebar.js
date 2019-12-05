@@ -13,7 +13,7 @@ import StarBorderRounded from '@material-ui/icons/StarBorderRounded';
 import ChatIcon from '@material-ui/icons/ChatBubbleOutline';
 import Videocam from '@material-ui/icons/OndemandVideo';
 import MoreOutlined from '@material-ui/icons/MoreOutlined';
-
+import Hidden from '@material-ui/core/Hidden';
 import History from './sidebar/History';
 import Chat from './sidebar/Chat';
 import Video from './sidebar/Video';
@@ -27,6 +27,11 @@ const StyledTab = withStyles(theme => ({
         minWidth: 80,
         width: 80,
         lineHeight: '1em',
+        minHeight: 72,
+        [theme.breakpoints.between('sm', 'md')]: {
+            minHeight: 40,
+            fontSize: theme.typography.pxToRem(11),
+        },
         backgroundColor: 'transparent',
         '&:hover': {
             opacity: 1,
@@ -36,6 +41,9 @@ const StyledTab = withStyles(theme => ({
             color: '#f50057',
             backgroundColor: 'transparent',
         }
+    },
+    labelIcon: {
+        paddingTop: 6
     },
     selected: {}
 }))(props => <Tab disableRipple {...props} />);
@@ -77,7 +85,7 @@ class Sidebar extends Component {
             <div style={styles.root} className="sidebar" id="sidebar">
                 <Tabs
                     orientation="vertical"
-                    variant="scrollable"
+                    // variant="scrollable"
                     value={this.state.tab}
                     onChange={this.handleChange}
                     aria-label="Vertical tabs example"

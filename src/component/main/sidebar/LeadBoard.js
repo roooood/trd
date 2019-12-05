@@ -25,7 +25,7 @@ class LeadBoard extends Component {
     return (
       <div style={styles.root} className="swing-in-top-fwd" >
         <Typography align="center" gutterBottom > {t('leaderBoard')}</Typography >
-        <Scrollbars style={{ height: '77vh' }}  >
+        <Scrollbars style={{ height: this.context.state.isMobile ? '67vh' : '77vh' }}  >
           {this.state.leads.map((lead, i) => {
             return (<div key={i} style={styles.item}>
               <div style={{ ...styles.subItem, color: 'rgb(247, 183, 28)', fontWeight: 'bold' }}>

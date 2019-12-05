@@ -84,7 +84,7 @@ class Price extends Component {
                     ))
                     }
                 </ButtonGroup>
-                <Scrollbars style={{ height: '70vh' }}  >
+                <Scrollbars style={{ height: this.context.state.isMobile ? '52vh' : '70vh' }}  >
                     {this.state[this.state.type].map((item, i) => {
                         let date = this.timeConverter(item.point)
                         return (

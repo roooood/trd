@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
+import Context from 'library/Context';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { t } from 'locales';
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +10,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import './ChatBubble.css';
 
 class ChatBubble extends Component {
+  static contextType = Context;
   constructor(props) {
     super(props);
     this.state = {
@@ -80,7 +82,7 @@ class ChatBubble extends Component {
       <>
         <Typography align="center" gutterBottom > {t('chatSupport')}</Typography >
         <div className="chats">
-          <Scrollbars style={{ height: '68vh' }} ref="scroll" >
+          <Scrollbars style={{ height: this.context.state.isMobile ? '46vh' : '68vh' }} ref="scroll" >
             <div className="chat-list">
               {chatList}
             </div>
@@ -91,7 +93,7 @@ class ChatBubble extends Component {
           >
             <input
               value={newMessage}
-              placeholder={t('type')}
+              placeholder={t('typing')}
               onChange={this.handleInputChange}
               className="new-message-input"
             />

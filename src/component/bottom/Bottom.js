@@ -11,9 +11,9 @@ import { withStyles } from '@material-ui/core/styles';
 import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import LockIcon from '@material-ui/icons/Lock';
 import { connect } from 'react-redux';
 import { User } from 'redux/action/user';
+import Hidden from '@material-ui/core/Hidden';
 
 const ColorButton = withStyles(theme => ({
     root: {
@@ -38,9 +38,6 @@ class Bottom extends Component {
     chat() {
         window.ee.emit('sideBar', null, 1)
     }
-    logOut() {
-        this.props.dispatch(User(null));
-    }
     changeScreen() {
         this.setState({ fullscreen: !this.state.fullscreen })
         if ((document.fullScreenElement && document.fullScreenElement !== null) ||
@@ -63,15 +60,32 @@ class Bottom extends Component {
         }
     }
     render() {
+        let profit = this.context.state.setting.profit || 0;
         return (
             <div style={styles.root}>
                 <ColorButton variant="outlined" size="small" onClick={this.chat}  >
                     <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10, color: '#fff' }} /> {t('chatSupport')}
                 </ColorButton>
+                <Hidden only={['md', 'lg', 'xl']}>
+                    <div style={styles.profit}>
+                        <div style={styles.info} >
+                            <Typography variant="button" display="block" >
+                                {t('profit')}:
+                            </Typography>
+                        </div>
+                        <div style={styles.info} >
+                            <Typography display="block" style={{ color: '#25b940' }} >
+                                {profit}%
+                        </Typography>
+                        </div>
+                        {/* <div style={styles.info} >
+                            <Typography variant="h5" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
+                                {(this.state.bet * profit / 100).toFixed(2)}$
+                        </Typography>
+                        </div> */}
+                    </div>
+                </Hidden>
                 <div style={styles.actions} >
-                    <IconButton size="medium" onClick={this.logOut}>
-                        <LockIcon style={styles.icon} />
-                    </IconButton>
                     <IconButton size="medium" onClick={this.changeScreen}>
                         {this.state.fullscreen
                             ? <FullscreenIcon style={styles.icon} />
@@ -96,6 +110,15 @@ const styles = {
     },
     icon: {
         color: '#fff'
-    }
+    },
+    profit: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    info: {
+        marginRight: 4,
+        marginLeft: 4,
+    },
 }
 export default connect(state => state)(Bottom);

@@ -47,8 +47,8 @@ export const chartOptions = {
         },
     },
     priceScale: {
+        mode: 1,
         autoScale: true,
-        invertScale: true,
         borderVisible: false,
         scaleMargins: {
             top: 0.10,
@@ -131,17 +131,18 @@ export const lineOption = {
     },
 }
 
-export function getDimention() {
+export function getDimention(isMobile) {
     let sidebarElement = window.document.getElementById("sidebar");
+    let action = isMobile ? 120 : 150;
     if (sidebarElement == null) {
         return {
             width: window.innerWidth,
-            height: window.innerHeight - 120,
+            height: window.innerHeight - 130,
         }
     }
     return {
-        width: window.innerWidth - (sidebarElement.offsetWidth + 150),
-        height: window.innerHeight - 120,
+        width: window.innerWidth - (sidebarElement.offsetWidth + action),
+        height: window.innerHeight - 130,
     }
 }
 

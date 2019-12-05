@@ -7,16 +7,19 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
-import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
+import LockIcon from '@material-ui/icons/Lock';
 import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
+import DepositModal from './DepositModal';
 
 import { t } from 'locales';
 import { connect } from 'react-redux';
 import Context from 'library/Context';
 import { User } from 'redux/action/user';
-import { toMoney } from 'library/Helper';
 
 const ColorButton = withStyles(theme => ({
     root: {
@@ -54,7 +57,7 @@ const StyledMenu = withStyles({
     />
 ));
 
-class Account extends Component {
+class Setting extends Component {
     static contextType = Context;
     constructor(props) {
         super(props);
@@ -69,26 +72,26 @@ class Account extends Component {
     closeMenu() {
         this.setState({ menu: null })
     }
-    changeAccountType(type) {
-        this.closeMenu();
-        this.props.dispatch(User({ type }));
+    deposit() {
+        let modal = this.context.app('modal');
+        modal.show(<DepositModal />);
+    }
+    logOut() {
+        this.props.dispatch(User(null));
     }
     render() {
         let { type } = this.props.user;
-        let { balance } = this.context.state.user;
+        let { username } = this.context.state.user;
         return (
             <>
                 <ColorButton onClick={this.openMenu} variant="contained" color="primary" style={{ margin: 5 }}>
                     <Hidden only={['md', 'lg', 'xl']}>
-                        <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: type == 'real' ? '#25b940' : '#fc155a' }} />
+                        <AccountCircleIcon style={{ fontSize: '2.5em', color: '#22a2e1', }} />
                     </Hidden>
                     <Hidden only={['xs', 'sm']}>
-                        <MonetizationOnRoundedIcon style={{ ...styles.icon, color: type == 'real' ? '#25b940' : '#fc155a' }} />
-                        <Typography component="div" style={{ ...styles.account, width: 100 }}>
-                            {type == 'real' ? t('realAccount') : t('practiceAccount')}
-                            <Typography component="div" align="left" style={styles.accountSub}  >
-                                $ {toMoney(balance[type])}
-                            </Typography>
+                        <AccountCircleIcon style={styles.icon} />
+                        <Typography component="div" style={{ ...styles.account }}>
+                            {username}
                         </Typography>
                         <ExpandMoreRoundedIcon style={{ marginRight: -5, marginLeft: 5 }} />
                     </Hidden>
@@ -99,31 +102,23 @@ class Account extends Component {
                     onClose={this.closeMenu}
                 >
                     <List style={{ padding: '0 10px' }}>
-                        <ListItem button onClick={() => this.changeAccountType('real')}>
+                        <ListItem button onClick={this.deposit}>
                             <ListItemAvatar>
-                                <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: '#25b940' }} />
+                                <VerticalAlignBottomIcon style={{ fontSize: '1.5em', color: '#98FB98' }} />
                             </ListItemAvatar>
-                            <ListItemText primary={t('realAccount')} secondary={
-                                <Typography
-                                    component="div"
-                                    style={styles.sub}
-                                >
-                                    $ {toMoney(balance['real'])}
-                                </Typography>
-                            } />
+                            <ListItemText primary={t('deposit')} />
                         </ListItem>
-                        <ListItem button onClick={() => this.changeAccountType('practice')}>
+                        <ListItem button onClick={this.deposit}>
                             <ListItemAvatar>
-                                <MonetizationOnRoundedIcon style={{ fontSize: '2.5em', color: '#fc155a' }} />
+                                <VerticalAlignTopIcon style={{ fontSize: '1.5em', color: '#FFA07A' }} />
                             </ListItemAvatar>
-                            <ListItemText primary={t('practiceAccount')} secondary={
-                                <Typography
-                                    component="div"
-                                    style={styles.sub}
-                                >
-                                    $ {toMoney(balance['practice'])}
-                                </Typography>
-                            } />
+                            <ListItemText primary={t('withdraw')} />
+                        </ListItem>
+                        <ListItem button onClick={this.logOut}>
+                            <ListItemAvatar>
+                                <LockIcon style={{ fontSize: '1.5em', color: '#7ac1ff' }} />
+                            </ListItemAvatar>
+                            <ListItemText primary={t('logOut')} />
                         </ListItem>
                     </List>
                 </StyledMenu>
@@ -155,4 +150,5 @@ const styles = {
     }
 }
 
-export default connect(state => state)(Account);
+export default connect(state => state)(Setting
+);
