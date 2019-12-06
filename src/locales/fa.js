@@ -92,5 +92,5 @@ export default {
     typing: 'Write a new message',
     chatSupport: 'Chat & Support',
 
-    copied: 'Copied To Clipboard'
+    copied: 'The Address Copied To Clipboard'
 }

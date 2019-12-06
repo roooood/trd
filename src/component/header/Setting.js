@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,7 +14,9 @@ import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import LockIcon from '@material-ui/icons/Lock';
 import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
+
 import DepositModal from './DepositModal';
+import WithdrawModal from './WithdrawModal';
 
 import { t } from 'locales';
 import { connect } from 'react-redux';
@@ -76,6 +78,10 @@ class Setting extends Component {
         let modal = this.context.app('modal');
         modal.show(<DepositModal />);
     }
+    withdraw() {
+        let modal = this.context.app('modal');
+        modal.show(<WithdrawModal />);
+    }
     logOut() {
         this.props.dispatch(User(null));
     }
@@ -108,7 +114,7 @@ class Setting extends Component {
                             </ListItemAvatar>
                             <ListItemText primary={t('deposit')} />
                         </ListItem>
-                        <ListItem button onClick={this.deposit}>
+                        <ListItem button onClick={this.withdraw}>
                             <ListItemAvatar>
                                 <VerticalAlignTopIcon style={{ fontSize: '1.5em', color: '#FFA07A' }} />
                             </ListItemAvatar>

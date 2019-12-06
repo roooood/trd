@@ -40,13 +40,17 @@ export default {
     depositExpireLimit: 'Attention , this addresses expire after one hour',
     makeDeposit: 'Make Deposit',
     withdraw: 'Withdraw',
-    makeWithdraw: 'Make Withdraw',
+    makeWithdraw: 'Request Withdraw',
+    withdrawSubmited: 'Withdraw request submited successful',
     history: 'History',
     address: 'Address',
+    max: 'Max',
     wallet: 'Wallet',
     date: 'Date',
+    price: 'Price',
     status: 'Status',
     amount: 'Amount',
+    submit: 'Submit',
     totalPortfolio: 'Total Portfolio',
     tradingHistory: 'Trading History',
     chatSupport: 'Chat & Support',
@@ -83,9 +87,11 @@ export default {
     barChart: 'Bar Chart',
 
     balanceError: 'Your balance is less than your trade amount',
+    withdrawError: 'Your balance is less than your withdrw request amount',
     marketError: 'The market not found',
     orderError: 'Problem in your order ,please try again',
     orderSuccess: 'Your order submited',
+    unhandledError: 'Something went wrong ,please try Later',
 
     open: 'Open',
     real: 'Real',
@@ -96,5 +102,5 @@ export default {
     typing: 'Write a new message',
     chatSupport: 'Chat & Support',
 
-    copied: 'Copied To Clipboard'
+    copied: 'The Address Copied To Clipboard'
 }

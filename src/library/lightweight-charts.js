@@ -10624,22 +10624,22 @@ var CandlestickSeriesApi = /** @class */ (function (_super) {
 }(SeriesApi));
 
 // upColor: '#fc155a',
-//     downColor: '#25b940',
+//     downColor: '25b940',
 var candlestickStyleDefaults = {
-    upColor: '#2ECC40',
-    downColor: '#FF4136',
+    upColor: '#25b940',
+    downColor: '#fc155a',
     wickVisible: true,
     borderVisible: true,
     borderColor: '#378658',
-    borderUpColor: '#2ECC40',
-    borderDownColor: '#FF4136',
+    borderUpColor: '#25b940',
+    borderDownColor: '#fc155a',
     wickColor: '#737375',
-    wickUpColor: '#2ECC40',
-    wickDownColor: '#FF4136',
+    wickUpColor: '#25b940',
+    wickDownColor: '#fc155a',
 };
 var barStyleDefaults = {
-    upColor: '#2ECC40',
-    downColor: '#FF4136',
+    upColor: '#25b940',
+    downColor: '#fc155a',
     openVisible: true,
     thinBars: true,
 };

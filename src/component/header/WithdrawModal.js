@@ -17,30 +17,59 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import Grid from '@material-ui/core/Grid';
 import HistoryIcon from '@material-ui/icons/History';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import TextField from '@material-ui/core/TextField';
 
-var QRCode = require('qrcode.react');
-
-const StyledInput = withStyles(theme => ({
+const StyledInput = withStyles({
     root: {
-        color: '#f7b71c',
-        fontSize: 14,
-        marginRight: -25,
+        '& .MuiInput-root': {
+            color: '#f7b71c',
+            fontSize: 14,
+        },
+        '& label': {
+            color: '#aeabab',
+        },
+        '& label.Mui-focused': {
+            color: '#aeabab',
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: '#aeabab',
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: '#aeabab',
+        },
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: '#aeabab',
+            },
+            '&:hover fieldset': {
+                borderColor: '#aeabab',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#aeabab',
+            },
+        },
     },
-}))(Input);
+})(TextField);
 
-const StyledSnackbarContent = withStyles(theme => ({
+const MyRadio = withStyles({
     root: {
-        color: '#fff',
-        background: '#ee7218',
-        marginBottom: 25,
+        color: '#aeabab',
+        '&$checked': {
+            color: '#f7b71c',
+        },
     },
-}))(SnackbarContent);
+    checked: {},
+})(props => <Radio color="default" {...props} />);
+
 const ColorButton = withStyles(theme => ({
     root: {
         color: 'rgb(221, 221, 221)',
@@ -48,6 +77,7 @@ const ColorButton = withStyles(theme => ({
         marginBottom: 7,
     },
 }))(Button);
+
 const ColorCircularProgress = withStyles({
     root: {
         color: '#fff',
@@ -80,19 +110,25 @@ const StyledTableRow = withStyles(theme => ({
     },
 }))(TableRow);
 
-class Deposit extends Component {
+class Withdraw extends Component {
     static contextType = Context;
     constructor(props) {
         super(props);
         this.state = {
-            deposit: null,
+            withdraw: null,
             history: null,
-            route: 'history'
+            route: 'withdraw',
+            submiting: false,
+            form: {
+                address: '',
+                type: 'bitcoin',
+                price: ''
+            }
         };
         autoBind(this);
     }
     componentDidMount() {
-        request('cash/depositHistory', { token: this.props.user.token }, res => {
+        request('cash/withdrawHistory', { token: this.props.user.token }, res => {
             if ('error' in res) {
                 this.notify({ message: t('unhandledError'), type: 'error' });
             }
@@ -101,29 +137,38 @@ class Deposit extends Component {
             }
         });
     }
+    changeInput(key, value) {
+        this.setState(state => state.form[key] = value);
+    }
     history() {
         this.setState({ route: 'history' });
     }
-    makeDeposit() {
-        this.setState({ route: 'deposit' })
-        if (this.state.deposit == null) {
-            request('cash/deposit', { token: this.props.user.token }, res => {
-                if ('error' in res) {
-                    this.notify({ message: t('unhandledError'), type: 'error' });
-                }
-                else {
-                    let address = res.addresses;
-                    delete address.usdc;
-                    this.setState({ deposit: address })
-                }
-            });
-        }
+    makeWithdraw() {
+        this.setState({ route: 'withdraw' });
+    }
+    maxValue() {
+        this.changeInput(key, this.context.state.user.balance.real)
+    }
+    submitWithdraw() {
+        this.setState({ submiting: true })
+        request('cash/withdraw', { token: this.props.user.token, ...this.state.form }, res => {
+            this.setState({ submiting: false })
+            if ('error' in res) {
+                this.notify({ message: t('unhandledError'), type: 'error' });
+            }
+            else if ('balance' in res) {
+                this.notify({ message: t('withdrawError'), type: 'error' });
+            }
+            else if ('empty' in res) {
+                this.notify({ message: t('emptyFields'), type: 'error' });
+            }
+            else {
+                this.notify({ message: t('withdrawSubmited'), type: 'success' });
+            }
+        });
     }
     notify(msg) {
         window.ee.emit('notify', msg)
-    }
-    copy(string) {
-        this.notify({ message: t('copied'), type: 'success' });
     }
     loading() {
         return (
@@ -132,40 +177,62 @@ class Deposit extends Component {
             </div>
         )
     }
-    generateDeposit() {
+    generateWithdraw() {
         return (
             <div style={styles.tableRoot}>
                 <div style={styles.header} >
-                    <Typography component="h5">{t('deposit')}</Typography>
+                    <Typography component="h5">{t('withdraw')}</Typography>
                     <ColorButton onClick={this.history} variant="outlined" >
                         <HistoryIcon />
                         {t('history')}
                     </ColorButton>
                 </div>
-                {this.state.deposit == null
-                    ? this.loading()
-                    : <>
-                        <StyledSnackbarContent message={t('depositExpireLimit')} />
-                        <Grid container spacing={2}>
-                            {Object.keys(this.state.deposit).map(item =>
-                                < Grid key={item} item xs={3} style={styles.item}>
-                                    <Typography align="center" style={{ color: '#aeabab' }}>{item.toUpperCase()}</Typography>
-                                    <div style={styles.gr}>
-                                        <QRCode value={this.state.deposit[item]} />
-                                    </div>
-                                    <StyledInput
-                                        value={this.state.deposit[item]}
-                                        endAdornment={
-                                            <IconButton onClick={() => this.copy(this.state.deposit[item])} >
-                                                <FileCopyIcon style={{ color: '#aeabab' }} />
-                                            </IconButton>
-                                        }
-                                    />
-                                </Grid>
-                            )}
-                        </Grid >
-                    </>
-                }
+                <Grid container spacing={2} >
+                    <Grid item xs={12} >
+                        <FormControl component="fieldset" >
+                            <FormLabel component="legend" style={{ color: '#aeabab' }}>{t('wallet')}</FormLabel>
+                            <RadioGroup row name="type" value={this.state.form.type} onChange={(e) => this.changeInput('type', e.target.value)}>
+                                {["Bitcoin", "Ethereum", "BitcoinCash", "Litecoin"].map(item =>
+                                    <FormControlLabel key={item} value={item.toLowerCase()} control={< MyRadio />} label={item} />
+                                )}
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={7} style={{ marginBottom: 15 }}>
+                        <FormControl fullWidth >
+                            <StyledInput
+                                label={t('address')}
+                                value={this.state.form.address}
+                                onChange={(e) => this.changeInput('address', e.target.value)}
+                                endAdornment={
+                                    <LibraryBooksIcon style={{ color: '#aeabab' }} />
+                                }
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={7} >
+                        <FormControl fullWidth >
+                            <StyledInput
+                                label={t('amount')}
+                                value={this.state.form.price}
+                                onChange={(e) => this.changeInput('price', e.target.value)}
+                                endAdornment={
+                                    <MonetizationOnIcon style={{ color: '#aeabab' }} />
+                                }
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2} >
+                        <ColorButton onClick={this.maxValue} variant="outlined" >
+                            {t('max')}
+                        </ColorButton>
+                    </Grid>
+                    <Grid item xs={12} style={{ marginTop: 15, marginBottom: 15 }} >
+                        <ColorButton onClick={this.submitWithdraw} variant="outlined" >
+                            {this.state.submiting ? <ColorCircularProgress size={25} /> : t('submit')}
+                        </ColorButton>
+                    </Grid>
+                </Grid >
             </div>
         )
     }
@@ -173,10 +240,10 @@ class Deposit extends Component {
         return (
             <div style={styles.tableRoot}>
                 <div style={styles.header} >
-                    <Typography component="h5">{t('deposit')}</Typography>
-                    <ColorButton onClick={this.makeDeposit} variant="outlined" >
+                    <Typography component="h5">{t('withdraw')}</Typography>
+                    <ColorButton onClick={this.makeWithdraw} variant="outlined" >
                         <VerticalAlignBottomIcon />
-                        {t('makeDeposit')}
+                        {t('makeWithdraw')}
                     </ColorButton>
                 </div>
                 {this.state.history == null
@@ -187,6 +254,7 @@ class Deposit extends Component {
                                 <TableHead>
                                     <TableRow>
                                         <StyledTableCell component="th">{t('wallet')}</StyledTableCell>
+                                        <StyledTableCell component="th">{t('address')}</StyledTableCell>
                                         <StyledTableCell component="th">{t('amount')}</StyledTableCell>
                                         <StyledTableCell component="th">{t('price')}</StyledTableCell>
                                         <StyledTableCell component="th">{t('status')}</StyledTableCell>
@@ -198,6 +266,7 @@ class Deposit extends Component {
                                         return (
                                             <StyledTableRow key={row.id} >
                                                 <StyledTableCell component="td" >{row.type} </StyledTableCell>
+                                                <StyledTableCell component="td" >{row.address} </StyledTableCell>
                                                 <StyledTableCell component="td" >{row.amount} </StyledTableCell>
                                                 <StyledTableCell component="td" >{toMoney(row.price)} </StyledTableCell>
                                                 <StyledTableCell component="td" >{row.status} </StyledTableCell>
@@ -219,8 +288,8 @@ class Deposit extends Component {
                 {this.state.route == 'history' &&
                     this.generateHistory()
                 }
-                {this.state.route == 'deposit' &&
-                    this.generateDeposit()
+                {this.state.route == 'withdraw' &&
+                    this.generateWithdraw()
                 }
             </div>
         );
@@ -258,12 +327,5 @@ const styles = {
         alignItems: 'center',
         flexDirection: 'column',
     },
-    gr: {
-        marginTop: 5,
-        marginBottom: 5,
-        border: '1px solid #eee',
-        padding: '9px 9px 0 9px',
-        borderRadius: 5
-    },
 }
-export default connect(state => state)(Deposit);
+export default connect(state => state)(Withdraw);

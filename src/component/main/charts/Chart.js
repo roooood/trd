@@ -68,7 +68,7 @@ class Chart extends Component {
 
         if (!(resolution in this.chartData)) {
             this.setState({ loading: true });
-            request('candle/', { url }, res => {
+            request('candle/', { url, token: this.props.user.token }, res => {
                 this.setState({ loading: false });
                 if (typeof res == 'object') {
                     let data = hub2candle(res);
