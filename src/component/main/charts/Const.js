@@ -142,7 +142,7 @@ export function getDimention(isMobile) {
     }
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + action),
-        height: window.innerHeight - 130,
+        height: window.innerHeight - (isMobile ? 110 : 130),
     }
 }
 

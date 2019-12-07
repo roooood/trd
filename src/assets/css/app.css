@@ -65,12 +65,12 @@ body {
 }
 .app-icon .cc:first-child {
   position: absolute;
-  top:-9px;
-  left:-6px;
+  bottom: -14px;
+  left: -6px;
 }
 .app-icon .cc:last-child{
   position: absolute;
-  bottom:-9px;
+  top:-10px;
   right:-14px;
 }
 .app-icon .currency-flag {
@@ -88,13 +88,18 @@ body {
   bottom:0px;
   right:-14px;
 }
-
+.app-icon .stock{
+  margin-left:-10px;
+  color:#333;
+  text-shadow:0px 0px 0px #d5d5d5, 7px 7px 0px rgba(0, 0, 0, 0.2)
+}
 .top{
   height: 65px;
   width:100%;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #333
+  border-bottom: 1px solid #333;
+  align-items: center;
 }
 .top .item1 {
   justify-content: center;
@@ -350,7 +355,7 @@ body {
     width: 95px;
   }
   .bottom{
-    height:42px
+    height:38px
   }
 }
 .swing-in-top-fwd{-webkit-animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both;animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both}

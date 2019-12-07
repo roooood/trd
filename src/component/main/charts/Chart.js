@@ -221,7 +221,7 @@ class Chart extends Component {
                 this.markers.push({
                     time: point,
                     position: j.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
-                    color: j.tradeType == 'buy' ? '#98FB98' : '#FFA07A',
+                    color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
                     shape: 'circle',
                 })
 
@@ -253,7 +253,7 @@ class Chart extends Component {
                 let item = {
                     time: last.time,
                     position: 'inBar',
-                    color: [this.shadow, last.open < last.close ? '#01FF70' : '#fc155a', this.context.state.isMobile],
+                    color: [this.shadow, last.open < last.close ? '#c0e122' : '#e16a22', this.context.state.isMobile],
                     shape: 'glow',
                     key: 'glow'
                 }

@@ -86,6 +86,9 @@ function tabGenerator(id, props, onRemove) {
             icon.push(<i key={i} className={"currency-flag currency-flag-" + i.toLowerCase()} />)
         });
     }
+    else if (props.type == 'stock') {
+        icon.push(<span className="stock">{props.symbol}</span>)
+    }
     return (
         <div style={styles.list}>
             <div style={styles.listIcon} className="app-icon">

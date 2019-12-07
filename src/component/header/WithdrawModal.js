@@ -117,7 +117,7 @@ class Withdraw extends Component {
         this.state = {
             withdraw: null,
             history: null,
-            route: 'withdraw',
+            route: 'history',
             submiting: false,
             form: {
                 address: '',
@@ -147,7 +147,7 @@ class Withdraw extends Component {
         this.setState({ route: 'withdraw' });
     }
     maxValue() {
-        this.changeInput(key, this.context.state.user.balance.real)
+        this.changeInput('price', this.context.state.user.balance.real)
     }
     submitWithdraw() {
         this.setState({ submiting: true })
