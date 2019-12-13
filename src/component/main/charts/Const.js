@@ -26,14 +26,14 @@ function fuck(n) {
     return check == 3 ? n.toFixed(count - 4) : n;
 }
 export const chartOptions = {
-    autoScale: true,
+    autoScale: false,
     layout: {
         backgroundColor: 'transparent',
         textColor: '#b5b5b5'
     },
     localization: {
         priceFormatter: (price) => {
-            return fuck(price);
+            return Math.round(price * 10000000) / 10000000;
         },
     },
     grid: {
@@ -50,22 +50,46 @@ export const chartOptions = {
         mode: 1,
         autoScale: true,
         borderVisible: false,
-        scaleMargins: {
-            top: 0.10,
-            bottom: 0.1,
-        },
     },
     timeScale: {
-        rightOffset: 12,
-        barSpacing: 2,
-        fixLeftEdge: false,
-        lockVisibleTimeRangeOnResize: false,
         rightBarStaysOnScroll: false,
         borderVisible: false,
         borderColor: 'transparent',
         visible: true,
         timeVisible: true,
         secondsVisible: false,
+        rightOffset: 15,
+        autoScale: true,
+        scaleMargins: {
+            top: 0.5,
+            bottom: 0.5,
+        },
+    },
+    crosshair: {
+        vertLine: {
+            color: '#6A5ACD',
+            width: 0.5,
+            style: 1,
+            visible: true,
+            labelVisible: false,
+        },
+        horzLine: {
+            color: '#6A5ACD',
+            width: 0.5,
+            style: 1,
+            visible: true,
+            labelVisible: true,
+        },
+        mode: 2,
+    },
+    handleScroll: {
+        mouseWheel: true,
+        pressedMouseMove: true,
+    },
+    handleScale: {
+        axisPressedMouseMove: true,
+        mouseWheel: true,
+        pinch: true,
     },
 }
 export const candleOption = {
@@ -164,7 +188,7 @@ export function hub2candle(data) {
                 close: data.c[i],
                 value: data.c[i],
                 volume: data.v[i],
-                time: data.t[i],
+                time: parseInt(data.t[i])
             })
         }
     } catch (error) {

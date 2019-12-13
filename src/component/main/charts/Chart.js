@@ -75,7 +75,6 @@ class Chart extends Component {
                     if (data != null) {
                         this.chartData[resolution] = data;
                         this.changeData();
-                        this.syncTime();
                     }
                 }
             });
@@ -113,9 +112,10 @@ class Chart extends Component {
             }
         }
         this.setMarkers();
-        this.chart.timeScale().fitContent();
         this.chart.timeScale().scrollToRealTime();
-        // this.chart.subscribeVisibleTimeRangeChange((e) => console.log(e))
+        // this.chart.timeScale().fitContent();
+
+        // this.chart.TimeRangeChangeEventHandler((e) => console.log(e))
     }
     showAction(action) {
         let { resolution, chartType } = this.props.parent;
@@ -129,7 +129,7 @@ class Chart extends Component {
             item = {
                 time: data.time,
                 position: 'aboveBar',
-                color: ['rgba(5, 253, 50,.2) ', 'rgba(0, 0, 0,0)', 'rgb(5, 253, 50)', dm],
+                color: ['rgba(5, 253, 50,.2) ', 'rgba(5, 253, 50,.008)', 'rgb(5, 253, 50)', dm],
                 shape: 'buy',
                 key: 'trade'
             }
@@ -208,26 +208,30 @@ class Chart extends Component {
             let len = this.chartData[resolution].length;
             for (j of this.opens) {
                 point = null;
+                console.log('====================================');
+                console.log(this.chartData[resolution], j.point);
+                console.log('====================================');
                 for (i = 0; i < len; i++) {
                     if (j.point <= this.chartData[resolution][i].time) {
                         point = this.chartData[resolution][i].time;
-                        this.chartData[resolution][i].marker = true;
                         break;
                     }
                 }
                 if (point == null) {
                     point = lastTime
                 }
-                this.markers.push({
-                    time: point,
-                    position: j.tradeType == 'buy' ? 'aboveBar' : 'belowBar',
-                    color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
-                    shape: 'circle',
-                })
-
+                if (point != null) {
+                    this.markers.push({
+                        time: point,
+                        price: j.price,
+                        position: j.tradeType == 'buy' ? 'aboveBarX' : 'belowBarX',
+                        color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
+                        shape: 'circle',
+                    })
+                }
             }
             this.chartType[chartType].setMarkers(this.markers);
-            this.glow();
+            // this.glow();
         }
     }
     glow() {
@@ -253,7 +257,15 @@ class Chart extends Component {
                 let item = {
                     time: last.time,
                     position: 'inBar',
-                    color: [this.shadow, last.open < last.close ? '#c0e122' : '#e16a22', this.context.state.isMobile],
+                    color: [
+                        this.shadow,
+                        last.open < last.close
+                            ? 'rgba(37, 185, 64, .9)'
+                            : 'rgba(252, 21, 90, .9)',
+                        last.open < last.close
+                            ? '#aeff1f'
+                            : '#ee0f78',
+                        this.context.state.isMobile],
                     shape: 'glow',
                     key: 'glow'
                 }
@@ -298,11 +310,6 @@ class Chart extends Component {
         }
         return false;
     }
-    syncTime() {
-        let timestamp = Math.round(new Date() / 1000);
-        let data = this.lastItem();
-        this.timeDifference = data.time - timestamp + 60;
-    }
     update(targetPrice) {
         let { resolution, chartType } = this.props.parent;
         let lastData = this.lastItem();
@@ -310,8 +317,8 @@ class Chart extends Component {
         if (!(resolution in this.chartData) || !lastData || this.chartType[chartType] == null) {
             return;
         }
-        let time = Math.round(new Date() / 1000) + this.timeDifference;
-        let isNew = time - lastData.time > timeLimit || ('marker' in lastData);
+        let time = Math.round((new Date()).getTime() / 1000);
+        let isNew = time - lastData.time > timeLimit;
         let updateData = isNew
             ? {
                 open: targetPrice,
@@ -327,6 +334,8 @@ class Chart extends Component {
         updateData.value = targetPrice;
         updateData.high = Math.max(updateData.high, targetPrice);
         updateData.low = Math.min(updateData.low, targetPrice);
+
+
         if (!isNew) {
             this.chartType[chartType].update(updateData);
             let len = this.chartData[resolution].length;
@@ -378,6 +387,7 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'baseline',
         zIndex: 999
-    }
+    },
+
 }
 export default connect(state => state)(Chart);

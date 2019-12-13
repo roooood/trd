@@ -84,6 +84,7 @@ class Setting extends Component {
     }
     logOut() {
         this.props.dispatch(User(null));
+        this.context.game.close()
     }
     render() {
         let { type } = this.props.user;

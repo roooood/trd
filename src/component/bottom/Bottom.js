@@ -12,7 +12,7 @@ import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import { connect } from 'react-redux';
-import { User } from 'redux/action/user';
+import Timer from './Timer';
 import Hidden from '@material-ui/core/Hidden';
 
 const ColorButton = withStyles(theme => ({
@@ -86,6 +86,9 @@ class Bottom extends Component {
                     </div>
                 </Hidden>
                 <div style={styles.actions} >
+                    <div style={styles.timer}>
+                        <span style={styles.span}>{t('currentTime')}:</span><Timer />
+                    </div>
                     <IconButton size="medium" onClick={this.changeScreen}>
                         {this.state.fullscreen
                             ? <FullscreenIcon style={styles.icon} />
@@ -106,7 +109,9 @@ const styles = {
         padding: '0 15px'
     },
     actions: {
-        display: 'flex'
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     icon: {
         color: '#fff'
@@ -120,5 +125,16 @@ const styles = {
         marginRight: 4,
         marginLeft: 4,
     },
+    timer: {
+        display: 'flex',
+        color: '#fafafa',
+        fontSize: 13,
+        marginRight: 20,
+        width: 230
+    },
+    span: {
+        color: '#b5b5b5',
+        marginRight: 5
+    }
 }
 export default connect(state => state)(Bottom);

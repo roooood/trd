@@ -102,5 +102,6 @@ export default {
     typing: 'Write a new message',
     chatSupport: 'Chat & Support',
 
-    copied: 'The Address Copied To Clipboard'
+    copied: 'The Address Copied To Clipboard',
+    currentTime: 'Current Time'
 }

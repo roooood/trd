@@ -263,7 +263,7 @@ var CrosshairMarksPaneView = /** @class */ (function () {
             this._private__markersData = serieses.map(function () { return createEmptyMarkerData(_this._private__chartModel.options()); });
             this._private__markersRenderers = this._private__markersData.map(function (data) {
                 var res = new PaneRendererMarks();
-                res.setData(data);
+                res.setData(data);                
                 return res;
             });
             this._private__compositeRenderer.setRenderers(this._private__markersRenderers);
@@ -2896,19 +2896,31 @@ function hitTestArrow(up, centerX, centerY, size, x, y) {
 }
 
 function drawGlow(ctx, centerX, centerY, color) {
-    let mul = color[2] ? 1 : 2;
+    let mul = color[3] ? 1 : 2;
+
     ctx.save();
     ctx.beginPath();
-    ctx.fillStyle = color[1];
     ctx.arc(centerX, centerY, 2*mul, 0, Math.PI * 2, false);
+    ctx.fillStyle = color[2];
+    ctx.shadowColor = '#000';
+    ctx.shadowBlur = 1;
     ctx.fill();
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = '#000';
+    // ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    // if (color[0] > 6) {
     ctx.beginPath();
-    ctx.filter = "blur(" + color[0]+"px)";
+    ctx.filter = "blur(" + color[0] + "px)";
     ctx.fillStyle = color[1];
-    // ctx.shadowColor = color[1];
-    // ctx.shadowBlur = color[0];
-    ctx.arc(centerX, centerY, 8*mul, 0, Math.PI * 2, false);
+    ctx.arc(centerX, centerY, (color[0]-2 )* mul, 0, Math.PI * 2, false);
+    // ctx.shadowBlur = 20;
+    // ctx.shadowColor = 'hsla(220, 80%, 60%, 1)';
+    // ctx.lineCap = 'round'
     ctx.fill();
+    // }
     ctx.restore()
 }
 
@@ -3029,6 +3041,7 @@ function hitTestItem(item, x, y) {
 function fillSizeAndY(
     // tslint:disable-next-line:max-params
     rendererItem, marker, seriesData, offsets, shapeMargin, priceScale, timeScale, firstValue) {
+    var price = isNumber(seriesData) ? seriesData : marker.price;
     var inBarPrice = isNumber(seriesData) ? seriesData : seriesData.close;
     var highPrice = isNumber(seriesData) ? seriesData : seriesData.high;
     var lowPrice = isNumber(seriesData) ? seriesData : seriesData.low;
@@ -3044,9 +3057,19 @@ function fillSizeAndY(
             offsets.aboveBar += shapeSize + shapeMargin;
             return;
         }
+        case 'aboveBarX': {
+            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) - shapeSize / 2 - offsets.aboveBar);
+            offsets.aboveBar += 3 + shapeMargin;
+            return;
+        }
         case 'belowBar': {
             rendererItem.y = (priceScale.priceToCoordinate(lowPrice, firstValue) + shapeSize / 2 + offsets.belowBar);
             offsets.belowBar += shapeSize + shapeMargin;
+            return;
+        }
+        case 'belowBarX': {
+            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) + shapeSize / 2 + offsets.belowBar);
+            offsets.belowBar += 3 + shapeMargin;
             return;
         }
     }
@@ -3092,6 +3115,7 @@ var SeriesMarkersPaneView = /** @class */ (function () {
             this._private__data.items = seriesMarkers.map(function (marker) {
                 return ({
                     time: marker.time,
+                    price: marker.price || null,
                     x: 0,
                     y: 0,
                     size: 0,
@@ -4259,6 +4283,7 @@ var Series = /** @class */ (function (_super) {
             return ({
                 time: ensureNotNull(timeScalePoints.indexOf(marker.time.timestamp, true)),
                 position: marker.position,
+                price: marker.price||null,
                 shape: marker.shape,
                 color: marker.color,
                 id: marker.id,
@@ -6998,8 +7023,8 @@ var TimeScale = /** @class */ (function () {
         }
         // from given date we should use only as UTC date or timestamp
         // but to format as locale date we can convert UTC date to local date
-        var localDateFromUtc = new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds());
-        return localDateFromUtc.toLocaleString(this._private__localizationOptions.locale, formatOptions);
+        //var localDateFromUtc = new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds());
+        return d.toLocaleString(this._private__localizationOptions.locale, formatOptions);
     };
     TimeScale.prototype._private__setVisibleBars = function (visibleBars) {
         if (visibleBars === null && this._private__visibleBars === null) {

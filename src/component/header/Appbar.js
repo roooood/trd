@@ -152,10 +152,14 @@ class Appbar extends Component {
         modal.show(<AppModal />);
     }
     onRemove(id) {
+        // this.context.live.register(this.props.parent.symbol, this.update);
         this.props.dispatch(TabbarRemove(id));
         let keys = Object.keys(this.props.tab.data);
         let index = keys.indexOf(id);
 
+        console.log('====================================');
+        console.log(this.props.tab.data[index]);
+        console.log('====================================');
         if (keys[index + 1] != 'undefined') {
             this.handleChangeList(null, keys[index + 1])
         }

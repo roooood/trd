@@ -215,20 +215,20 @@ body {
 
 @keyframes loading {
   0% {
-    background-color: rgba(205, 10, 0, 0.2);
+    background-color: rgba(245, 49, 39, 0.4);
   }
   30% {
-    background-color: rgba(250, 138, 0, 0.2);
+    background-color: rgba(248, 252, 33, 0.5);
   }
   50% {
     height: 100px;
     margin-top: 0px;
   }
   80% {
-    background-color: rgba(145, 215, 0, 0.2);
+    background-color: rgba(175, 248, 29, 0.5);
   }
   100% {
-    background-color: rgba(205, 10, 0, 0.2);
+    background-color: rgba(245, 49, 39, 0.4);
   }
 }
 /*@-moz-keyframes loading {

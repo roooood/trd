@@ -87,7 +87,7 @@ class Account extends Component {
                         <Typography component="div" style={{ ...styles.account, width: 100 }}>
                             {type == 'real' ? t('realAccount') : t('practiceAccount')}
                             <Typography component="div" align="left" style={styles.accountSub}  >
-                                $ {toMoney(balance[type])}
+                                $ {toMoney(Math.round(balance[type] * 10000000) / 10000000)}
                             </Typography>
                         </Typography>
                         <ExpandMoreRoundedIcon style={{ marginRight: -5, marginLeft: 5 }} />
@@ -108,7 +108,7 @@ class Account extends Component {
                                     component="div"
                                     style={styles.sub}
                                 >
-                                    $ {toMoney(balance['real'])}
+                                    $ {toMoney(Math.round(balance['real'] * 10000000) / 10000000)}
                                 </Typography>
                             } />
                         </ListItem>
@@ -121,7 +121,7 @@ class Account extends Component {
                                     component="div"
                                     style={styles.sub}
                                 >
-                                    $ {toMoney(balance['practice'])}
+                                    $ {toMoney(Math.round(balance['practice'] * 10000000) / 10000000)}
                                 </Typography>
                             } />
                         </ListItem>

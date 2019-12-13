@@ -10,7 +10,7 @@ class Loading extends Component {
         return (
             <div id="content" className={cls}>
                 <div className={"loading-dir"}>
-                    <div className="loading">
+                    <div className="loading" style={{ transform: 'scale(1.3)' }}>
                         <div className="loading-1"></div>
                         <div className="loading-2"></div>
                         <div className="loading-3"></div>
