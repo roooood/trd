@@ -54,6 +54,7 @@ export const chartOptions = {
     timeScale: {
         rightBarStaysOnScroll: false,
         borderVisible: false,
+        barSpacing: 25,
         borderColor: 'transparent',
         visible: true,
         timeVisible: true,
@@ -126,8 +127,6 @@ export const volumeOption = {
     },
 }
 export const barOption = {
-    thinBars: false,
-
     downColor: '#25b940',
     upColor: '#fc155a',
 }

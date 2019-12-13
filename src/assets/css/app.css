@@ -202,7 +202,7 @@ body {
 .loading {
   position: absolute;
   float: left;
-  bottom: 5px;
+  bottom: 0px;
   left: 50%;
   height: 120px;
   padding: 0px;
@@ -215,20 +215,20 @@ body {
 
 @keyframes loading {
   0% {
-    background-color: rgba(245, 49, 39, 0.4);
+    background-color: rgba(119, 43, 39, 0.3);
   }
-  30% {
-    background-color: rgba(248, 252, 33, 0.5);
+  40% {
+    background-color: rgba(248, 252, 33, 0.3);
   }
   50% {
     height: 100px;
     margin-top: 0px;
   }
-  80% {
-    background-color: rgba(175, 248, 29, 0.5);
+  70% {
+    background-color: rgba(175, 248, 29, 0.3);
   }
   100% {
-    background-color: rgba(245, 49, 39, 0.4);
+    background-color: rgba(245, 49, 39, 0.3);
   }
 }
 /*@-moz-keyframes loading {

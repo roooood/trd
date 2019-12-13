@@ -4,7 +4,6 @@
  * Copyright (c) 2019 TradingView, Inc.
  * Licensed under Apache License 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
-
 var LineType;
 (function (LineType) {
     LineType[LineType["Simple"] = 0] = "Simple";
@@ -2928,23 +2927,22 @@ function drawCircle(ctx, centerX, centerY, color, size) {
     var circleSize = shapeSize('circle', size);
     var halfSize = (circleSize - 1) / 2;
     ctx.save();
-    ctx.fillStyle = color;
-    // ctx.shadowColor = '#000';
-    // ctx.shadowBlur = 1;
-    // for (var i = 0; i < 3; i++) {
-    //     ctx.shadowBlur += 0.25;
-    // }
-    ctx.lineWidth = 1;
-
     ctx.beginPath();
+    ctx.lineWidth = 1;
     ctx.lineCap = "round";
+    ctx.setLineDash([15, 3, 3, 3])
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(2000, centerY);
     ctx.strokeStyle = color;
     ctx.stroke();
 
+    ctx.save();
+    ctx.restore()
     ctx.beginPath();
-    ctx.arc(centerX, centerY, halfSize, 0, 2 * Math.PI, false);
+    ctx.arc(centerX, centerY, halfSize, 0,2*Math.PI, false);
+    ctx.fillStyle = color;
+    ctx.shadowColor = '#000';
+    ctx.shadowBlur = 1;
     ctx.fill();
     ctx.restore()
 }
@@ -3058,7 +3056,7 @@ function fillSizeAndY(
             return;
         }
         case 'aboveBarX': {
-            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) - shapeSize / 2 - offsets.aboveBar);
+            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) - offsets.aboveBar);
             offsets.aboveBar += 3 + shapeMargin;
             return;
         }
@@ -3068,7 +3066,7 @@ function fillSizeAndY(
             return;
         }
         case 'belowBarX': {
-            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) + shapeSize / 2 + offsets.belowBar);
+            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue)  + offsets.belowBar);
             offsets.belowBar += 3 + shapeMargin;
             return;
         }

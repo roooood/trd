@@ -128,7 +128,7 @@ class Chart extends Component {
         if (action == 'buy') {
             item = {
                 time: data.time,
-                position: 'aboveBar',
+                position: 'inBar',
                 color: ['rgba(5, 253, 50,.2) ', 'rgba(5, 253, 50,.008)', 'rgb(5, 253, 50)', dm],
                 shape: 'buy',
                 key: 'trade'
@@ -137,7 +137,7 @@ class Chart extends Component {
         else {
             item = {
                 time: data.time,
-                position: 'belowBar',
+                position: 'inBar',
                 color: ['rgba(252, 21, 90,.3)', 'rgba(0, 0, 0, 0)', 'rgb(252, 21, 90)', dm],
                 shape: 'sell',
                 key: 'trade'
@@ -208,9 +208,6 @@ class Chart extends Component {
             let len = this.chartData[resolution].length;
             for (j of this.opens) {
                 point = null;
-                console.log('====================================');
-                console.log(this.chartData[resolution], j.point);
-                console.log('====================================');
                 for (i = 0; i < len; i++) {
                     if (j.point <= this.chartData[resolution][i].time) {
                         point = this.chartData[resolution][i].time;
@@ -225,13 +222,13 @@ class Chart extends Component {
                         time: point,
                         price: j.price,
                         position: j.tradeType == 'buy' ? 'aboveBarX' : 'belowBarX',
-                        color: j.tradeType == 'buy' ? '#25b940' : '#fc155a',
+                        color: j.tradeType == 'buy' ? '#3e5' : '#fc1515',
                         shape: 'circle',
                     })
                 }
             }
             this.chartType[chartType].setMarkers(this.markers);
-            // this.glow();
+            this.glow();
         }
     }
     glow() {
