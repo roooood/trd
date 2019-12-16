@@ -1,9 +1,9 @@
 
-export const canddleUrl = 'https://finnhub.io/api/v1/{type}/candle?symbol={symbol}&resolution={resolution}&count={count}&token={token}';
+export const canddleUrl = '{type}/candle?symbol={symbol}&resolution={resolution}&count={count}&token={token}';
 export const resolutionEx = { '1m': '1', '5m': '5', '15m': '15', '30m': '30', 'H': '60', 'D': 'D', 'W': 'W', 'M': 'M' };
 export const timeRange = { '1m': 60, '5m': 300, '15m': 900, '30m': 1800, 'H': 3600, 'D': 86400, 'W': 604800, 'M': 2592000 };
 
-function fuck(n) {
+function xround(n) {
     let num = n + '';
     let nums = num.split('.');
     if (nums.length == 1)

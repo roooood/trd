@@ -332,10 +332,9 @@ class Chart extends Component {
         updateData.high = Math.max(updateData.high, targetPrice);
         updateData.low = Math.min(updateData.low, targetPrice);
 
-
         if (!isNew) {
             this.chartType[chartType].update(updateData);
-            let len = this.chartData[resolution].length;
+            let len = this.chartData[resolution].length - 1;
             this.chartData[resolution][len] = updateData;
         } else {
             this.chartData[resolution].push(updateData);

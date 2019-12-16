@@ -3057,7 +3057,7 @@ function fillSizeAndY(
         }
         case 'aboveBarX': {
             rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) - offsets.aboveBar);
-            offsets.aboveBar += 3 + shapeMargin;
+            offsets.aboveBar += 5;
             return;
         }
         case 'belowBar': {
@@ -3067,7 +3067,7 @@ function fillSizeAndY(
         }
         case 'belowBarX': {
             rendererItem.y = (priceScale.priceToCoordinate(price, firstValue)  + offsets.belowBar);
-            offsets.belowBar += 3 + shapeMargin;
+            offsets.belowBar += 5;
             return;
         }
     }

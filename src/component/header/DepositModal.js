@@ -23,7 +23,11 @@ import HistoryIcon from '@material-ui/icons/History';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-
+import Menu from '@material-ui/core/Menu';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 var QRCode = require('qrcode.react');
 
 const StyledInput = withStyles(theme => ({
@@ -79,7 +83,26 @@ const StyledTableRow = withStyles(theme => ({
         }
     },
 }))(TableRow);
-
+const StyledMenu = withStyles({
+    paper: {
+        background: '#25272b',
+        color: '#fff'
+    },
+})(props => (
+    <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+        }}
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+        }}
+        {...props}
+    />
+));
 class Deposit extends Component {
     static contextType = Context;
     constructor(props) {
@@ -87,9 +110,17 @@ class Deposit extends Component {
         this.state = {
             deposit: null,
             history: null,
+            list: [],
+            menu: null,
             route: 'history'
         };
         autoBind(this);
+    }
+    openMenu(event) {
+        this.setState({ menu: event.currentTarget })
+    }
+    closeMenu() {
+        this.setState({ menu: null })
     }
     componentDidMount() {
         request('cash/depositHistory', { token: this.props.user.token }, res => {
@@ -98,6 +129,14 @@ class Deposit extends Component {
             }
             else {
                 this.setState({ history: res.data })
+            }
+        });
+        request('cash/deposit', { token: this.props.user.token }, res => {
+            if ('error' in res) {
+                this.notify({ message: t('unhandledError'), type: 'error' });
+            }
+            else {
+                this.setState({ list: res.data })
             }
         });
     }
@@ -169,15 +208,36 @@ class Deposit extends Component {
             </div>
         )
     }
+    openLink(link) {
+        window.open(link.replace('{token}', this.props.user.token), "_blank")
+    }
     generateHistory() {
         return (
             <div style={styles.tableRoot}>
                 <div style={styles.header} >
                     <Typography component="h5">{t('deposit')}</Typography>
-                    <ColorButton onClick={this.makeDeposit} variant="outlined" >
+                    <ColorButton onClick={this.openMenu} variant="outlined" >
                         <VerticalAlignBottomIcon />
                         {t('makeDeposit')}
                     </ColorButton>
+                    <StyledMenu
+                        open={Boolean(this.state.menu)}
+                        anchorEl={this.state.menu}
+                        onClose={this.closeMenu}
+                    >
+                        <List style={{ padding: '0 10px' }}>
+                            {
+                                this.state.list.map((item, i) => (
+                                    <ListItem key={i} button onClick={() => this.openLink(item.link)}>
+                                        <ListItemAvatar>
+                                            <img src={item.logo} style={{ height: 30, width: 30, borderRadius: 15 }} />
+                                        </ListItemAvatar>
+                                        <ListItemText primary={item.title} />
+                                    </ListItem>
+                                ))
+                            }
+                        </List>
+                    </StyledMenu>
                 </div>
                 {this.state.history == null
                     ? this.loading()
