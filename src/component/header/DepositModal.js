@@ -128,7 +128,6 @@ class Deposit extends Component {
                 this.notify({ message: t('unhandledError'), type: 'error' });
             }
             else {
-                console.log(res.data)
                 this.setState({ history: res.data })
             }
         });
