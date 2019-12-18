@@ -45,7 +45,7 @@ export default {
     history: 'History',
     address: 'Address',
     max: 'Max',
-    wallet: 'Wallet',
+    wallet: 'Type',
     date: 'Date',
     price: 'Price',
     status: 'Status',

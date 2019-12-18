@@ -32,7 +32,7 @@ export default {
     signIn: 'Sign In',
     forgotPassword: 'Forgot password?',
     loginSignUp: "Don't have an account? Sign Up",
-    agree: 'I am agree with the',
+    agree: 'I am over 18 & agree with the',
     terms: 'Terms of Service',
 
     logOut: 'Logout',
@@ -40,13 +40,17 @@ export default {
     depositExpireLimit: 'Attention , this addresses expire after one hour',
     makeDeposit: 'Make Deposit',
     withdraw: 'Withdraw',
-    makeWithdraw: 'Make Withdraw',
+    makeWithdraw: 'Request Withdraw',
+    withdrawSubmited: 'Withdraw request submited successful',
     history: 'History',
     address: 'Address',
-    wallet: 'Wallet',
+    max: 'Max',
+    wallet: 'Type',
     date: 'Date',
+    price: 'Price',
     status: 'Status',
     amount: 'Amount',
+    submit: 'Submit',
     totalPortfolio: 'Total Portfolio',
     tradingHistory: 'Trading History',
     chatSupport: 'Chat & Support',
@@ -77,7 +81,13 @@ export default {
     week: 'Week',
     month: 'Month',
 
-    balanceError: 'Your balance is less than your trade amont',
+    candleChart: 'Candle Chart',
+    lineChart: 'Line Chart',
+    areaChart: 'Area Chart',
+    barChart: 'Bar Chart',
+
+    balanceError: 'Your balance is less than your trade amount',
+    withdrawError: 'Your balance is less than your withdrw request amount',
     marketError: 'The market not found',
     orderError: 'Problem in your order ,please try again',
     orderSuccess: 'Your order submited',
@@ -92,5 +102,6 @@ export default {
     typing: 'Write a new message',
     chatSupport: 'Chat & Support',
 
-    copied: 'The Address Copied To Clipboard'
+    copied: 'The Address Copied To Clipboard',
+    currentTime: 'Current Time'
 }

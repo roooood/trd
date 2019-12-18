@@ -128,6 +128,7 @@ class Deposit extends Component {
                 this.notify({ message: t('unhandledError'), type: 'error' });
             }
             else {
+                console.log(res.data)
                 this.setState({ history: res.data })
             }
         });
@@ -257,7 +258,7 @@ class Deposit extends Component {
                                     {this.state.history.map(row => {
                                         return (
                                             <StyledTableRow key={row.id} >
-                                                <StyledTableCell component="td" >{row.type} </StyledTableCell>
+                                                <StyledTableCell component="td" >{row.payment.title} </StyledTableCell>
                                                 <StyledTableCell component="td" >{row.amount} </StyledTableCell>
                                                 <StyledTableCell component="td" >{toMoney(row.price)} </StyledTableCell>
                                                 <StyledTableCell component="td" >{row.status} </StyledTableCell>

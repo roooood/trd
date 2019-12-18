@@ -183,7 +183,8 @@ class Chart extends Component {
     }
     order([order]) {
         if (this.props.parent.id == order.market_id) {
-            this.openOrders([order]);
+            order.last = true;
+            this.openOrders([order], true);
             this.notify({ message: t('orderSuccess'), type: 'success' });
         }
     }
@@ -208,10 +209,12 @@ class Chart extends Component {
             let len = this.chartData[resolution].length;
             for (j of this.opens) {
                 point = null;
-                for (i = 0; i < len; i++) {
-                    if (j.point <= this.chartData[resolution][i].time) {
-                        point = this.chartData[resolution][i].time;
-                        break;
+                if (!('last' in j)) {
+                    for (i = 0; i < len; i++) {
+                        if (j.point <= this.chartData[resolution][i].time) {
+                            point = this.chartData[resolution][i].time;
+                            break;
+                        }
                     }
                 }
                 if (point == null) {
@@ -226,6 +229,7 @@ class Chart extends Component {
                         shape: 'circle',
                     })
                 }
+                delete j.last;
             }
             this.chartType[chartType].setMarkers(this.markers);
             this.glow();
@@ -310,7 +314,7 @@ class Chart extends Component {
     update(targetPrice) {
         let { resolution, chartType } = this.props.parent;
         let lastData = this.lastItem();
-        let timeLimit = timeRange[resolution]
+        let timeLimit = 10;//timeRange[resolution]
         if (!(resolution in this.chartData) || !lastData || this.chartType[chartType] == null) {
             return;
         }

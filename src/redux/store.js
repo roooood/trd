@@ -9,7 +9,7 @@ import rootReducer from "./action";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ['snack']
+  blacklist: ['market']
 };
 
 const middlewares = [];

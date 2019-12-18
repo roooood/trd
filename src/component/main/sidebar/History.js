@@ -10,6 +10,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
 import play from 'library/Sound';
+import ReactCountdownClock from 'react-countdown-clock';
 
 class Price extends Component {
     static contextType = Context;
@@ -63,7 +64,7 @@ class Price extends Component {
                 this.state[i.balanceType].unshift(i)
             }
         }
-        this.setState({ test: Math.random() })
+        this.forceUpdate();
     }
     timeConverter(timestamp) {
         var a = new Date(timestamp * 1000);
@@ -86,12 +87,29 @@ class Price extends Component {
                 </ButtonGroup>
                 <Scrollbars style={{ height: this.context.state.isMobile ? '52vh' : '70vh' }}  >
                     {this.state[this.state.type].map((item, i) => {
-                        let date = this.timeConverter(item.point)
+                        let date = this.timeConverter(item.point);
+                        let time = Math.round((new Date()).getTime() / 1000);
+                        let newTime = (item.tradeAt - time);
+                        if (newTime < 0)
+                            newTime = 1;
                         return (
-                            <div key={i} style={styles.item}>
+                            <div key={item.id} style={styles.item}>
                                 <div style={styles.subItem}>
-                                    <div>{date[0]}</div>
-                                    <div style={styles.subItemDesc}>{date[1]}</div>
+                                    {this.state.type != 'open'
+                                        ? <>
+                                            <div>{date[0]}</div>
+                                            <div style={styles.subItemDesc}>{date[1]}</div>
+                                        </>
+                                        : <ReactCountdownClock
+                                            color="#fc155a"
+                                            alpha={0.9}
+                                            size={45}
+                                            weight={2}
+                                            fontSize={'12px'}
+                                            timeFormat={'hms'}
+                                            seconds={newTime}
+                                        />
+                                    }
                                 </div>
                                 <div style={styles.subItem}>
                                     <div style={styles.subItemText}>{item.market.display}</div>
@@ -157,6 +175,8 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center'
     },
-
+    timer: {
+        fontSize: 12
+    }
 }
 export default connect(state => state)(Price);

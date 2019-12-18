@@ -19,7 +19,7 @@ class LeadBoard extends Component {
     this.context.game.send({ get: 'Leads' });
   }
   leads(leads) {
-    this.setState({ leads: [...leads, ...leads] });
+    this.setState({ leads });
   }
   render() {
     return (
