@@ -11,7 +11,7 @@ import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRo
 import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
 import play from 'library/Sound';
 import ReactCountdownClock from 'react-countdown-clock';
-
+import { clone } from 'library/Helper';
 class Price extends Component {
     static contextType = Context;
     constructor(props) {
@@ -38,14 +38,20 @@ class Price extends Component {
     }
     orderResult(order) {
         let i;
-        for (i in this.state.open) {
-            if (this.state.open[i].id == order.id) {
-                this.state.open.splice(i, 1);
+        let tmp = {
+            open: clone(this.state.open),
+            real: clone(this.state.real),
+            practice: clone(this.state.practice),
+        };
+        this.setState({ open: [] });
+        for (i in tmp.open) {
+            if (tmp.open[i].id == order.id) {
+                tmp.open.splice(i, 1);
                 break;
             }
         }
-        this.state[order.balanceType].unshift(order);
-        this.forceUpdate();
+        tmp[order.balanceType].unshift(order);
+        this.setState(tmp);
         play(order.amount > 0 ? 'win' : 'lose')
         if (order.amount > 0) {
             this.notify({ message: t('uWin') + ' : +$' + order.amount, type: 'success' });
@@ -56,15 +62,21 @@ class Price extends Component {
     }
     order(orders) {
         let i;
+        let tmp = {
+            open: clone(this.state.open),
+            real: clone(this.state.real),
+            practice: clone(this.state.practice),
+        };
+        this.setState({ open: [] });
         for (i of orders) {
             if (i.status == 'pending') {
-                this.state.open.unshift(i)
+                tmp.open.unshift(i)
             }
             else {
-                this.state[i.balanceType].unshift(i)
+                tmp[i.balanceType].unshift(i)
             }
         }
-        this.forceUpdate();
+        this.setState(tmp);
     }
     timeConverter(timestamp) {
         var a = new Date(timestamp * 1000);
@@ -93,7 +105,7 @@ class Price extends Component {
                         if (newTime < 0)
                             newTime = 1;
                         return (
-                            <div key={item.id} style={styles.item}>
+                            <div key={Math.random()} style={styles.item}>
                                 <div style={styles.subItem}>
                                     {this.state.type != 'open'
                                         ? <>

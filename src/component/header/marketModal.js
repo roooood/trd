@@ -14,14 +14,10 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import InputBase from '@material-ui/core/InputBase';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
 import SearchIcon from '@material-ui/icons/Search';
+import VirtualizedTable from 'library/VirtualizedTable';
 
 const AntTab = withStyles(theme => ({
     wrapper: {
@@ -36,33 +32,6 @@ const ColorCircularProgress = withStyles({
         color: '#fff',
     },
 })(CircularProgress);
-
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: 'rgb(69, 71, 75)',
-        color: '#eee',
-        padding: 10,
-        borderBottom: '1px solid rgb(193, 78, 192)'
-    },
-    body: {
-        fontSize: 14,
-        color: '#fff',
-        borderBottom: 0,
-        padding: 10
-    },
-}))(TableCell);
-
-const StyledTableRow = withStyles(theme => ({
-    root: {
-        cursor: 'pointer',
-        '&:nth-of-type(even)': {
-            backgroundColor: 'rgba(136, 134, 134, 0.2)',
-        },
-        '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        }
-    },
-}))(TableRow);
 
 function tabGenerator(props) {
     return (
@@ -108,9 +77,9 @@ class AppModal extends Component {
     }
     handleChange(e, tab) {
         this.setState({ tab, load: false, searchValue: '' });
-        setTimeout(() => {
-            this.setState({ load: true });
-        }, 500);
+        // setTimeout(() => {
+        this.setState({ load: true });
+        // }, 500);
     }
 
     handleSearch(e) {
@@ -119,9 +88,9 @@ class AppModal extends Component {
     componentDidMount() {
         let check = ['crypto', 'forex', 'stock'];
         let i;
-        setTimeout(() => {
+        // setTimeout(() => {
             this.setState({ load: true });
-        }, 400);
+        // }, 400);
         for (i of check) {
             if (this.props.market[i] == null) {
                 request('market/list/' + i, res => {
@@ -161,35 +130,32 @@ class AppModal extends Component {
         )
     }
     generateTable(type) {
+        let row;
+        const rows = [];
+        for (row of this.props.market[type]) {
+            let regex = new RegExp(this.state.searchValue, 'gi');
+            if (row.display.match(regex))
+                rows.push(row);
+        }
         return (
-            <div style={styles.tableRoot}>
-                <Scrollbars style={{ height: '50vh' }} >
-                    <div style={styles.tableWrapper}>
-                        <Table stickyHeader >
-                            <TableHead>
-                                <TableRow>
-                                    <StyledTableCell component="th">{t('asset')}</StyledTableCell>
-                                    <StyledTableCell component="th">{t('description')}</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {this.props.market[type].map(row => {
-                                    let regex = new RegExp(this.state.searchValue, 'gi')
-                                    if (row.display.match(regex))
-                                        return (
-                                            <StyledTableRow key={row.id} onClick={() => this.addTab(row.id, row.symbol, row.display, type)}>
-                                                <StyledTableCell component="td" scope="row">
-                                                    {row.display}
-                                                </StyledTableCell>
-                                                <StyledTableCell component="td">{row.description}</StyledTableCell>
-                                            </StyledTableRow>
-                                        )
-                                    return null
-                                })}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </Scrollbars>
+            <div style={styles.tableRoot} >
+                <VirtualizedTable
+                    rowCount={rows.length}
+                    rowGetter={({ index }) => rows[index]}
+                    columns={[
+                        {
+                            width: 300,
+                            label: t('asset'),
+                            dataKey: 'display',
+                        },
+                        {
+                            width: 400,
+                            label: t('description'),
+                            dataKey: 'description',
+                        },
+                    ]}
+                    onRowClick={({rowData})=>this.addTab(rowData.id, rowData.symbol, rowData.display, type)}
+                />
             </div>
         )
     }
@@ -240,10 +206,11 @@ const styles = {
     root: {
         flexGrow: 1,
         display: 'flex',
-        height: '65vh',
+        height: '67vh',
     },
     tableRoot: {
         width: '100%',
+        height: '55vh',
     },
     tableWrapper: {
         position: 'relative'

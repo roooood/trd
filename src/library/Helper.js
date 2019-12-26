@@ -29,7 +29,7 @@ export function clone(arr) {
         if (i == 'clone')
             continue;
         if (arr[i] && typeof arr[i] == "object") {
-            newObj[i] = arr[i].clone();
+            newObj[i] = clone(arr[i]);
         }
         else
             newObj[i] = arr[i]

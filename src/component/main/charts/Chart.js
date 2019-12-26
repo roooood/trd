@@ -26,7 +26,7 @@ class Chart extends Component {
         this.timer = null;
         this.id = props.parent.id;
         this.markers = [];
-        this.shadow = 6;
+        this.glower = 2;
         this.up = true;
         autoBind(this);
         window.ee.on('actionHover' + props.parent.id, this.showAction)
@@ -157,9 +157,9 @@ class Chart extends Component {
         this.chartType[chartType].setMarkers(this.markers);
     }
     trade({ tradeType, bet, tradeAt }) {
-        // let { balance } = this.context.state.user;
         let { id, resolution } = this.props.parent;
-        if (!(resolution in this.chartData)) {
+        let lastItem = this.lastItem()
+        if (!(resolution in this.chartData) || !lastItem) {
             return;
         }
         let data = {
@@ -167,7 +167,8 @@ class Chart extends Component {
             tradeType,
             bet: bet,
             marketId: id,
-            tradeAt: tradeAt
+            tradeAt: tradeAt,
+            price: lastItem.close
         }
         play('click')
         this.context.game.send({ trade: data });
@@ -183,8 +184,7 @@ class Chart extends Component {
     }
     order([order]) {
         if (this.props.parent.id == order.market_id) {
-            order.last = true;
-            this.openOrders([order], true);
+            this.openOrders([order]);
             this.notify({ message: t('orderSuccess'), type: 'success' });
         }
     }
@@ -203,33 +203,29 @@ class Chart extends Component {
     setMarkers() {
         let { resolution, chartType } = this.props.parent;
         this.markers = [];
-        let i, j, point;
+        let i, j;
         let lastTime = this.lastItem().time;
         if (resolution in this.chartData) {
-            let len = this.chartData[resolution].length;
             for (j of this.opens) {
-                point = null;
-                if (!('last' in j)) {
-                    for (i = 0; i < len; i++) {
-                        if (j.point <= this.chartData[resolution][i].time) {
-                            point = this.chartData[resolution][i].time;
+                if (!('triger' in j)) {
+                    for (i of this.chartData[resolution]) {
+                        if (j.point <= i.time) {
+                            j.triger = i.time;
                             break;
                         }
                     }
+                    if (!('triger' in j)) {
+                        j.triger = lastTime;
+                    }
                 }
-                if (point == null) {
-                    point = lastTime
-                }
-                if (point != null) {
-                    this.markers.push({
-                        time: point,
-                        price: j.price,
-                        position: j.tradeType == 'buy' ? 'aboveBarX' : 'belowBarX',
-                        color: j.tradeType == 'buy' ? '#3e5' : '#fc1515',
-                        shape: 'circle',
-                    })
-                }
-                delete j.last;
+                this.markers.push({
+                    time: j.triger,
+                    price: j.price,
+                    position: j.tradeType == 'buy' ? 'aboveBarX' : 'belowBarX',
+                    color: j.tradeType == 'buy' ? '#3e5' : '#fc1515',
+                    shape: 'circle',
+                })
+
             }
             this.chartType[chartType].setMarkers(this.markers);
             this.glow();
@@ -240,32 +236,23 @@ class Chart extends Component {
         let { resolution, chartType } = this.props.parent;
         if (resolution in this.chartData) {
             this.timer = setInterval(() => {
-                if (this.up == true) {
-                    this.shadow += 2;
-
-                    if (this.shadow == 12) {
-                        this.up = false;
-                    }
-                } else {
-                    this.up = false
-                    this.shadow -= 2;
-
-                    if (this.shadow == 6) {
-                        this.up = true;
-                    }
+                this.glower += 2;
+                if (this.glower == 12) {
+                    this.glower = 2
                 }
+
                 let last = this.lastItem();
                 let item = {
                     time: last.time,
                     position: 'inBar',
                     color: [
-                        this.shadow,
+                        this.glower,
                         last.open < last.close
-                            ? 'rgba(37, 185, 64, .9)'
-                            : 'rgba(252, 21, 90, .9)',
+                            ? 'rgba(37, 185, 64, 0.' + ((12 - this.glower) * 10) + ')'
+                            : 'rgba(252, 21, 90, 0.' + ((12 - this.glower) * 10) + ')',
                         last.open < last.close
-                            ? '#aeff1f'
-                            : '#ee0f78',
+                            ? '#aeff1f'//'#aeff1f'
+                            : '#aeff1f',//ee0f78
                         this.context.state.isMobile],
                     shape: 'glow',
                     key: 'glow'
@@ -314,7 +301,7 @@ class Chart extends Component {
     update(targetPrice) {
         let { resolution, chartType } = this.props.parent;
         let lastData = this.lastItem();
-        let timeLimit = 10;//timeRange[resolution]
+        let timeLimit = 20;//timeRange[resolution]
         if (!(resolution in this.chartData) || !lastData || this.chartType[chartType] == null) {
             return;
         }
@@ -326,7 +313,7 @@ class Chart extends Component {
                 high: targetPrice,
                 low: targetPrice,
                 close: targetPrice,
-                time: Number(time),
+                time: time + timeLimit,
                 value: targetPrice
             }
             : lastData;

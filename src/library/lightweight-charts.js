@@ -2894,15 +2894,20 @@ function hitTestArrow(up, centerX, centerY, size, x, y) {
     return hitTestSquare(centerX, centerY, size, x, y);
 }
 
-function drawGlow(ctx, centerX, centerY, color) {
-    let mul = color[3] ? 1 : 2;
+function drawGlow(ctx, centerX, centerY, arg) {
+    let glower = arg[0];
+    let glowColor = arg[1];
+    let dotColor = arg[2];
+    let isMobile = arg[3];
+
+    let mul = isMobile ? 1 : 2;
 
     ctx.save();
     ctx.beginPath();
     ctx.arc(centerX, centerY, 2*mul, 0, Math.PI * 2, false);
-    ctx.fillStyle = color[2];
-    ctx.shadowColor = '#000';
-    ctx.shadowBlur = 1;
+    ctx.fillStyle = dotColor;
+    // ctx.shadowColor = '#fff';
+    // ctx.shadowBlur = 1;
     ctx.fill();
     // ctx.lineWidth = 1;
     // ctx.strokeStyle = '#000';
@@ -2910,16 +2915,14 @@ function drawGlow(ctx, centerX, centerY, color) {
     ctx.restore();
 
     ctx.save();
-    // if (color[0] > 6) {
     ctx.beginPath();
-    ctx.filter = "blur(" + color[0] + "px)";
-    ctx.fillStyle = color[1];
-    ctx.arc(centerX, centerY, (color[0]-2 )* mul, 0, Math.PI * 2, false);
-    // ctx.shadowBlur = 20;
-    // ctx.shadowColor = 'hsla(220, 80%, 60%, 1)';
-    // ctx.lineCap = 'round'
+    ctx.filter = "blur(" + glower/7 + "px)";
+    ctx.fillStyle = glowColor;
+    ctx.arc(centerX, centerY, glower * mul, 0, Math.PI * 2, false);
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = 'hsla(200, 50%, 100%, 1)';
+    ctx.lineCap = 'round'
     ctx.fill();
-    // }
     ctx.restore()
 }
 
@@ -3056,8 +3059,7 @@ function fillSizeAndY(
             return;
         }
         case 'aboveBarX': {
-            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue) - offsets.aboveBar);
-            offsets.aboveBar += 5;
+            rendererItem.y = (priceScale.priceToCoordinate(price > highPrice ? highPrice : price, firstValue) - (price > highPrice ? 0 : 10));
             return;
         }
         case 'belowBar': {
@@ -3066,8 +3068,7 @@ function fillSizeAndY(
             return;
         }
         case 'belowBarX': {
-            rendererItem.y = (priceScale.priceToCoordinate(price, firstValue)  + offsets.belowBar);
-            offsets.belowBar += 5;
+            rendererItem.y = (priceScale.priceToCoordinate(price < lowPrice ? lowPrice : price, firstValue) +( price < lowPrice ? 0 : 10));
             return;
         }
     }

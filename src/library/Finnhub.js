@@ -61,7 +61,12 @@ class Finnhub {
 
     send(symbol) {
         if (this.isConnect) {
-            this.websocket.send('{"type":50,"ticker":"' + symbol + '"}');
+            try {
+                this.websocket.send('{"type":50,"ticker":"' + symbol + '"}');
+            } catch (error) {
+
+            }
+
         }
     }
 
