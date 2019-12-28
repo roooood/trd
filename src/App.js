@@ -25,11 +25,22 @@ class App extends Component {
     super(props);
     this.state = {
       isMobile: window.innerWidth <= 900,
-      setting: {}
+      isPortrait: window.matchMedia("(orientation: portrait)").matches,
+      setting: {},
+      menu: false
     };
     this.game = new GameServer('trade');
     this.finnhub = new Finnhub();
     autoBind(this);
+  }
+  componentDidMount() {
+    window.addEventListener("orientationchange", this.orientationchange);
+  }
+  componentWillUnmoun() {
+    window.removeEventListener("orientationchange", this.orientationchange);
+  }
+  orientationchange() {
+    this.setState({ isPortrait: window.matchMedia("(orientation: portrait)").matches })
   }
   changeState(obj) {
     this.setState(obj)

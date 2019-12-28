@@ -12,7 +12,7 @@ const styles = theme => ({
         alignItems: 'center',
         boxSizing: 'border-box',
     },
-    tableHead:{
+    tableHead: {
         backgroundColor: 'rgb(69, 71, 75)',
         color: '#eee',
         padding: 10,
@@ -35,13 +35,13 @@ const styles = theme => ({
     },
     tableRowHover: {
         '&:hover': {
-            backgroundColor:'rgba(0, 0, 0, 0.5)',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
         },
     },
     tableCell: {
         flex: 1,
-        border:0,
-        color:'#fff',
+        border: 0,
+        color: '#fff',
     },
     noClick: {
         cursor: 'initial',

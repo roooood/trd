@@ -17,11 +17,9 @@ import Hidden from '@material-ui/core/Hidden';
 
 const ColorButton = withStyles(theme => ({
     root: {
-        marginTop: -3,
-        color: '#fff',
-        backgroundColor: '#e82944',
+        color: '#f7931a',
+        border: '1px solid #51483d',
         '&:hover': {
-            backgroundColor: '#ca152e',
         },
     },
 }))(Button);
@@ -64,7 +62,7 @@ class Bottom extends Component {
         return (
             <div style={styles.root}>
                 <ColorButton variant="outlined" size="small" onClick={this.chat}  >
-                    <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10, color: '#fff' }} /> {t('chatSupport')}
+                    <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10 }} /> {t('chatSupport')}
                 </ColorButton>
                 <Hidden only={['md', 'lg', 'xl']}>
                     <div style={styles.profit}>

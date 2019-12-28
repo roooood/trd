@@ -34,8 +34,8 @@ class Chart extends Component {
         window.ee.on('trade' + props.parent.id, this.trade)
     }
     resize() {
-        if (this.props.inView)
-            this.chart.applyOptions(getDimention(this.context.state.isMobile));
+        if (this.props.inView && !this.context.state.isPortrait)
+            this.chart.applyOptions(getDimention(this.context.state.isMobile, this.context.state.isPortrait));
     }
 
     componentDidMount() {
@@ -83,11 +83,12 @@ class Chart extends Component {
         }
     }
     createChart() {
+        chartOptions.timeScale.rightOffset = this.context.state.isPortrait ? 2 : 10;
         this.context.live.register(this.props.parent.symbol, this.update);
         this.selector = document.getElementById('chart' + this.id);
         this.chart = LightweightCharts.createChart(this.selector, {
-            ...getDimention(this.context.state.isMobile),
-            ...chartOptions
+            ...getDimention(this.context.state.isMobile, this.context.state.isPortrait),
+            ...chartOptions,
         });
     }
     createSeries() {
@@ -123,7 +124,7 @@ class Chart extends Component {
             return;
         }
         let data = this.lastItem();
-        let dm = getDimention(this.context.state.isMobile);
+        let dm = getDimention(this.context.state.isMobile, this.context.state.isPortrait);
         let item = {};
         if (action == 'buy') {
             item = {
@@ -349,7 +350,7 @@ class Chart extends Component {
                     </div>
                 }
                 <div id={"chart" + this.id} />
-                <div style={styles.actions}>
+                <div style={this.context.state.isPortrait ? styles.actions2 : styles.actions}>
                     <Resolution value={this.props.parent.resolution} onChange={this.changeResolution} />
                     <ChartType value={this.props.parent.chartType} onChange={this.changeChartType} />
                 </div>
@@ -367,13 +368,23 @@ const styles = {
     actions: {
         position: 'absolute',
         top: 20,
-        left: 20,
+        left: 10,
         width: 50,
         height: 200,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'baseline',
-        zIndex: 999
+        zIndex: 99999999
+    },
+    actions2: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: 50,
+        width: 200,
+        display: 'flex',
+        alignItems: 'center',
+        zIndex: 99999999,
     },
 
 }

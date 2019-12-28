@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { withStyles } from '@material-ui/core/styles';
+import Context from 'library/Context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -15,7 +16,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const StyledModal = withStyles(theme => ({
     paper: {
         backgroundColor: '#25272b',
-        color: ' #fff'
+        color: ' #fff',
+    },
+}))(Dialog);
+const StyledModal2 = withStyles(theme => ({
+    paper: {
+        backgroundColor: '#25272b',
+        color: ' #fff',
+        width: '100%',
+        margin: 10
     },
 }))(Dialog);
 const StyledDialogContent = withStyles(theme => ({
@@ -25,6 +34,7 @@ const StyledDialogContent = withStyles(theme => ({
 }))(DialogContent);
 
 class Modal extends React.Component {
+    static contextType = Context;
     constructor(props) {
         super(props);
         this.state = {
@@ -42,8 +52,9 @@ class Modal extends React.Component {
         this.setState({ open: true, component })
     }
     render() {
+        const Modal = this.context.state.isPortrait ? StyledModal2 : StyledModal;
         return (
-            <StyledModal
+            <Modal
                 fullWidth={true}
                 maxWidth={'md'}
                 open={this.state.open}
@@ -60,7 +71,7 @@ class Modal extends React.Component {
                         Close
                     </Button>
                 </DialogActions> */}
-            </StyledModal>
+            </Modal>
         );
     }
 }

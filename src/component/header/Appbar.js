@@ -12,15 +12,22 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import AppModal from './marketModal';
+import DropDown from 'component/DropDown';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 const ColorButton = withStyles(theme => ({
     root: {
         background: 'transparent',
         border: '1px solid #333',
-        margin: 5,
+        margin: 2,
         borderRadius: 5,
         height: 56,
-        [theme.breakpoints.between('sm', 'md')]: {
+        color: '#eee',
+        minWidth: 40,
+        [theme.breakpoints.down('sm')]: {
             minHeight: 48,
             height: 48,
         },
@@ -74,7 +81,7 @@ const StyledTab = withStyles(theme => ({
     selected: {}
 }))(props => <Tab {...props} />);
 
-function tabGenerator(id, props, onRemove) {
+function tabGenerator(id, props, onRemove, inList = false) {
     let icon = [];
     if (props.type == 'crypto') {
         props.name.split('/').forEach((i) => {
@@ -94,11 +101,11 @@ function tabGenerator(id, props, onRemove) {
             <div style={styles.listIcon} className="app-icon">
                 {icon}
             </div>
-            <div style={styles.listText}>
+            <div style={{ ...styles.listText, ...(inList ? { marginLeft: 10 } : {}) }}>
                 <Typography variant="subtitle1" display="block" style={{ fontSize: 13, color: '#fff' }} >
                     {props.name}
                 </Typography>
-                <Typography variant="subtitle2" display="block" style={{ fontSize: 11, marginPop: -4 }} >
+                <Typography variant="subtitle2" display="block" style={{ fontSize: 11, marginTop: -4 }} >
                     {props.type}
                 </Typography>
             </div>
@@ -152,7 +159,6 @@ class Appbar extends Component {
         modal.show(<AppModal />);
     }
     onRemove(id) {
-        // this.context.live.register(this.props.parent.symbol, this.update);
         this.props.dispatch(TabbarRemove(id));
         let keys = Object.keys(this.props.tab.data);
         let index = keys.indexOf(id);
@@ -168,26 +174,53 @@ class Appbar extends Component {
         const keys = Object.keys(tab);
         return (
             <div style={styles.root}>
-                <div style={{ ...styles.tabs }} >
-                    <StyledTabs
-                        value={this.props.tab.active + ""}
-                        onChange={this.handleChangeList}
-                        variant="scrollable"
-                        scrollButtons="on"
-                        indicatorColor="primary"
-                        textColor="primary"
-                    >
-                        {keys.map((item) => {
-                            return (
-                                <StyledTab key={item} value={item} label={tabGenerator(item, tab[item], keys.length == 1 ? null : this.onRemove)} />
-                            )
-                        })
-                        }
-                    </StyledTabs>
-                </div>
-                <ColorButton onClick={this.list} variant="contained" color="primary" >
-                    <AddIcon style={{ fontSize: 30 }} />
-                </ColorButton>
+                {this.context.state.isPortrait
+                    ? <>
+                        <DropDown
+                            triger={
+                                <ColorButton style={{ display: 'flex', minWidth: 120 }}>
+                                    {tabGenerator(this.props.tab.active, tab[this.props.tab.active], null)}
+                                </ColorButton>
+                            }
+                        >
+                            <List style={{ padding: '0 10px' }}>
+                                {keys.map((item) => {
+                                    return (
+                                        <ListItem key={item} style={styles.listPort} onClick={(e) => this.handleChangeList(e, item)}>
+                                            {tabGenerator(item, tab[item], keys.length == 1 ? null : this.onRemove, true)}
+                                        </ListItem>
+                                    )
+                                })
+                                }
+                            </List>
+                        </DropDown>
+                        <ColorButton onClick={this.list}  >
+                            <AddIcon style={{ fontSize: 30 }} />
+                        </ColorButton>
+                    </>
+                    : <>
+                        <div style={{ ...styles.tabs }} >
+                            <StyledTabs
+                                value={this.props.tab.active + ""}
+                                onChange={this.handleChangeList}
+                                variant="scrollable"
+                                scrollButtons="on"
+                                indicatorColor="primary"
+                                textColor="primary"
+                            >
+                                {keys.map((item) => {
+                                    return (
+                                        <StyledTab key={item} value={item} label={tabGenerator(item, tab[item], keys.length == 1 ? null : this.onRemove)} />
+                                    )
+                                })
+                                }
+                            </StyledTabs>
+                        </div>
+                        <ColorButton onClick={this.list}  >
+                            <AddIcon style={{ fontSize: 30 }} />
+                        </ColorButton>
+                    </>
+                }
             </div>
         );
     }
@@ -195,6 +228,7 @@ class Appbar extends Component {
 const styles = {
     root: {
         display: 'flex',
+        alignItems: 'center'
 
     },
     tabs: {
@@ -224,6 +258,11 @@ const styles = {
         bottom: -10,
         right: -10,
         zIndex: 9999
+    },
+    listPort: {
+        marginBottom: 5,
+        border: '1px solid #444',
+        borderRadius: 5
     }
 }
 export default connect(state => state)(Appbar);

@@ -6,24 +6,25 @@ import { t } from 'locales';
 import { withStyles } from '@material-ui/core/styles';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import Backdrop from '@material-ui/core/Backdrop';
 
 
 const Fab = withStyles(theme => ({
     fab: {
-        background: 'rgba(255, 255, 255, .05)',
+        background: 'rgba(53, 53, 53, 0.81)',
         backdropFilter: 'blur(3px)',
         border: '1px solid #333',
         width: 40,
         height: 40,
         '&:hover': {
-            background: 'transparent',
+            background: 'rgba(53, 53, 53, 0.91)',
         },
     },
 }))(SpeedDial);
 
 const FabAction = withStyles(theme => ({
     fab: {
-        background: 'rgba(255, 255, 255, .05)',
+        background: 'rgba(53, 53, 53, 0.81)',
         backdropFilter: 'blur(3px)',
         border: '1px solid #333',
         color: '#fff',
@@ -31,7 +32,7 @@ const FabAction = withStyles(theme => ({
         height: 35,
         margin: 2,
         '&:hover': {
-            background: 'transparent',
+            background: 'rgba(53, 53, 53, 0.91)',
         },
     },
 }))(SpeedDialAction);
@@ -92,13 +93,16 @@ class Resolution extends Component {
     render() {
         return (
             <div style={styles.root} >
+                {this.context.state.isPortrait &&
+                    <Backdrop open={this.state.open} />
+                }
                 <Fab
                     ariaLabel="charts"
                     icon={charts[this.props.value]}
                     onClose={this.handleClose}
                     onOpen={this.handleOpen}
                     open={this.state.open}
-                    direction={"right"}
+                    direction={this.context.state.isPortrait ? "down" : "right"}
                 >
                     {
                         this.actions.map(action => (
@@ -106,7 +110,7 @@ class Resolution extends Component {
                                 key={action.name}
                                 icon={action.icon}
                                 tooltipTitle={action.name}
-                                tooltipPlacement="top"
+                                tooltipPlacement={this.context.state.isPortrait ? "right" : "top"}
                                 onClick={() => this.changeType(action.value)}
                             />
                         ))
@@ -118,7 +122,8 @@ class Resolution extends Component {
 }
 const styles = {
     root: {
-        margin: 4
+        margin: 4,
+        height: 40
     },
     text: {
         textTransform: 'none'

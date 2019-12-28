@@ -93,11 +93,11 @@ class Price extends Component {
                 <Typography align="center" gutterBottom > {t('tradingHistory')}</Typography >
                 <ButtonGroup color="primary" fullWidth size="small">
                     {['open', 'real', 'practice'].map((item, i) => (
-                        <Button key={i} style={{ color: this.state.type == item ? "#fff" : "rgb(83, 81, 81)" }} onClick={() => this.show(item)}>{t(item)}</Button>
+                        <Button key={i} style={{ color: this.state.type == item ? "rgb(47, 131, 204)" : "#eee" }} onClick={() => this.show(item)}>{t(item)}</Button>
                     ))
                     }
                 </ButtonGroup>
-                <Scrollbars style={{ height: this.context.state.isMobile ? '52vh' : '70vh' }}  >
+                <Scrollbars style={{ height: this.context.state.isPortrait ? '77vh' : this.context.state.isMobile ? '52vh' : '70vh' }}  >
                     {this.state[this.state.type].map((item, i) => {
                         let date = this.timeConverter(item.point);
                         let time = Math.round((new Date()).getTime() / 1000);

@@ -154,18 +154,18 @@ export const lineOption = {
     },
 }
 
-export function getDimention(isMobile) {
+export function getDimention(isMobile, isPortrait) {
     let sidebarElement = window.document.getElementById("sidebar");
-    let action = isMobile ? 120 : 150;
+    let action = isPortrait ? 10 : isMobile ? 120 : 150;
     if (sidebarElement == null) {
         return {
             width: window.innerWidth,
-            height: window.innerHeight - 130,
+            height: window.innerHeight - (isPortrait ? 100 : 130),
         }
     }
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + action),
-        height: window.innerHeight - (isMobile ? 110 : 130),
+        height: window.innerHeight - (isPortrait ? 200 : isMobile ? 110 : 130),
     }
 }
 

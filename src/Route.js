@@ -3,8 +3,6 @@ import autoBind from 'react-autobind';
 import { connect } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 
-import Rotate90DegreesCcwIcon from '@material-ui/icons/Rotate90DegreesCcw';
-
 import Context from './library/Context';
 import { t } from './locales';
 
@@ -12,6 +10,7 @@ import Loading from './component/Loading';
 import Setting from './component/header/Setting';
 import Account from './component/header/Account';
 import Appbar from './component/header/Appbar';
+import Menu from './component/header/Menu';
 
 import Tabbar from './component/main/Tabbar';
 import Sidebar from './component/main/Sidebar';
@@ -90,15 +89,10 @@ class Route extends Component {
             return <Loading full />
         else
             return (
-                <div id="content" className={"container column theme-default"} >
-                    <div className="rotate">
-                        <Rotate90DegreesCcwIcon style={{ fontSize: 100 }} />
-                    </div>
+                <div id="content" className={"container column theme-default " + (this.context.state.isPortrait ? 'portrait' : '')} >
                     <div className="container top" >
                         <div className="item1" >
-                            <Hidden only={['xs', 'sm']}>
-                                <img style={{ width: 120 }} src={require('./assets/img/logo.png')} />
-                            </Hidden>
+                            <Menu />
                         </div>
                         <div className="item2">
                             <Appbar />
@@ -109,16 +103,18 @@ class Route extends Component {
                         </div>
                     </div>
                     <div className="container center" >
-                        <div className="item1" >
+                        <div className={"item1 menu " + (this.context.state.menu ? 'open' : '')} >
                             <Sidebar />
                         </div>
                         <div className="item2 main" >
                             <Tabbar />
                         </div>
                     </div>
-                    <div className="container bottom" >
-                        <Bottom />
-                    </div>
+                    {!this.context.state.isPortrait &&
+                        <div className="container bottom" >
+                            <Bottom />
+                        </div>
+                    }
                 </div >
             );
     }

@@ -80,16 +80,16 @@ body {
 }
 .app-icon .currency-flag:first-child{
   position: absolute;
-  top:0px;
+  bottom:0px;
   left:-6px;
 }
 .app-icon .currency-flag:last-child{
   position: absolute;
-  bottom:0px;
+  top:5px;
   right:-14px;
 }
 .app-icon .stock{
-  margin-left:-10px;
+  margin-left:-4px;
   color:#333;
   text-shadow:0px 0px 0px #d5d5d5, 7px 7px 0px rgba(0, 0, 0, 0.2)
 }
@@ -124,7 +124,7 @@ body {
   height:calc(100% - 115px);
   width:100%;
 }
-.center>.item1 {
+.center>.menu {
   height:100%;
 }
 
@@ -144,7 +144,7 @@ body {
 }
 .center .main .item2 {
   width: 125px;
-  padding:10px;
+  /* padding:10px; */
 }
 .bottom{
   width:100%;
@@ -170,7 +170,6 @@ body {
   -moz-animation-duration:.2s;
   animation-duration:.2s;
 }
-
 @keyframes sideMenu{
   0% {
     width:0px;
@@ -319,28 +318,38 @@ body {
   animation-delay: 1.25s;
 }
 
-.rotate{
-  width: 100%;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  display: none;
-  position: fixed;
-  top:0;
-  left:0;
-  background:#222;
-  z-index: 9999999;
+.portrait .menu{
+    position: absolute;
+    z-index: 999;
+    background: #25272b;
+    display: none;
 }
-
-@media only screen and (orientation:portrait){
-  .rotate {
-    display:flex;
+.portrait .menu.open{
+  display: flex;
+  -webkit-animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both;animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both
+}
+@media only screen and (orientation:portrait) {
+  .top{
+    height: 56px;
+  }
+  .top .item2 { 
+    overflow: hidden;
+    padding-right:0px;
+    width: auto;
+    min-width: auto;
+  }
+  .center{
+    height:100% ;
+    width:100%;
+  }
+  .center .main .item1 { 
+    width: 100%;
+  }
+  .center .main .item2 {
+    width: 100%;
   }
 }
-
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 900px) and (orientation:landscape) {
   .top{
     height: 56px;
   }
@@ -352,7 +361,7 @@ body {
     width: calc(100% - 110px);
   }
   .center .main .item2 {
-    width: 95px;
+    width: 100px;
   }
   .bottom{
     height:38px

@@ -66,6 +66,7 @@ function TabPanel(props) {
     );
 }
 class Sidebar extends Component {
+    static contextType = Context;
     constructor(props) {
         super(props);
         this.state = {
@@ -76,7 +77,7 @@ class Sidebar extends Component {
     }
     handleChange(e, tab) {
         this.prev = this.state.tab;
-        if (tab == this.state.tab)
+        if (tab == this.state.tab && !this.context.state.isPortrait)
             tab = null;
         this.setState({ tab });
     }

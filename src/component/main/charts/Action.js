@@ -15,36 +15,50 @@ import HelpIcon from '@material-ui/icons/Help';
 
 const BuyButton = withStyles(theme => ({
     root: {
-        color: '#fff',
+        display: 'flex',
+        flex: 1,
+        color: '#4C9929',
         maxHeight: 80,
-        height: 80,
+        padding: '30px 0',
         [theme.breakpoints.down('sm')]: {
-            height: 48,
-            maxHeight: 48,
+            padding: '8px 0',
         },
-        marginTop: 5,
-        fontSize: '1.1rem',
+        margin: 5,
+        fontSize: '1rem',
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
+        background: 'transparent',
+        border: '1px solid #4C9929',
+        transition: 'all 0.3s ease-out',
+        outlineOffset: 3,
         '&:hover': {
-
+            background: 'transparent',
+            // color: '#fff',
+            boxShadow: 'inset 0 0 10px rgba(87, 227, 36, 0.5), 0 0 10px rgba(87, 227, 36, 0.5)'
         },
     },
 }))(Button);
 
 const SellButton = withStyles(theme => ({
     root: {
-        color: '#fff',
+        display: 'flex',
+        flex: 1,
+        color: '#ee3769',
         maxHeight: 80,
-        height: 80,
+        padding: '30px 0',
         [theme.breakpoints.down('sm')]: {
-            height: 48,
-            maxHeight: 48,
+            padding: '8px 0',
         },
-        marginTop: 5,
-        fontSize: '1.1rem',
+        margin: 5,
+        fontSize: '1rem',
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
+        background: 'transparent',
+        border: '1px solid #ee3769',
+        transition: 'all 0.3s ease-out',
+        outlineOffset: 3,
         '&:hover': {
-
+            background: 'transparent',
+            // color: '#fff',
+            boxShadow: 'inset 0 0 10px rgba(210, 38, 54, 0.5), 0 0 10px rgba(210, 38, 54, 0.5)'
         },
     },
 }))(Button);
@@ -81,8 +95,27 @@ class Action extends Component {
         let profit = this.context.state.setting.profit || 0;
         return (
             <div style={styles.root} className="scrollbar">
-                <div style={styles.group}>
+                <div style={this.context.state.isPortrait ? styles.group2 : styles.group}>
                     <Price amount={this.amount} />
+                    {this.context.state.isPortrait &&
+                        <div style={styles.profit2}>
+                            <Typography variant="button" display="block" >
+                                {t('profit')}
+                            </Typography>
+                            <div style={styles.profit3} >
+                                <div style={styles.info} >
+                                    <Typography variant="h5" display="block" style={{ color: 'rgb(232, 229, 92)' }} >
+                                        {profit}%
+                                </Typography>
+                                </div>
+                                <div style={styles.info} >
+                                    <Typography display="block" style={{ color: 'rgb(232, 229, 92)' }} >
+                                        {(this.state.bet * profit / 100).toFixed(2)}$
+                                </Typography>
+                                </div>
+                            </div>
+                        </div>
+                    }
                     <Time time={this.time} />
                 </div>
                 <Hidden only={['xs', 'sm']}>
@@ -94,29 +127,25 @@ class Action extends Component {
                             <HelpIcon style={{ ...styles.color, fontSize: 14 }} />
                         </div>
                         <div style={styles.info} >
-                            <Typography variant="h4" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
+                            <Typography variant="h4" display="block" style={{ color: 'rgb(232, 229, 92)' }} >
                                 {profit}%
                         </Typography>
                         </div>
                         <div style={styles.info} >
-                            <Typography variant="h5" display="block" style={{ color: this.state.state == 'up' ? '#25b940' : ' #fc155a' }} >
+                            <Typography variant="h5" display="block" style={{ color: 'rgb(232, 229, 92)' }} >
                                 {(this.state.bet * profit / 100).toFixed(2)}$
                         </Typography>
                         </div>
                     </div>
                 </Hidden>
-                <div style={styles.group}>
+                <div style={this.context.state.isPortrait ? styles.group2 : styles.group}>
                     <BuyButton
-                        variant="contained"
-                        color="primary"
                         onClick={() => this.onTrade('buy')}
                         onMouseEnter={() => this.mouseOver('buy')}
                         onMouseLeave={() => this.mouseOut('buy')}>
                         <TrendingUpIcon style={{ marginRight: '1vw' }} /> {t('buy')}
                     </BuyButton>
                     <SellButton
-                        variant="contained"
-                        color="primary"
                         onClick={() => this.onTrade('sell')}
                         onMouseEnter={() => this.mouseOver('sell')}
                         onMouseLeave={() => this.mouseOut('sell')}>
@@ -139,16 +168,38 @@ const styles = {
     group: {
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+    group2: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        borderTop: '1px solid #2f2f2f',
     },
     profit: {
         border: '1px solid #333',
+        margin: 5,
         padding: 5,
         borderRadius: 5,
-        height: 600,
-        marginTop: 5,
         alignItems: 'center',
         justifyContent: 'center',
         maxHeight: 100,
+    },
+    profit2: {
+        border: '1px solid #333',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        margin: 5,
+        padding: 3
+    },
+    profit3: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%'
     },
     info: {
         width: '100%',

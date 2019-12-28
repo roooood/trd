@@ -38,7 +38,7 @@ function tabGenerator(props) {
         <div style={styles.list}>
             {props.icon}
             <div style={styles.listText}>
-                <Typography variant="subtitle1" display="block" style={{ marginLeft: 5 }} >
+                <Typography variant="subtitle1" display="block" style={{ marginLeft: 5, fontSize: '.85rem' }} >
                     {props.title}
                 </Typography>
             </div>
@@ -58,7 +58,7 @@ function TabPanel(props) {
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
         >
-            <Box p={3}>{children}</Box>
+            {children}
         </Typography>
     );
 }
@@ -89,7 +89,7 @@ class AppModal extends Component {
         let check = ['crypto', 'forex', 'stock'];
         let i;
         // setTimeout(() => {
-            this.setState({ load: true });
+        this.setState({ load: true });
         // }, 400);
         for (i of check) {
             if (this.props.market[i] == null) {
@@ -154,7 +154,7 @@ class AppModal extends Component {
                             dataKey: 'description',
                         },
                     ]}
-                    onRowClick={({rowData})=>this.addTab(rowData.id, rowData.symbol, rowData.display, type)}
+                    onRowClick={({ rowData }) => this.addTab(rowData.id, rowData.symbol, rowData.display, type)}
                 />
             </div>
         )
@@ -175,9 +175,9 @@ class AppModal extends Component {
     }
     render() {
         return (
-            <div style={styles.root}>
+            <div style={this.context.state.isPortrait ? styles.root2 : styles.root}>
                 <Tabs
-                    orientation="vertical"
+                    orientation={this.context.state.isPortrait ? "horizontal" : "vertical"}
                     variant="scrollable"
                     value={this.state.tab}
                     onChange={this.handleChange}
@@ -206,11 +206,20 @@ const styles = {
     root: {
         flexGrow: 1,
         display: 'flex',
-        height: '67vh',
+        height: '70vh',
+        overflow: 'hidden'
+    },
+    root2: {
+        flexGrow: 1,
+        display: 'flex',
+        height: '77vh',
+        flexDirection: 'column'
     },
     tableRoot: {
         width: '100%',
         height: '55vh',
+        marginTop: '3vh',
+        padding: 5
     },
     tableWrapper: {
         position: 'relative'

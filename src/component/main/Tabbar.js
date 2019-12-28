@@ -32,7 +32,7 @@ class Tabbar extends Component {
                 {Object.keys(tab).map((item) => {
                     return (
                         <TabPanel key={item} className="swing-in-top-fwd" value={this.props.tab.active} index={item}>
-                            <div style={styles.root} className={"chart-dir-" + tab[item].id}>
+                            <div style={{ ...styles.root, ...(this.context.state.isPortrait ? { flexDirection: 'column' } : {}) }} className={"chart-dir-" + tab[item].id}>
                                 <div className="item1 chart">
                                     <Chart parent={tab[item]} inView={this.props.tab.active == item} />
                                 </div>

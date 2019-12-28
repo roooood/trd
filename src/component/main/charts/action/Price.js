@@ -152,6 +152,7 @@ class Price extends Component {
 const styles = {
     root: {
         background: 'rgba(255,255,255,.1)',
+        margin: 5,
         padding: 5,
         borderRadius: 5,
         cursor: 'pointer',
