@@ -2926,27 +2926,56 @@ function drawGlow(ctx, centerX, centerY, arg) {
     ctx.restore()
 }
 
-function drawCircle(ctx, centerX, centerY, color, size) {
-    var circleSize = shapeSize('circle', size);
-    var halfSize = (circleSize - 1) / 2;
+function drawTrade(ctx, centerX, centerY, type, size) {
+    let color = '#FFE045'// type == 'buy' ? '#4CAF50' : '#fc1540'
+    let mul = type[0] == 'buy' ? -1 : 1;
+
     ctx.save();
+    let x = centerX-15, y = centerY, height = 9, width = 40, arrow = 10, miniArrow = 5;
+
     ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.lineCap = "round";
-    ctx.setLineDash([15, 3, 3, 3])
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(2000, centerY);
+    ctx.lineWidth = height;
+    ctx.lineJoin = "round";
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - arrow, y - height);
+    ctx.lineTo(x - width, y - height);
+    ctx.lineTo(x - width, y + height);
+    ctx.lineTo(x - arrow, y + height);
+    ctx.lineTo(x, y);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.closePath();
     ctx.strokeStyle = color;
     ctx.stroke();
 
-    ctx.save();
-    ctx.restore()
+    x = x + 10;
+
     ctx.beginPath();
-    ctx.arc(centerX, centerY, halfSize, 0,2*Math.PI, false);
+    ctx.lineWidth = miniArrow;
+    ctx.lineJoin = "round";
+    ctx.moveTo(x + (miniArrow * 2), y);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x + miniArrow, y + (mul * miniArrow))
+    ctx.lineTo(x + (miniArrow * 2), y);
     ctx.fillStyle = color;
-    ctx.shadowColor = '#000';
-    ctx.shadowBlur = 1;
     ctx.fill();
+    ctx.closePath();
+    ctx.strokeStyle = color;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x + (miniArrow * 3), y);
+    ctx.lineWidth = 1;
+    ctx.lineCap = "round";
+    ctx.setLineDash([15, 3, 3, 3]);
+    ctx.lineTo(2000, y);
+    ctx.strokeStyle = color;
+    ctx.stroke();
+
+    ctx.font = "15px Arial";
+    ctx.fillStyle = "#333";
+    ctx.fillText(type[1]+" $", x - width - 5, y + 6);
+
     ctx.restore()
 }
 function hitTestCircle(centerX, centerY, size, x, y) {
@@ -3013,8 +3042,8 @@ function drawItem(item, ctx) {
         case 'glow':
             drawGlow(ctx, item.x, item.y, item.color);
             return;
-        case 'circle':
-            drawCircle(ctx, item.x, item.y, item.color, 15);
+        case 'trade':
+            drawTrade(ctx, item.x, item.y, item.color, 15);
             return;
         case 'square':
             drawSquare(ctx, item.x, item.y, item.color, item.size);
@@ -3059,7 +3088,7 @@ function fillSizeAndY(
             return;
         }
         case 'aboveBarX': {
-            rendererItem.y = (priceScale.priceToCoordinate(price > highPrice ? highPrice : price, firstValue) - (price > highPrice ? 0 : 10));
+            rendererItem.y = (priceScale.priceToCoordinate(price > highPrice ? highPrice : price, firstValue));
             return;
         }
         case 'belowBar': {
@@ -3068,7 +3097,7 @@ function fillSizeAndY(
             return;
         }
         case 'belowBarX': {
-            rendererItem.y = (priceScale.priceToCoordinate(price < lowPrice ? lowPrice : price, firstValue) +( price < lowPrice ? 0 : 10));
+            rendererItem.y = (priceScale.priceToCoordinate(price < lowPrice ? lowPrice : price, firstValue) );
             return;
         }
     }
@@ -10647,23 +10676,23 @@ var CandlestickSeriesApi = /** @class */ (function (_super) {
     return CandlestickSeriesApi;
 }(SeriesApi));
 
-// upColor: '#fc155a',
-//     downColor: '25b940',
+// upColor: '#FF0033',
+//     downColor: '2DBB54',
 var candlestickStyleDefaults = {
-    upColor: '#25b940',
-    downColor: '#fc155a',
+    upColor: '#2DBB54',
+    downColor: '#FF0033',
     wickVisible: true,
     borderVisible: true,
     borderColor: '#378658',
-    borderUpColor: '#25b940',
-    borderDownColor: '#fc155a',
+    borderUpColor: '#2DBB54',
+    borderDownColor: '#FF0033',
     wickColor: '#737375',
-    wickUpColor: '#25b940',
-    wickDownColor: '#fc155a',
+    wickUpColor: '#2DBB54',
+    wickDownColor: '#FF0033',
 };
 var barStyleDefaults = {
-    upColor: '#25b940',
-    downColor: '#fc155a',
+    upColor: '#2DBB54',
+    downColor: '#FF0033',
     openVisible: true,
     thinBars: true,
 };
@@ -10684,7 +10713,7 @@ var areaStyleDefaults = {
     crosshairMarkerRadius: 4,
 };
 var histogramStyleDefaults = {
-    color: '#fc155a',
+    color: '#FF0033',
     base: 0,
     lineWidth: 2,
 };

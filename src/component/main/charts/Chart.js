@@ -9,7 +9,7 @@ import ChartType from './widget/chartTypes';
 import Context from 'library/Context';
 import { clone } from 'library/Helper';
 import { TabbarAdd } from 'redux/action/tab';
-import * as LightweightCharts from 'library/lightweight-charts';
+import * as LightweightCharts from 'component/lightweight-charts';
 import play from 'library/Sound';
 
 
@@ -223,8 +223,8 @@ class Chart extends Component {
                     time: j.triger,
                     price: j.price,
                     position: j.tradeType == 'buy' ? 'aboveBarX' : 'belowBarX',
-                    color: j.tradeType == 'buy' ? '#3e5' : '#fc1515',
-                    shape: 'circle',
+                    color: [j.tradeType, j.bet],
+                    shape: 'trade',
                 })
 
             }

@@ -17,7 +17,7 @@ import InputBase from '@material-ui/core/InputBase';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import MonetizationOnRoundedIcon from '@material-ui/icons/MonetizationOnRounded';
 import SearchIcon from '@material-ui/icons/Search';
-import VirtualizedTable from 'library/VirtualizedTable';
+import VirtualizedTable from 'component/VirtualizedTable';
 
 const AntTab = withStyles(theme => ({
     wrapper: {

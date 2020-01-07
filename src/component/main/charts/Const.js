@@ -127,8 +127,8 @@ export const volumeOption = {
     },
 }
 export const barOption = {
-    downColor: '#25b940',
-    upColor: '#fc155a',
+    downColor: '#2DBB54',
+    upColor: '#FF0033',
 }
 export const areaOption = {
     topColor: 'rgba(21, 146, 230, 0.4)',
