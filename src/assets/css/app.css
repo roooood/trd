@@ -318,6 +318,10 @@ body {
   animation-delay: 1.25s;
 }
 
+.portrait .sign{
+  height:100%;
+  border-radius: 0!important;
+}
 .portrait .menu{
     position: absolute;
     z-index: 999;

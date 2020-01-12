@@ -24,8 +24,8 @@ class Sign extends Component {
     }
     render() {
         return (
-            <div id="content" className="bg theme-default" style={styles.root} >
-                <div style={styles.body}>
+            <div id="content" className={"bg theme-default " + (this.context.state.isPortrait ? 'portrait' : '')} style={styles.root} >
+                <div style={styles.body} className="sign">
                     {this.state.route == 'login' &&
                         <Login goto={this.goto} />
                     }

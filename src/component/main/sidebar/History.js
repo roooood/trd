@@ -100,10 +100,6 @@ class Price extends Component {
                 <Scrollbars style={{ height: this.context.state.isPortrait ? '77vh' : this.context.state.isMobile ? '52vh' : '70vh' }}  >
                     {this.state[this.state.type].map((item, i) => {
                         let date = this.timeConverter(item.point);
-                        let time = Math.round((new Date()).getTime() / 1000);
-                        let newTime = (item.tradeAt - time);
-                        if (newTime < 0)
-                            newTime = 1;
                         return (
                             <div key={Math.random()} style={styles.item}>
                                 <div style={styles.subItem}>
@@ -119,7 +115,7 @@ class Price extends Component {
                                             weight={2}
                                             fontSize={'12px'}
                                             timeFormat={'hms'}
-                                            seconds={newTime}
+                                            seconds={item.timer}
                                         />
                                     }
                                 </div>

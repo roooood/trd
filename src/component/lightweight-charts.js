@@ -2900,14 +2900,14 @@ function drawGlow(ctx, centerX, centerY, arg) {
     let dotColor = arg[2];
     let isMobile = arg[3];
 
-    let mul = isMobile ? 1 : 2;
+    let mul = 2//isMobile ? 1 : 2;
 
     ctx.save();
     ctx.beginPath();
     ctx.arc(centerX, centerY, 2*mul, 0, Math.PI * 2, false);
     ctx.fillStyle = dotColor;
-    // ctx.shadowColor = '#fff';
-    // ctx.shadowBlur = 1;
+    ctx.shadowColor = '#fff';
+    ctx.shadowBlur = 1;
     ctx.fill();
     // ctx.lineWidth = 1;
     // ctx.strokeStyle = '#000';
@@ -2916,11 +2916,11 @@ function drawGlow(ctx, centerX, centerY, arg) {
 
     ctx.save();
     ctx.beginPath();
-    ctx.filter = "blur(" + glower/7 + "px)";
+    // ctx.filter = "blur(" + glower/7 + "px)";
     ctx.fillStyle = glowColor;
     ctx.arc(centerX, centerY, glower * mul, 0, Math.PI * 2, false);
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = 'hsla(200, 50%, 100%, 1)';
+    // ctx.shadowBlur = 20;
+    // ctx.shadowColor = 'hsla(200, 50%, 100%, 1)';
     ctx.lineCap = 'round'
     ctx.fill();
     ctx.restore()

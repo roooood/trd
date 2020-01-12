@@ -34,7 +34,7 @@ class Chart extends Component {
         window.ee.on('trade' + props.parent.id, this.trade)
     }
     resize() {
-        if (this.props.inView && !this.context.state.isPortrait)
+        if (!this.context.state.isPortrait) //this.props.inView && 
             this.chart.applyOptions(getDimention(this.context.state.isMobile, this.context.state.isPortrait));
     }
 
@@ -252,8 +252,8 @@ class Chart extends Component {
                             ? 'rgba(37, 185, 64, 0.' + ((12 - this.glower) * 10) + ')'
                             : 'rgba(252, 21, 90, 0.' + ((12 - this.glower) * 10) + ')',
                         last.open < last.close
-                            ? '#aeff1f'//'#aeff1f'
-                            : '#aeff1f',//ee0f78
+                            ? '#2DBB54'//'#aeff1f'
+                            : '#FF0033',//ee0f78
                         this.context.state.isMobile],
                     shape: 'glow',
                     key: 'glow'

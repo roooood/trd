@@ -74,7 +74,7 @@ class Setting extends Component {
                             <Typography component="div" style={{ ...styles.account }}>
                                 {username}
                             </Typography>
-                            <ExpandMoreRoundedIcon style={{ marginRight: -5, marginLeft: 5 }} />
+                            <ExpandMoreRoundedIcon style={{ color: '#fff', marginRight: -5, marginLeft: 5 }} />
                         </Hidden>
                     </ColorButton>
                 }

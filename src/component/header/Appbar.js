@@ -172,6 +172,9 @@ class Appbar extends Component {
     render() {
         const tab = this.props.tab.data || {};
         const keys = Object.keys(tab);
+
+        if (keys.length === 0)
+            return null;
         return (
             <div style={styles.root}>
                 {this.context.state.isPortrait
