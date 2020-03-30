@@ -62,6 +62,7 @@ class Price extends Component {
     }
     order(orders) {
         let i;
+        let startData = parseInt(new Date().getTime() / 1000);
         let tmp = {
             open: clone(this.state.open),
             real: clone(this.state.real),
@@ -69,6 +70,7 @@ class Price extends Component {
         };
         this.setState({ open: [] });
         for (i of orders) {
+            i.startDate = startData;
             if (i.status == 'pending') {
                 tmp.open.unshift(i)
             }
@@ -88,6 +90,7 @@ class Price extends Component {
         return [(("" + hour).length == 1 ? '0' + hour : hour) + ':' + (("" + min).length == 1 ? '0' + min : min), (date + ' ' + month)];
     }
     render() {
+        let endDate = parseInt(new Date().getTime() / 1000);
         return (
             <div style={styles.root} className="swing-in-top-fwd" >
                 <Typography align="center" gutterBottom > {t('tradingHistory')}</Typography >
@@ -100,6 +103,8 @@ class Price extends Component {
                 <Scrollbars style={{ height: this.context.state.isPortrait ? '77vh' : this.context.state.isMobile ? '52vh' : '70vh' }}  >
                     {this.state[this.state.type].map((item, i) => {
                         let date = this.timeConverter(item.point);
+                        let seconds = endDate - item.startDate;
+                        let down = parseInt(item.timer - seconds) + 1;
                         return (
                             <div key={Math.random()} style={styles.item}>
                                 <div style={styles.subItem}>
@@ -115,7 +120,7 @@ class Price extends Component {
                                             weight={2}
                                             fontSize={'12px'}
                                             timeFormat={'hms'}
-                                            seconds={item.timer}
+                                            seconds={down}
                                         />
                                     }
                                 </div>

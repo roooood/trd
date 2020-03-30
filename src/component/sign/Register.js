@@ -1,6 +1,5 @@
 import React from 'react';
 import autoBind from 'react-autobind';
-
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,9 +10,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import LockOpenOutlined from '@material-ui/icons/LockOpenOutlined';
+import PhoneInput from 'react-phone-input-2';
+import 'assets/css/material.css';
 
 import { t } from 'locales';
 import { emailPattern } from 'library/Helper';
@@ -32,6 +32,7 @@ class Register extends React.Component {
 
             username: '',
             password: '',
+            mobile: '',
             email: '',
             agree: false,
 
@@ -99,6 +100,9 @@ class Register extends React.Component {
     changeAgree() {
         this.setState({ agree: !this.state.agree })
     }
+    changeNumber(mobile) {
+        this.setState({ mobile })
+    }
     submit() {
         if (this.state.loading)
             return;
@@ -119,8 +123,8 @@ class Register extends React.Component {
             return;
         }
         this.setState({ loading: true })
-        let { username, password, email } = this.state
-        request('user/add_account', { username, password, email }, res => {
+        let { username, password, email, mobile } = this.state
+        request('user/add_account', { username, password, email, mobile }, res => {
             this.setState({ loading: false })
             if (res.success) {
                 this.notify({ message: t('registered'), type: 'success' });
@@ -195,6 +199,12 @@ class Register extends React.Component {
                             autoComplete="current-password"
                             helperText={this.state.pHelp}
                         />
+                        <PhoneInput
+                            disableAreaCodes
+                            defaultCountry="us"
+                            value={this.state.mobile}
+                            onChange={this.changeNumber}
+                        />
                         <TextField
                             onChange={this.changeEmail}
                             onBlur={this.checkEmail}
@@ -226,6 +236,7 @@ class Register extends React.Component {
                             </label>
                             )}
                         />
+
                         <Button
                             onClick={this.submit}
                             type="button"
@@ -251,6 +262,7 @@ const styles = {
         flexDirection: 'column',
         alignItems: 'center',
         position: 'relative',
+        color: '#333'
     },
     avatar: {
         margin: theme.spacing(1),

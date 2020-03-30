@@ -32,7 +32,7 @@ export default {
     signIn: 'Sign In',
     forgotPassword: 'Forgot password?',
     loginSignUp: "Don't have an account? Sign Up",
-    agree: 'I am over 18 & agree with the',
+    agree: 'I agree with the',
     terms: 'Terms of Service',
 
     logOut: 'Logout',

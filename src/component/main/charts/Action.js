@@ -26,12 +26,10 @@ const BuyButton = withStyles(theme => ({
         margin: 5,
         fontSize: '1rem',
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
-        background: 'transparent',
         border: '1px solid #4C9929',
         transition: 'all 0.3s ease-out',
         outlineOffset: 3,
         '&:hover': {
-            background: 'transparent',
             // color: '#fff',
             boxShadow: 'inset 0 0 10px rgba(87, 227, 36, 0.5), 0 0 10px rgba(87, 227, 36, 0.5)'
         },
@@ -51,12 +49,10 @@ const SellButton = withStyles(theme => ({
         margin: 5,
         fontSize: '1rem',
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
-        background: 'transparent',
         border: '1px solid #ee3769',
         transition: 'all 0.3s ease-out',
         outlineOffset: 3,
         '&:hover': {
-            background: 'transparent',
             // color: '#fff',
             boxShadow: 'inset 0 0 10px rgba(210, 38, 54, 0.5), 0 0 10px rgba(210, 38, 54, 0.5)'
         },

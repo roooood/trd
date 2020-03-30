@@ -18,7 +18,7 @@ body {
        -moz-user-select: none;
             user-select: none; 
   -webkit-overflow-scrolling: touch;
-    background-image: url('../img/map.png');
+    background-image: url('../img/map.svg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -35,7 +35,7 @@ body {
 
 .theme-default{
   color:#fff;
-  background-color: rgba(21, 21, 21, 0.95);
+  background-color: rgba(21, 21, 21, 0.01);
 }
 #root{
   width: 100vw;
