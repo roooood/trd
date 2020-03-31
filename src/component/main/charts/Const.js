@@ -159,13 +159,13 @@ export function getDimention(isMobile, isPortrait) {
     let action = isPortrait ? 10 : isMobile ? 120 : 150;
     if (sidebarElement == null) {
         return {
-            width: window.innerWidth,
-            height: window.innerHeight - (isPortrait ? 100 : 130),
+            width: window.innerWidth-50,
+            height: window.innerHeight - (isPortrait ? 150 : 130),
         }
     }
     return {
         width: window.innerWidth - (sidebarElement.offsetWidth + action),
-        height: window.innerHeight - (isPortrait ? 200 : isMobile ? 110 : 130),
+        height: window.innerHeight - (isPortrait ? 200 : isMobile ? 70 : 130),
     }
 }
 

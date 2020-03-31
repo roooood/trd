@@ -1,5 +1,5 @@
-export const apiUrl = window.location.protocol + '//localhost:2657/';
-export const serverUrl = (window.location.protocol === 'https:' ? 'wss' : 'ws') + '://localhost:2657';
+export const apiUrl = window.location.protocol + '//192.168.1.104:2657/';
+export const serverUrl = (window.location.protocol === 'https:' ? 'wss' : 'ws') + '://192.168.1.104:2657';
 
 
 export const emailPattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;

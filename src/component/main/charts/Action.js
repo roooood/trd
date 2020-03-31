@@ -17,7 +17,7 @@ const BuyButton = withStyles(theme => ({
     root: {
         display: 'flex',
         flex: 1,
-        color: '#4C9929',
+        color: '#fff',
         maxHeight: 80,
         padding: '30px 0',
         [theme.breakpoints.down('sm')]: {
@@ -26,7 +26,6 @@ const BuyButton = withStyles(theme => ({
         margin: 5,
         fontSize: '1rem',
         background: 'linear-gradient(0deg, #CC7F0E, #25b940)',
-        border: '1px solid #4C9929',
         transition: 'all 0.3s ease-out',
         outlineOffset: 3,
         '&:hover': {
@@ -40,7 +39,7 @@ const SellButton = withStyles(theme => ({
     root: {
         display: 'flex',
         flex: 1,
-        color: '#ee3769',
+        color: '#fff',
         maxHeight: 80,
         padding: '30px 0',
         [theme.breakpoints.down('sm')]: {
@@ -49,7 +48,6 @@ const SellButton = withStyles(theme => ({
         margin: 5,
         fontSize: '1rem',
         background: 'linear-gradient(0deg, #fc155a, #CC7F0E)',
-        border: '1px solid #ee3769',
         transition: 'all 0.3s ease-out',
         outlineOffset: 3,
         '&:hover': {
@@ -99,13 +97,13 @@ class Action extends Component {
                                 {t('profit')}
                             </Typography>
                             <div style={styles.profit3} >
-                                <div style={styles.info} >
+                                <div style={{...styles.info,...styles.border}} >
                                     <Typography variant="h5" display="block" style={{ color: 'rgb(232, 229, 92)' }} >
                                         {profit}%
                                 </Typography>
                                 </div>
                                 <div style={styles.info} >
-                                    <Typography display="block" style={{ color: 'rgb(232, 229, 92)' }} >
+                                <Typography display="block" style={{ color: '#41c14b' }} >
                                         {(this.state.bet * profit / 100).toFixed(2)}$
                                 </Typography>
                                 </div>
@@ -195,7 +193,7 @@ const styles = {
     profit3: {
         display: 'flex',
         justifyContent: 'space-between',
-        width: '100%'
+        width: '100%',
     },
     info: {
         width: '100%',
@@ -206,5 +204,10 @@ const styles = {
     color: {
         color: '#b5b5b5'
     },
+    border: {
+        borderRight: '1px solid #4e4d4d',
+        paddingRight: 5,
+        marginRight: 5,
+    }
 }
 export default Action;

@@ -17,6 +17,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { t } from 'locales';
 
 const ColorButton = withStyles(theme => ({
     root: {
@@ -195,11 +196,11 @@ class Appbar extends Component {
                                     )
                                 })
                                 }
+                                <ListItem style={styles.listPort} onClick={this.list}>
+                                    <AddIcon style={{ fontSize: 30 }} />{t('newApp')}
+                                </ListItem>
                             </List>
                         </DropDown>
-                        <ColorButton onClick={this.list}  >
-                            <AddIcon style={{ fontSize: 30 }} />
-                        </ColorButton>
                     </>
                     : <>
                         <div style={{ ...styles.tabs }} >

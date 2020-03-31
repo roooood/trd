@@ -110,7 +110,7 @@ class Route extends Component {
                             <Tabbar />
                         </div>
                     </div>
-                    {!this.context.state.isPortrait &&
+                    {!this.context.state.isMobile &&
                         <div className="container bottom" >
                             <Bottom />
                         </div>

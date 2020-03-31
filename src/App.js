@@ -25,7 +25,7 @@ class App extends Component {
     super(props);
     this.state = {
       isMobile: window.innerWidth <= 900,
-      isPortrait: window.matchMedia("(orientation: portrait)").matches,
+      isPortrait: window.innerHeight > window.innerWidth,
       setting: {},
       menu: false
     };
@@ -34,13 +34,10 @@ class App extends Component {
     autoBind(this);
   }
   componentDidMount() {
-    window.addEventListener("orientationchange", this.orientationchange);
+    window.addEventListener('resize', this.resize);
   }
-  componentWillUnmoun() {
-    window.removeEventListener("orientationchange", this.orientationchange);
-  }
-  orientationchange() {
-    this.setState({ isPortrait: window.matchMedia("(orientation: portrait)").matches })
+  resize() {
+    this.setState({ isPortrait: window.innerHeight > window.innerWidth })
   }
   changeState(obj) {
     this.setState(obj)

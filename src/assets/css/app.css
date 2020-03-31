@@ -154,7 +154,7 @@ body {
 }
 .animated{
   border-right: 1px solid #333;
-  width:250px;
+  width:230px;
 }
 .animate{
   border-right: 1px solid #333;
@@ -180,7 +180,7 @@ body {
   }
   100% {
     opacity:1;
-    width:250px;
+    width:230px;
   }
 }
 
@@ -335,6 +335,7 @@ body {
 @media only screen and (orientation:portrait) {
   .top{
     height: 56px;
+    border-bottom: 0;
   }
   .top .item2 { 
     overflow: hidden;
@@ -358,7 +359,7 @@ body {
     height: 56px;
   }
   .center{
-    height:calc(100% - 95px);
+    height:75%;
     width:100%;
   }
   .center .main .item1 { 

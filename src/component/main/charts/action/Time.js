@@ -143,7 +143,7 @@ const styles = {
     root: {
         background: 'rgba(255,255,255,.1)',
         margin: 5,
-        padding: 5,
+        padding: 2,
         borderRadius: 5,
         cursor: 'pointer',
     },
@@ -179,7 +179,7 @@ const styles = {
         color: '#fff',
         fontSize: '1.4em',
         padding: 0,
-        width: 60,
+        width: 45,
         height: '1.4em'
     },
     listItem: {

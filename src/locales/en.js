@@ -103,5 +103,6 @@ export default {
     chatSupport: 'Chat & Support',
 
     copied: 'The Address Copied To Clipboard',
-    currentTime: 'Current Time'
+    currentTime: 'Current Time',
+    newApp:'Add New'
 }

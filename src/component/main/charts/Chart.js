@@ -34,8 +34,8 @@ class Chart extends Component {
         window.ee.on('trade' + props.parent.id, this.trade)
     }
     resize() {
-        if (!this.context.state.isPortrait) //this.props.inView && 
-            this.chart.applyOptions(getDimention(this.context.state.isMobile, this.context.state.isPortrait));
+        // if (!this.context.state.isPortrait) //this.props.inView && 
+        this.chart.applyOptions(getDimention(this.context.state.isMobile, this.context.state.isPortrait));
     }
 
     componentDidMount() {
@@ -48,7 +48,9 @@ class Chart extends Component {
         this.createChart();
 
         window.addEventListener('resize', this.resize);
-        new ResizeObserver(this.resize).observe(document.getElementById("sidebar"))
+        if ('ResizeObserver' in window) {
+            new ResizeObserver(this.resize).observe(document.getElementById("sidebar"))
+        }
 
     }
 

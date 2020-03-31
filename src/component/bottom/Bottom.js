@@ -61,9 +61,11 @@ class Bottom extends Component {
         let profit = this.context.state.setting.profit || 0;
         return (
             <div style={styles.root}>
-                <ColorButton variant="outlined" size="small" onClick={this.chat}  >
-                    <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10 }} /> {t('chatSupport')}
-                </ColorButton>
+                {!this.context.state.isMobile &&
+                    < ColorButton variant="outlined" size="small" onClick={this.chat}  >
+                        <ChatOutlinedIcon style={{ marginRight: 10, marginLeft: 10 }} /> {t('chatSupport')}
+                    </ColorButton>
+                }
                 <Hidden only={['md', 'lg', 'xl']}>
                     <div style={styles.profit}>
                         <div style={styles.info} >
