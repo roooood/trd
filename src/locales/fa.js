@@ -36,6 +36,7 @@ export default {
     terms: 'قوانین استفاده از سرویس',
 
     logOut: 'خروج',
+    setting: 'تنظیمات',
     deposit: 'انتقال',
     makeDeposit: 'افزایش موجودی',
     withdraw: 'برداشت',
@@ -100,5 +101,8 @@ export default {
 
     currentTime: 'زمان فعلی',
     newApp: 'افزودن' ,
-    invalidUserError : 'کاربر یافت نشد'
+    invalidUserError : 'کاربر یافت نشد',
+
+    lanuage: 'زبان',
+    currency: 'واحد پولی'
 }

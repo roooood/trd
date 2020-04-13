@@ -8,18 +8,22 @@ import Grow from '@material-ui/core/Grow';
 
 const styles = {
     snack: {
-        marginTop: 30
+        marginTop: 50
     },
     error: {
+        flexGrow:0,
         background: '#d32f2f',
     },
     warning: {
+        flexGrow: 0,
         background: '#ffa000',
     },
     info: {
+        flexGrow: 0,
         background: '#1976d2',
     },
     success: {
+        flexGrow: 0,
         background: '#43a047',
     },
 }

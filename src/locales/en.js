@@ -36,6 +36,7 @@ export default {
     terms: 'Terms of Service',
 
     logOut: 'Logout',
+    setting:'Setting',
     deposit: 'Deposit',
     makeDeposit: 'Make Deposit',
     withdraw: 'Withdraw',
@@ -101,5 +102,8 @@ export default {
     copied: 'The Address Copied To Clipboard',
     currentTime: 'Current Time',
     newApp: 'Add New',
-    invalidUserError  :'User Not Found'
+    invalidUserError: 'User Not Found',
+    
+    lanuage: 'Lanuage',
+    currency:'Currency'
 }

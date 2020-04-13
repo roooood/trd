@@ -18,9 +18,9 @@ import Hidden from '@material-ui/core/Hidden';
 
 const StyledMenu = withStyles({
     paper: {
-        background: '#25272b',
+        background: '#1c2030',
         color: '#fff',
-        transform: 'translateX(-90px) translateY(-5px)!important'
+        transform: 'translateX(-100px) translateY(-5px)!important'
     },
 })(props => (
     <Menu
@@ -85,6 +85,8 @@ class Price extends Component {
         window.ee.emit('notify', data)
     }
     render() {
+        let { currency } = this.context.state.user;
+        let value = toMoney(this.state.value, currency);
         return (
             <>
                 <div style={styles.root} >
@@ -99,9 +101,9 @@ class Price extends Component {
                             <AttachMoneyIcon onClick={this.openMenu} style={{ ...styles.color, fontSize: '1.6em', marginRight: 10 }} />
                             <input
                                 type="text"
-                                style={styles.input}
+                                style={{ ...styles.input, fontSize: value.length>5? '.9em':'1.4em'}}
                                 onChange={e => this.changeValue(e.target.value)}
-                                value={this.state.value} />
+                                value={value} />
                         </div>
                     </Hidden>
                     <Hidden only={['md', 'lg', 'xl']}>
@@ -109,10 +111,10 @@ class Price extends Component {
                             <AttachMoneyIcon style={{ ...styles.color, fontSize: '1.6em', marginRight: 10 }} />
                             <input
                                 type="text"
-                                style={styles.input}
+                                style={{ ...styles.input, fontSize: value.length > 5 ? '.9em' : '1.4em' }}
                                 disabled
                                 onChange={e => this.changeValue(e.target.value)}
-                                value={this.state.value} />
+                                value={value} />
                         </div>
                     </Hidden>
                     <div style={styles.picker} >
@@ -136,7 +138,7 @@ class Price extends Component {
                                 return (
                                     <ListItem style={styles.listItem} key={item} button onClick={() => this.change(item)}>
                                         <Typography style={styles.color}>
-                                            ${toMoney(item)}
+                                            ${toMoney(item, currency)}
                                         </Typography>
                                     </ListItem>
                                 )
@@ -187,7 +189,6 @@ const styles = {
         background: 'transparent',
         border: 0,
         color: '#fff',
-        fontSize: '1.4em',
         padding: 0,
         width: 45,
         height: '1.4em'

@@ -56,7 +56,7 @@ class Account extends Component {
     }
     render() {
         let { type } = this.props.user;
-        let { balance } = this.context.state.user;
+        let { balance, currency } = this.context.state.user;
         return (
             <DropDown
                 triger={
@@ -69,7 +69,7 @@ class Account extends Component {
                             <Typography component="div" style={{ ...styles.account, width: 100 }}>
                                 {type == 'real' ? t('realAccount') : t('practiceAccount')}
                                 <Typography component="div" align="left" style={styles.accountSub}  >
-                                    $ {toMoney(Math.round(balance[type] * 10000000) / 10000000)}
+                                    $ {toMoney(Math.round(balance[type] * 10000000) / 10000000, currency)}
                                 </Typography>
                             </Typography>
                             <ExpandMoreRoundedIcon style={{ marginRight: -5, marginLeft: 5 }} />
@@ -87,7 +87,7 @@ class Account extends Component {
                                 component="div"
                                 style={styles.sub}
                             >
-                                $ {toMoney(Math.round(balance['real'] * 10000000) / 10000000)}
+                                $ {toMoney(Math.round(balance['real'] * 10000000) / 10000000, currency)}
                             </Typography>
                         } />
                     </ListItem>
@@ -100,7 +100,7 @@ class Account extends Component {
                                 component="div"
                                 style={styles.sub}
                             >
-                                $ {toMoney(Math.round(balance['practice'] * 10000000) / 10000000)}
+                                $ {toMoney(Math.round(balance['practice'] * 10000000) / 10000000, currency)}
                             </Typography>
                         } />
                     </ListItem>
@@ -123,7 +123,6 @@ const styles = {
         fontSize: 17,
         fontWeight: 'bold',
         color: 'rgb(247, 183, 28)',
-        paddingLeft: 15,
     },
     list: {
         fontSize: '0.85rem',

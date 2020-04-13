@@ -4,6 +4,7 @@ import Context from 'library/Context';
 import Price from './action/Price';
 import Time from './action/Time';
 import { t } from 'locales';
+import { toMoney } from 'library/Helper';
 
 import Hidden from '@material-ui/core/Hidden';
 import { withStyles } from '@material-ui/core/styles';
@@ -87,6 +88,8 @@ class Action extends Component {
     }
     render() {
         let profit = this.context.state.setting.profit || 0;
+        let { currency } = this.context.state.user;
+        let value = toMoney((this.state.bet * profit / 100).toFixed(2), currency);
         return (
             <div style={styles.root} className="scrollbar">
                 <div style={this.context.state.isPortrait ? styles.group2 : styles.group}>
@@ -99,12 +102,12 @@ class Action extends Component {
                             <div style={styles.profit3} >
                                 <div style={{...styles.info,...styles.border}} >
                                     <Typography variant="h5" display="block" style={{ color: 'rgb(232, 229, 92)' }} >
-                                        {profit}%
+                                    {profit}%
                                 </Typography>
                                 </div>
                                 <div style={styles.info} >
-                                <Typography display="block" style={{ color: '#41c14b' }} >
-                                        {(this.state.bet * profit / 100).toFixed(2)}$
+                                <Typography display="block" style={{ color: '#41c14b' , fontSize: value.length > 5 ? '1em' : '1.5em'}} >
+                                    {value}$
                                 </Typography>
                                 </div>
                             </div>
@@ -126,8 +129,8 @@ class Action extends Component {
                         </Typography>
                         </div>
                         <div style={styles.info} >
-                            <Typography variant="h5" display="block" style={{ color: 'rgb(232, 229, 92)' }} >
-                                {(this.state.bet * profit / 100).toFixed(2)}$
+                            <Typography variant="h5" display="block" style={{ color: 'rgb(232, 229, 92)', fontSize: value.length > 5 ? '1em' : '1.5em' }} >
+                                {value}$
                         </Typography>
                         </div>
                     </div>

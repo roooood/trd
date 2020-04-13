@@ -63,7 +63,9 @@ export function amountLen(amount) {
 
     return 0;
 }
-export function toMoney(amount) {
+export function toMoney(amount, currency=1) {
+    amount = amount * currency;
+    
     if (typeof amount == 'undefined' || amount == 'null')
         return 0;
     if (amount.length < 2)

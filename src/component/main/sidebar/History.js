@@ -12,6 +12,8 @@ import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounde
 import play from 'library/Sound';
 import ReactCountdownClock from 'react-countdown-clock';
 import { clone } from 'library/Helper';
+import { toMoney } from 'library/Helper';
+
 class Price extends Component {
     static contextType = Context;
     constructor(props) {
@@ -91,6 +93,7 @@ class Price extends Component {
     }
     render() {
         let endDate = parseInt(new Date().getTime() / 1000);
+        let { currency } = this.context.state.user;
         return (
             <div style={styles.root} className="swing-in-top-fwd" >
                 <Typography align="center" gutterBottom > {t('tradingHistory')}</Typography >
@@ -142,13 +145,13 @@ class Price extends Component {
                                             color: item.status == 'pending' ? '#fff' : item.amount > 0 ? '#25b940' : '#fc155a'
                                         }}>
                                         ${item.status == 'pending'
-                                            ? item.bet
+                                            ? toMoney(item.bet, currency)
                                             : item.amount > 0
-                                                ? '+' + item.amount
-                                                : '-' + item.bet
+                                                ? '+' + toMoney(item.amount, currency)
+                                                : '-' + toMoney(item.bet, currency)
                                         }
                                     </div>
-                                    <div style={styles.subItemDesc}>${item.bet}</div>
+                                    <div style={styles.subItemDesc}>${toMoney(item.bet, currency)}</div>
                                 </div>
                             </div>
                         )

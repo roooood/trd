@@ -10,6 +10,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
+import SettingsIcon from '@material-ui/icons/Settings';
 import LockIcon from '@material-ui/icons/Lock';
 import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
@@ -17,6 +18,7 @@ import DropDown from 'component/DropDown';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
+import SettingModal from './SettingModal';
 
 import { t } from 'locales';
 import { connect } from 'react-redux';
@@ -50,6 +52,10 @@ class Setting extends Component {
     deposit() {
         let modal = this.context.app('modal');
         modal.show(<DepositModal />);
+    }
+    settingModal() {
+        let modal = this.context.app('modal');
+        modal.show(<SettingModal />);
     }
     withdraw() {
         let modal = this.context.app('modal');
@@ -92,9 +98,15 @@ class Setting extends Component {
                         </ListItemAvatar>
                         <ListItemText primary={<Typography style={styles.list}>{t('withdraw')}</Typography>} />
                     </ListItem> */}
+                    <ListItem button onClick={this.settingModal}>
+                        <ListItemAvatar>
+                            <SettingsIcon style={{ fontSize: '1.5em', color: '#3870c8' }} />
+                        </ListItemAvatar>
+                        <ListItemText primary={<Typography style={styles.list}>{t('setting')}</Typography>} />
+                    </ListItem>
                     <ListItem button onClick={this.logOut}>
                         <ListItemAvatar>
-                            <LockIcon style={{ fontSize: '1.5em', color: '#7ac1ff' }} />
+                            <LockIcon style={{ fontSize: '1.5em', color: '#3870c8' }} />
                         </ListItemAvatar>
                         <ListItemText primary={<Typography style={styles.list}>{t('logOut')}</Typography>} />
                     </ListItem>
@@ -103,6 +115,7 @@ class Setting extends Component {
         );
     }
 }
+
 const styles = {
     account: {
         fontSize: 13,

@@ -16,7 +16,7 @@ import Hidden from '@material-ui/core/Hidden';
 
 const StyledMenu = withStyles({
     paper: {
-        background: '#25272b',
+        background: '#1c2030',
         color: '#fff',
         transform: 'translateX(-100px) translateY(-5px)!important'
     },

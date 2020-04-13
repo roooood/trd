@@ -47,6 +47,9 @@ class App extends Component {
   changeState(obj) {
     this.setState(obj)
   }
+  update() {
+    this.forceUpdate();
+  }
   app(obj) {
     return this[obj];
   }
