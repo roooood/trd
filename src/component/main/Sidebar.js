@@ -127,7 +127,7 @@ const styles = {
         height: '100%',
     },
     tabs: {
-        borderRight: '1px solid #333',
+        borderRight: '1px solid rgba(128, 128, 128, 0.3)',
     },
 }
 export default Sidebar;

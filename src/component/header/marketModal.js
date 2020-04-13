@@ -152,7 +152,7 @@ class AppModal extends Component {
                             width: 400,
                             label: t('description'),
                             dataKey: 'description',
-                        },
+                        }
                     ]}
                     onRowClick={({ rowData }) => this.addTab(rowData.id, rowData.symbol, rowData.display, type)}
                 />
@@ -254,7 +254,7 @@ const styles = {
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: 'rgba(0,0,0,.2)',
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },

@@ -15,13 +15,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const StyledModal = withStyles(theme => ({
     paper: {
-        backgroundColor: '#25272b',
+        backgroundColor: '#1c2030',
         color: ' #fff',
     },
 }))(Dialog);
 const StyledModal2 = withStyles(theme => ({
     paper: {
-        backgroundColor: '#25272b',
+        backgroundColor: '#1c2030',
         color: ' #fff',
         width: '100%',
         margin: 10

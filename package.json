@@ -11,6 +11,8 @@
     "colyseus.js": "^0.9.13",
     "events": "^3.0.0",
     "i18next": "^17.0.18",
+    "jss": "^10.1.1",
+    "jss-rtl": "^0.3.0",
     "qrcode.react": "^1.0.0",
     "react": "^16.10.2",
     "react-autobind": "^1.0.6",

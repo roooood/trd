@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 
 const StyledMenu = withStyles({
     paper: {
-        background: '#25272b',
+        background: '#1c2030',
         color: '#fff'
     },
 })(props => (

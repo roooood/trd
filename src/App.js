@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
+import { getQuery } from 'library/Helper';
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -20,6 +21,9 @@ import './assets/crypto/cryptocoins-colors.css';
 let EventEmitter = require('events')
 window.ee = new EventEmitter();
 
+const lang = getQuery('lang') || 'fa';
+const dir = lang == 'fa' ? 'rtl' : 'ltr'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +31,7 @@ class App extends Component {
       isMobile: window.innerWidth <= 900,
       isPortrait: window.innerHeight > window.innerWidth,
       setting: {},
+      dir: dir,
       menu: false
     };
     this.game = new GameServer('trade');

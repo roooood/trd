@@ -10,28 +10,28 @@ import Backdrop from '@material-ui/core/Backdrop';
 
 const Fab = withStyles(theme => ({
     fab: {
-        background: 'rgba(53, 53, 53, 0.81)',
+        background: 'rgba(31, 32, 36, 0.4)',
         backdropFilter: 'blur(3px)',
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         width: 40,
         height: 40,
         '&:hover': {
-            background: 'rgba(53, 53, 53, 0.91)',
+            background: 'rgba(31, 32, 36, 0.5)',
         },
     },
 }))(SpeedDial);
 
 const FabAction = withStyles(theme => ({
     fab: {
-        background: 'rgba(53, 53, 53, 0.81)',
+        background: 'rgba(31, 32, 36, 0.4)',
         backdropFilter: 'blur(3px)',
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         color: '#fff',
         width: 35,
         height: 35,
         margin: 2,
         '&:hover': {
-            background: 'rgba(53, 53, 53, 0.91)',
+            background: 'rgba(31, 32, 36, 0.5)',
         },
     },
 }))(SpeedDialAction);

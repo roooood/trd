@@ -18,6 +18,7 @@ import Sidebar from './component/main/Sidebar';
 import Bottom from './component/bottom/Bottom';
 
 import Sign from './component/sign';
+import { User } from 'redux/action/user';
 
 class Route extends Component {
     static contextType = Context;
@@ -68,8 +69,17 @@ class Route extends Component {
     setting(setting) {
         this.context.setState({ setting });
     }
+    logOut() {
+        this.props.dispatch(User(null));
+        this.context.game.close();
+    }
     user(user) {
-        this.context.setState({ user });
+        if (user == 'invalid') {
+            this.showError('invalidUser');
+            this.logOut();
+        }
+        else
+            this.context.setState({ user });
     }
     balance({ type, balance }) {
         let user = this.context.state.user;

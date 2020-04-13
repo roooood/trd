@@ -10,7 +10,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: rgb(21, 21, 21);
+  background:linear-gradient(#262f48, #1c2233);
   margin: 0;
     -webkit-touch-callout: none; 
     -webkit-user-select: none;
@@ -18,11 +18,6 @@ body {
        -moz-user-select: none;
             user-select: none; 
   -webkit-overflow-scrolling: touch;
-    background-image: url('../img/map.svg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: contain;
 }
 .scrollbar::-webkit-scrollbar {
    width: 0 !important 
@@ -35,7 +30,11 @@ body {
 
 .theme-default{
   color:#fff;
-  background-color: rgba(21, 21, 21, 0.01);
+  background-image: url('../img/map.svg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: contain;
 }
 #root{
   width: 100vw;
@@ -98,7 +97,7 @@ body {
   width:100%;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.35);
   align-items: center;
 }
 .top .item1 {
@@ -150,14 +149,14 @@ body {
   width:100%;
   position: fixed;
   bottom: 0;
-  border-top: 1px solid #333;
+  border-top: 1px solid rgba(128, 128, 128, 0.35);
 }
 .animated{
-  border-right: 1px solid #333;
+  border-right: 1px solid rgba(128, 128, 128, 0.35);
   width:230px;
 }
 .animate{
-  border-right: 1px solid #333;
+  border-right: 1px solid rgba(128, 128, 128, 0.35);
   -webkit-animation:sideMenu ease-in 1;  
   -moz-animation:sideMenu ease-in 1;
   animation:sideMenu ease-in 1;
@@ -196,6 +195,9 @@ body {
   width:100%;
   height:100%;
   z-index: 99999;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 
 }
 .loading {
@@ -230,21 +232,12 @@ body {
     background-color: rgba(245, 49, 39, 0.3);
   }
 }
-/*@-moz-keyframes loading {
-  50% { height: 100px; margin-top: 0px; }
-}
-@-o-keyframes loading {
-  50% { height: 100px; margin-top: 0px; }
-}
-@keyframes loading {
-  50% { height: 100px; margin-top: 0px; }
-}*/
 .loading>*{
   margin-right:3px;
 }
 .loading .loading-1 {
   height: 10px;
-  width: 30px;
+  width: 25px;
   background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
@@ -259,7 +252,7 @@ body {
 }
 .loading .loading-2 {
   height: 10px;
-  width: 30px;
+  width: 25px;
   background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
@@ -274,7 +267,7 @@ body {
 }
 .loading .loading-3 {
   height: 10px;
-  width: 30px;
+  width: 25px;
   background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
@@ -289,7 +282,7 @@ body {
 }
 .loading .loading-4 {
   height: 10px;
-  width: 30px;
+  width: 25px;
   background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
@@ -304,7 +297,7 @@ body {
 }
 .loading .loading-5 {
   height: 10px;
-  width: 30px;
+  width: 25px;
   background-color: rgba(0,0,0,.2);
   display: inline-block;
   margin-top: 90px;
@@ -375,3 +368,36 @@ body {
 .swing-in-top-fwd{-webkit-animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both;animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both}
 
 @-webkit-keyframes swing-in-top-fwd{0%{-webkit-transform:rotateX(-100deg);transform:rotateX(-100deg);-webkit-transform-origin:top;transform-origin:top;opacity:0}100%{-webkit-transform:rotateX(0deg);transform:rotateX(0deg);-webkit-transform-origin:top;transform-origin:top;opacity:1}}@keyframes swing-in-top-fwd{0%{-webkit-transform:rotateX(-100deg);transform:rotateX(-100deg);-webkit-transform-origin:top;transform-origin:top;opacity:0}100%{-webkit-transform:rotateX(0deg);transform:rotateX(0deg);-webkit-transform-origin:top;transform-origin:top;opacity:1}}
+
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fed;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}

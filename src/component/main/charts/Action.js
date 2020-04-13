@@ -171,7 +171,7 @@ const styles = {
         borderTop: '1px solid #2f2f2f',
     },
     profit: {
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         margin: 5,
         padding: 5,
         borderRadius: 5,
@@ -180,7 +180,7 @@ const styles = {
         maxHeight: 100,
     },
     profit2: {
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',

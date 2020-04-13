@@ -31,13 +31,12 @@ export default {
 
     signIn: 'Sign In',
     forgotPassword: 'Forgot password?',
-    loginSignUp: "Don't have an account? Sign Up",
+    loginSignUp: "Sign Up",
     agree: 'I agree with the',
     terms: 'Terms of Service',
 
     logOut: 'Logout',
     deposit: 'Deposit',
-    depositExpireLimit: 'Attention , this addresses expire after one hour',
     makeDeposit: 'Make Deposit',
     withdraw: 'Withdraw',
     makeWithdraw: 'Request Withdraw',
@@ -51,7 +50,6 @@ export default {
     status: 'Status',
     amount: 'Amount',
     submit: 'Submit',
-    totalPortfolio: 'Total Portfolio',
     tradingHistory: 'Trading History',
     chatSupport: 'Chat & Support',
     leaderBoard: 'Leader Board',
@@ -65,13 +63,11 @@ export default {
     buy: 'Buy',
     sell: 'Sell',
     bitcoin: 'Bitcoin',
-    proccedToPayment: 'Procced To Payment',
 
     crypto: 'Crypto',
     forex: 'Forex',
     stocks: 'Stocks',
     asset: 'Asset',
-    profit: 'Profit',
     change: 'Change',
     description: 'Description',
 
@@ -104,5 +100,6 @@ export default {
 
     copied: 'The Address Copied To Clipboard',
     currentTime: 'Current Time',
-    newApp:'Add New'
+    newApp: 'Add New',
+    invalidUserError  :'User Not Found'
 }

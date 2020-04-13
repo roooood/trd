@@ -21,14 +21,16 @@ import { toMoney } from 'library/Helper';
 const ColorButton = withStyles(theme => ({
     root: {
         background: 'transparent',
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         padding: ' 6px 10px',
         margin: 2,
         borderRadius: 5,
         minWidth: 40,
+        boxShadow:'none',
         '&:hover': {
             background: 'transparent',
-            border: '1px solid #555',
+            border: '1px solid rgba(128, 128, 128, 0.5)',
+            boxShadow: 'none',
         },
     },
 }))(Button);

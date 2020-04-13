@@ -22,7 +22,7 @@ import { t } from 'locales';
 const ColorButton = withStyles(theme => ({
     root: {
         background: 'transparent',
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         margin: 2,
         borderRadius: 5,
         height: 56,
@@ -68,7 +68,7 @@ const StyledTab = withStyles(theme => ({
         margin: 5,
         borderRadius: 5,
         minWidth: 100,
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         backgroundColor: 'transparent',
         '&:hover': {
             opacity: 1,

@@ -26,14 +26,14 @@ import { User } from 'redux/action/user';
 const ColorButton = withStyles(theme => ({
     root: {
         background: 'transparent',
-        border: '1px solid #333',
+        border: '1px solid rgba(128, 128, 128, 0.8)',
         padding: ' 6px 10px',
         margin: 2,
         borderRadius: 5,
         minWidth: 40,
         '&:hover': {
             background: 'transparent',
-            border: '1px solid #555',
+            border: '1px solid rgba(128, 128, 128, 0.5)',
         },
     },
 }))(Button);
@@ -57,7 +57,7 @@ class Setting extends Component {
     }
     logOut() {
         this.props.dispatch(User(null));
-        this.context.game.close()
+        this.context.game.close();
     }
     render() {
         let { type } = this.props.user;
@@ -80,7 +80,7 @@ class Setting extends Component {
                 }
             >
                 <List style={{ padding: '0 10px' }}>
-                    <ListItem button onClick={this.deposit}>
+                    {/* <ListItem button onClick={this.deposit}>
                         <ListItemAvatar>
                             <VerticalAlignBottomIcon style={{ fontSize: '1.5em', color: '#98FB98' }} />
                         </ListItemAvatar>
@@ -91,7 +91,7 @@ class Setting extends Component {
                             <VerticalAlignTopIcon style={{ fontSize: '1.5em', color: '#FFA07A' }} />
                         </ListItemAvatar>
                         <ListItemText primary={<Typography style={styles.list}>{t('withdraw')}</Typography>} />
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem button onClick={this.logOut}>
                         <ListItemAvatar>
                             <LockIcon style={{ fontSize: '1.5em', color: '#7ac1ff' }} />

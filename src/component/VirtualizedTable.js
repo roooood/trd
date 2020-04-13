@@ -13,7 +13,7 @@ const styles = theme => ({
         boxSizing: 'border-box',
     },
     tableHead: {
-        backgroundColor: 'rgb(69, 71, 75)',
+       
         color: '#eee',
         padding: 10,
         borderBottom: '1px solid rgb(193, 78, 192)'
@@ -21,21 +21,22 @@ const styles = theme => ({
     table: {
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
+            backgroundColor: 'rgba(0, 0, 0,.5)',
             paddingRight: theme.direction === 'rtl' ? '0px !important' : undefined,
         },
     },
     tableRow: {
         cursor: 'pointer',
         '&:nth-of-type(even)': {
-            backgroundColor: 'rgba(136, 134, 134, 0.2)',
+            backgroundColor: 'rgba(0, 0, 0,.3)',
         },
         '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
         }
     },
     tableRowHover: {
         '&:hover': {
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
         },
     },
     tableCell: {
