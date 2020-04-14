@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Hidden from '@material-ui/core/Hidden';
 
 import Context from './library/Context';
-import { t } from './locales';
+import i18n,{ t } from './locales';
 
 import Loading from './component/Loading';
 import Setting from './component/header/Setting';
@@ -61,6 +61,7 @@ class Route extends Component {
         }
     }
     connected(data) {
+        i18n.changeLanguage(data.user.lang);
         this.context.setState(data);
         this.context.live.connect(() => {
             this.setState({ loading: false });
@@ -78,8 +79,9 @@ class Route extends Component {
             this.showError('invalidUser');
             this.logOut();
         }
-        else
+        else {
             this.context.setState({ user });
+        }
     }
     balance({ type, balance }) {
         let user = this.context.state.user;

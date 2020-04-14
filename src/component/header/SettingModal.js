@@ -28,7 +28,6 @@ class Setting extends Component {
     constructor(props, Context) {
         super(props);
         let { cur, lang } = Context.state.user;
-        console.log(Context.state.user);
         this.state = {
             language: lang,
             currency: cur
@@ -36,20 +35,28 @@ class Setting extends Component {
         autoBind(this);
     }
     componentDidMount() {
-
+        this.context.game.register('currency', this.currency);
     }
     notify(msg) {
         window.ee.emit('notify', msg)
     }
     handleLanguage(event){
         this.setState({ language: event.target.value }, () => {
+            this.context.game.send({ lang:this.state.language });
             i18n.changeLanguage(this.state.language);
             let update = this.context.app('update');
             update();
         });
     }
     handleCurrency(event) {
-        this.setState({ currency: event.target.value });
+        this.setState({ currency: event.target.value }, () => {
+            this.context.game.send({ currency: this.state.currency });
+        });
+    }
+    currency(cur) {
+        this.context.state.user.currency = cur;
+        let update = this.context.app('update');
+        update();
     }
     render() {
         return (
